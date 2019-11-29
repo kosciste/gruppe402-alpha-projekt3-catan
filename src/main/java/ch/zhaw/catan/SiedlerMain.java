@@ -8,41 +8,37 @@ import org.beryx.textio.TextTerminal;
 import java.awt.*;
 import java.util.Map;
 
+import ch.zhaw.catanGameActions.*;
+
+
 public class SiedlerMain {
 
-    TextIO textIO;
-    TextTerminal<?> textTerminal;
+    private TextIO textIO;
+    private TextTerminal<?> textTerminal;
 
-    public SiedlerMain()
+    private SiedlerMain()
+    {
+        initializeTextTerminal();
+    }
+
+    private void initializeTextTerminal()
     {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
+        textTerminal.getProperties().setPaneDimension(1280,720);
     }
-
-    public enum StartActions {
-        PLAY, ABOUT, QUIT,
-    }
-
-    public enum IngameActions {
-        BUILD, TRADE, END_TURN, END_THE_GAME
-    }
-
-    public enum YesAndNo {
-        YES, NO
-    }
-
     public static void main(String[] args)
     {
-        new SiedlerMain().run();
+        new SiedlerMain().runMainMenu();
     }
 
-    private void run()
+    private void runMainMenu()
     {
         boolean running = true;
 
         textTerminal.print(getTextWelcome());
         while(running) {
-            switch (getEnumValue(textIO, StartActions.class)) {
+            switch (getEnumValue(textIO, MainMenuActions.class)) {
                 case PLAY:
                     startNewRound();
                     break;
@@ -76,7 +72,7 @@ public class SiedlerMain {
         // TODO: Implement Check wincondition
         boolean running = true;
         while (running) {
-            switch (getEnumValue(textIO, IngameActions.class)) {
+            switch (getEnumValue(textIO, IngameMenuActions.class)) {
                 case BUILD:
                     // TODO: Implement Build Structure
                     break;
@@ -99,24 +95,20 @@ public class SiedlerMain {
 
     private boolean isStillRunning()
     {
-        boolean running = true;
         textTerminal.println("You can't safe the progress you've made so far...\n" +
                              "Do You really want to end the game?");
+
         switch (getEnumValue(textIO, YesAndNo.class)) {
             case YES:
                 // TODO: Implement reset everything!
                 textTerminal.print(getTextWelcome());
-                running = false;
-                break;
+                return false;
             case NO:
-                running = true;
-                break;
+                return true;
             default:
                 textTerminal.println("Something went wrong :(");
-                running = true;
-                break;
+                return true;
         }
-        return running;
     }
 
     private SiedlerGame initializeSiedlerGame()
