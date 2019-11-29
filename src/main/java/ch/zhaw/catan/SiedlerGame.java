@@ -10,6 +10,8 @@ import java.util.Map;
 public class SiedlerGame {
 
   SiedlerBoard board = new SiedlerBoard();
+  private int winPoints;
+  private int players;
 
 
   public SiedlerGame(int winPoints, int players) {
@@ -30,8 +32,8 @@ public class SiedlerGame {
   }
 
   public SiedlerBoard getBoard() {
-    // TODO: Implement
-    return null;
+
+    return board;
   }
 
   public Faction getCurrentPlayer() {
@@ -45,13 +47,31 @@ public class SiedlerGame {
   }
 
   public boolean placeInitialSettlement(Point position, boolean payout) {
-    // TODO: Implement
-    return false;
+    board.setCorner(position, null);
+    if(board.getCorner(position)!=null){
+
+      return true;
+    }
+
+    else {
+
+      return false;
+    }
+
   }
 
   public boolean placeInitialRoad(Point roadStart, Point roadEnd) {
-    // TODO: Implement
-    return false;
+    board.setEdge(roadStart, roadEnd, null);
+
+    if(board.getEdge(roadStart,roadEnd)!=null) {
+
+      return true;
+    }
+
+    else {
+      return false;
+    }
+
   }
 
   public Map<Faction, List<Resource>> throwDice(int dicethrow) {
