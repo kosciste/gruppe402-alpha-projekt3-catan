@@ -9,6 +9,9 @@ import java.util.Map;
 
 public class SiedlerGame {
 
+  SiedlerBoard board = new SiedlerBoard();
+
+
   public SiedlerGame(int winPoints, int players) {
     // TODO: Implement
   }
@@ -56,10 +59,27 @@ public class SiedlerGame {
     return null;
   }
 
+
   public boolean buildSettlement(Point position) {
-    // TODO: Implement
-    return false;
+
+    //TODO: Überprüfung ob die Strasse des Player an Corner grenzt
+
+    if (board.hasCorner(position) && board.getAdjacentEdges(position)!=null && board.getCorner(position) == null) {
+
+      board.setCorner(position,null);
+      return true;
+
+    }
+
+    else {
+      return false;
+    }
+
+
+
+
   }
+
 
   public boolean buildCity(Point position) {
     // TODO: OPTIONAL task - Implement
@@ -67,8 +87,18 @@ public class SiedlerGame {
   }
 
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    // TODO: Implement
+
+  if(board.hasEdge(roadStart,roadEnd)&&board.getEdge(roadStart, roadEnd)==null)  {
+
+    board.setEdge(roadStart, roadEnd, null);
+    return true;
+  }
+
+  else {
     return false;
+  }
+
+
   }
 
   public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
