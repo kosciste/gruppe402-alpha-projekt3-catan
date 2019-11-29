@@ -23,6 +23,9 @@ public class SiedlerGame {
     this.numberOfPlayers = numberOfPlayers;
   }
 
+  /**
+   * This method switches to next player who needs to make a turn.
+   */
   public void switchToNextPlayer() {
     if(playerAtTurn<4) {
 
@@ -32,6 +35,9 @@ public class SiedlerGame {
     playerAtTurn = 0;
   }
 
+  /**
+   * This method switches to the previous player who needs to make a turn.
+   */
   public void switchToPreviousPlayer() {
     if(playerAtTurn>0) {
       playerAtTurn--;
@@ -41,51 +47,65 @@ public class SiedlerGame {
     playerAtTurn = 4;
   }
 
+
+  /**
+   * This method returns a list with all players.
+   * @return List with all players
+   */
   public List<Faction> getPlayer() {
     return players;
   }
 
+
+  /**
+   * This method returns the GameBoard
+   * @return the GameBoard
+   */
   public SiedlerBoard getBoard() {
 
     return board;
   }
 
+
+  /**
+   * Returns the current player who needs to make a turn.
+   * @return the current player
+   */
   public Faction getCurrentPlayer() {
    return players.get(playerAtTurn);
   }
+
+
 
   public int getCurrentPlayerResourceStock(Resource resource) {
     // TODO: Implement
     return 0;
   }
 
-  public boolean placeInitialSettlement(Point position, boolean payout) {
-    board.setCorner(position, null);
-    if(board.getCorner(position)!=null){
 
-      return true;
-    }
+  /**
+   * Builds an  initial settlement
+   * @param position the specified position for the settlement
+   * @return true, if the settlement has been built
+   */
+  public boolean placeInitialSettlement(Point position) {
 
-    else {
-
-      return false;
-    }
+  return buildSettlement(position);
 
   }
 
+  /**
+   * Builds an initial road
+   * @param roadStart the Point where the road starts
+   * @param roadEnd the Point where the road ends
+   * @return true, if the road has been built
+   */
   public boolean placeInitialRoad(Point roadStart, Point roadEnd) {
-    board.setEdge(roadStart, roadEnd, null);
 
-    if(board.getEdge(roadStart,roadEnd)!=null) {
-
-      return true;
-    }
-
-    else {
-      return false;
-    }
+    return buildRoad(roadStart,roadEnd);
 
   }
+
 
   public Map<Faction, List<Resource>> throwDice(int dicethrow) {
     // TODO: Implement
@@ -93,6 +113,11 @@ public class SiedlerGame {
   }
 
 
+  /**
+   * This method builds a settlement at a specified position
+   * @param position the specified position for the settlement
+   * @return
+   */
   public boolean buildSettlement(Point position) {
 
     //TODO: Überprüfung ob die Strasse des Player an Corner grenzt
@@ -119,6 +144,12 @@ public class SiedlerGame {
     return false;
   }
 
+  /**
+   * This method builds a road at a specicfied location
+   * @param roadStart the Point where the road starts
+   * @param roadEnd the Point where the road ends
+   * @return true, if the road has been built
+   */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
 
   if(board.hasEdge(roadStart,roadEnd)&&board.getEdge(roadStart, roadEnd)==null)  {
