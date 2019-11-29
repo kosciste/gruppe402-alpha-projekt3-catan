@@ -4,31 +4,45 @@ import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 
 import java.awt.Point;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class SiedlerGame {
 
   SiedlerBoard board = new SiedlerBoard();
   private int winPoints;
-  private int players;
+  private int numberOfPlayers;
+  private List<Faction> players = new ArrayList<Faction>();
 
+  private static int playerAtTurn = 0;
 
-  public SiedlerGame(int winPoints, int players) {
-    // TODO: Implement
+  public SiedlerGame(int winPoints, int numberOfPlayers) {
+    this.winPoints = winPoints;
+    this.numberOfPlayers = numberOfPlayers;
   }
 
   public void switchToNextPlayer() {
-    // TODO: Implement
+    if(playerAtTurn<4) {
+
+      playerAtTurn++;
+    }
+
+    playerAtTurn = 0;
   }
 
   public void switchToPreviousPlayer() {
-    // TODO: Implement
+    if(playerAtTurn>0) {
+      playerAtTurn--;
+
+    }
+
+    playerAtTurn = 4;
   }
 
   public List<Faction> getPlayer() {
-    // TODO: Implement
-    return null;
+    return players;
   }
 
   public SiedlerBoard getBoard() {
@@ -37,8 +51,7 @@ public class SiedlerGame {
   }
 
   public Faction getCurrentPlayer() {
-    // TODO: Implement
-    return null;
+   return players.get(playerAtTurn);
   }
 
   public int getCurrentPlayerResourceStock(Resource resource) {
