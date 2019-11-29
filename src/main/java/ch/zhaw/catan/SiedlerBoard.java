@@ -10,20 +10,31 @@ import java.util.Map;
 
 public class SiedlerBoard extends HexBoard<Land, String, String, String> {
 
+    private static final int FIRST_CHAR = 0;
+    private static final int SECOND_CHAR = 1;
+
     private Map<Point, Land> standardLandPlacement = Config.getStandardLandPlacement();
-    private Map<Point, Integer> standardDiceNumberPlacement = Config.getStandardDiceNumberPlacement();
     private Map<Point, Label> lowerFieldLabel = new HashMap<>();
 
 
     public SiedlerBoard()
     {
-        //Fülle die Hexagons mit Materialien
-        for(Map.Entry<Point, Land> landvalue : standardLandPlacement.entrySet()) {
+        createStandardBoard();
+        putDicevaluesForStandardBoard();
+    }
+
+    // This method adds fields to the HexBoard.
+    private void createStandardBoard()
+    {
+        for (Map.Entry<Point, Land> landvalue : standardLandPlacement.entrySet()) {
             addField(landvalue.getKey(), landvalue.getValue());
         }
+    }
 
-        //Fülle die Hexagons mit den Würfelwerten
-        for(Map.Entry<Point, Integer> dicevalue : standardDiceNumberPlacement.entrySet()) {
+    // This method converts the dicenumbers into chars and puts them into the Map lowerFieldlabel.
+    private void putDicevaluesForStandardBoard()
+    {
+        for(Map.Entry<Point, Integer> dicevalue : Config.getStandardDiceNumberPlacement().entrySet()) {
             String dicevalueAsString = dicevalue.getValue().toString();
             char firstChar = '0';
             char secondChar = '0';
@@ -38,6 +49,24 @@ public class SiedlerBoard extends HexBoard<Land, String, String, String> {
         }
     }
 
+    /*private char[] convertDicenumberInttoChar(int dicevalue)
+    {
+        char[] dicenumberAsChars = {'0', '0'};
+        String dicevalueAsString = dicevalue.getValue().toString();
+        char firstChar = '0';
+        char secondChar = '0';
+        if(dicevalueAsString.length() == 2) {
+            firstChar = dicevalueAsString.charAt(0);
+            secondChar = dicevalueAsString.charAt(1);
+        }
+        else {
+            secondChar = dicevalueAsString.charAt(0);
+        }
+    }*/
+
+    /**
+     * @return lowerFieldLabel in this map are dicevalues in form of chars stored.
+     */
     public Map<Point, Label> getLowerFieldLabel()
     {
         return lowerFieldLabel;

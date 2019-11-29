@@ -21,52 +21,57 @@ public class SiedlerMain {
         initializeTextTerminal();
     }
 
+
     private void initializeTextTerminal()
     {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
         textTerminal.getProperties().setPaneDimension(1280,720);
     }
+
     public static void main(String[] args)
     {
-        new SiedlerMain().runMainMenu();
+        new SiedlerMain().startMainMenu();
     }
 
-    private void runMainMenu()
+    // This method starts and runs the main menu.
+    private void startMainMenu()
+    {
+        printTextWelcome();
+        MainMenu();
+        textTerminal.dispose();
+    }
+
+    // This method implements the main menu.
+    private void MainMenu()
     {
         boolean running = true;
-
-        textTerminal.print(getTextWelcome());
         while(running) {
             switch (getEnumValue(textIO, MainMenuActions.class)) {
                 case PLAY:
                     startNewRound();
                     break;
                 case ABOUT:
-                    textTerminal.println(getTextAbout());
+                    printTextAbout();
                     break;
                 case QUIT:
                     running = false;
                     break;
+
                 default:
-                    textTerminal.println("Something went wrong :(");
+                    printErrorMessage();
                     break;
             }
         }
-        textTerminal.dispose();
     }
 
+    // This Method starts a new round of the Settlers of catan.
     private void startNewRound()
     {
-        //SiedlerGame siedlerGame = initializeSiedlerGame();
-        SiedlerBoard board = new SiedlerBoard();
+        SiedlerGame siedlerGame = initializeSiedlerGame();
+        SiedlerBoardTextView view = initialSiedlerBoardTextview(siedlerGame.getBoard());
 
-        SiedlerBoardTextView view = new SiedlerBoardTextView(board);
-        for (Map.Entry<Point, Label> e : board.getLowerFieldLabel().entrySet()) {
-            view.setLowerFieldLabel(e.getKey(), e.getValue());
-        }
-
-        textTerminal.println(view.toString());
+        printSiedlerBoard(view);
 
         // TODO: Implement initial round and role Dice
         // TODO: Implement Check wincondition
@@ -75,6 +80,11 @@ public class SiedlerMain {
             switch (getEnumValue(textIO, IngameMenuActions.class)) {
                 case BUILD:
                     // TODO: Implement Build Structure
+                    /*
+                    case ROAD:
+                        siedlergame.buildRoad();
+                        printSiedlerBoard(view);
+                     */
                     break;
                 case TRADE:
                     // TODO: Implement Trade with Bank
@@ -84,29 +94,29 @@ public class SiedlerMain {
                     // TODO: Role Dice
                     break;
                 case END_THE_GAME:
-                    running = isStillRunning();
+                    printCantSafeWarning();
+                    running = shouldStillRun();
                     break;
+
                 default:
-                    textTerminal.println("Something went wrong :(");
+                    printErrorMessage();
                     break;
             }
         }
     }
 
-    private boolean isStillRunning()
+    // This method returns true if the round still should run otherwise it will return false.
+    private boolean shouldStillRun()
     {
-        textTerminal.println("You can't safe the progress you've made so far...\n" +
-                             "Do You really want to end the game?");
-
         switch (getEnumValue(textIO, YesAndNo.class)) {
             case YES:
-                // TODO: Implement reset everything!
-                textTerminal.print(getTextWelcome());
+                printTextWelcome();
                 return false;
             case NO:
                 return true;
+
             default:
-                textTerminal.println("Something went wrong :(");
+                printErrorMessage();
                 return true;
         }
     }
@@ -114,20 +124,44 @@ public class SiedlerMain {
     private SiedlerGame initializeSiedlerGame()
     {
         textTerminal.println();
-        int winpoints = textIO.newIntInputReader()
-              .withMinVal(3)
-              .withMaxVal(10)
-              .read("Declare number of winpoints: ");
-        int numberOfPlayers = textIO.newIntInputReader()
-              .withMinVal(2)
-              .withMaxVal(4)
-              .read("Enter the number of Settlers: ");
-        return new SiedlerGame(winpoints, numberOfPlayers);
+        return new SiedlerGame(setNumberOfWinpointsToWin(), setNumberOfPlayers());
     }
 
-    private String getTextWelcome()
+    private int setNumberOfWinpointsToWin()
     {
-        return "\n"
+        return textIO.newIntInputReader()
+                .withMinVal(3)
+                .withMaxVal(10)
+                .read("Declare number of winpoints: ");
+    }
+
+    private int setNumberOfPlayers()
+    {
+        return textIO.newIntInputReader()
+                .withMinVal(2)
+                .withMaxVal(4)
+                .read("Enter the number of Settlers: ");
+    }
+
+    private SiedlerBoardTextView initialSiedlerBoardTextview(SiedlerBoard board)
+    {
+        SiedlerBoardTextView view = new SiedlerBoardTextView(board);
+
+        for (Map.Entry<Point, Label> e : board.getLowerFieldLabel().entrySet()) {
+            view.setLowerFieldLabel(e.getKey(), e.getValue());
+        }
+        return view;
+    }
+
+    private static <T extends Enum<T>> T getEnumValue(TextIO textIO, Class<T> commands)
+    {
+        return textIO.newEnumInputReader(commands).read("----");
+    }
+
+    private void printTextWelcome()
+    {
+        textTerminal.println(
+              "\n"
             + "   _____ _____ _____     _____ _____ _____ _____ __    _____ _____ _____  \n"
             + "  |_   _|  |  |   __|   |   __|   __|_   _|_   _|  |  |   __| __  |   __| \n"
             + "    | | |     |   __|   |__   |   __| | |   | | |  |__|   __|    -|__   | \n"
@@ -142,27 +176,42 @@ public class SiedlerMain {
             + "                          Hello fellow Settlers!\n"
             + "      You have successfully startet the game THE SETTLERS OF CATAN.\n"
             + "                         May the best of you win.\n\n"
-            + "                                   ****\n";
+            + "                                   ****\n"
+        );
     }
 
-    private String getTextAbout()
+    private void printTextAbout()
     {
-        return "\n****\n\n"
+        textTerminal.println(
+              "\n****\n\n"
 
-                + "You're playing our third Project called THE SETTLERS OF CATAN\n\n"
+            + "You're playing our third Project called THE SETTLERS OF CATAN\n\n"
 
-                + "Autors: Blattmann Peter   -- blattpet\n"
-                + "        Jovanovic Nikola  -- jovanni1\n"
-                + "        Koscica Stefan    -- kosciste\n"
-                + "        Sileno Ennio      -- silenenn\n\n"
+            + "Autors: Blattmann Peter   -- blattpet\n"
+            + "        Jovanovic Nikola  -- jovanni1\n"
+            + "        Koscica Stefan    -- kosciste\n"
+            + "        Sileno Ennio      -- silenenn\n\n"
 
-                + "For more information please visit our repository on Github :)\n\n"
+            + "For more information please visit our repository on Github :)\n\n"
 
-                + "****\n";
+            + "****\n"
+        );
     }
 
-    private static <T extends Enum<T>> T getEnumValue(TextIO textIO, Class<T> commands)
+    private void printCantSafeWarning()
     {
-        return textIO.newEnumInputReader(commands).read("----");
+        textTerminal.println("You can't safe the progress you've made so far...\n" +
+                             "Do You really want to end the game?");
+
+    }
+
+    private void printErrorMessage()
+    {
+        textTerminal.println("Something unexpected went wrong :(");
+    }
+
+    private void printSiedlerBoard(SiedlerBoardTextView view)
+    {
+        textTerminal.println(view.toString());
     }
 }

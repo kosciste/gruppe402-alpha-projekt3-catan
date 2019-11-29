@@ -41,15 +41,20 @@ public class Dummy2 {
                     switch (getEnumValue(textIO, Config.Structure.class)) {
                         case ROAD:
                             textTerminal.println("Declare the beginning of your new Road");
-                            int xCoordinateBeginning = textIO.newIntInputReader()
-                                    .withMinVal(0)
-                                    .withMaxVal(14)
-                                    .read("X-Coordiante");
-                            int yCoordinateBeginning = textIO.newIntInputReader()
-                                    .withMinVal(0)
-                                    .withMaxVal(22)
-                                    .read("Y-Coordiante");
-                            Point beginningRoad = new Point(xCoordinateBeginning, yCoordinateBeginning);
+                            boolean isvalidbeginning = false;
+                            Point beginningRoad = null;
+                            while(!isvalidbeginning) {
+                                int xCoordinateBeginning = textIO.newIntInputReader()
+                                        .withMinVal(0)
+                                        .withMaxVal(14)
+                                        .read("X-Coordiante");
+                                int yCoordinateBeginning = textIO.newIntInputReader()
+                                        .withMinVal(0)
+                                        .withMaxVal(22)
+                                        .read("Y-Coordiante");
+                                beginningRoad = new Point(xCoordinateBeginning, yCoordinateBeginning);
+                                isvalidbeginning = board.hasCorner(beginningRoad);
+                            }
                             textTerminal.println("Declare the ending of your new Road");
                             int xCoordinateEnd = textIO.newIntInputReader()
                                     .withMinVal(0)
@@ -60,7 +65,7 @@ public class Dummy2 {
                                     .withMaxVal(22)
                                     .read("Y-Coordiante");
                             Point endRoad = new Point(xCoordinateEnd, yCoordinateEnd);
-                            board.setEdge(beginningRoad, endRoad, "r");
+                            board.setEdge(beginningRoad, endRoad, "rr");
                             textTerminal.println(view.toString());
                             textIO.getTextTerminal();
                             break;
