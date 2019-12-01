@@ -15,6 +15,7 @@ public class SiedlerMain {
 
     private TextIO textIO;
     private TextTerminal<?> textTerminal;
+    private SiedlerGame siedlerGame;
 
     private SiedlerMain()
     {
@@ -68,8 +69,8 @@ public class SiedlerMain {
     // This Method starts a new round of the Settlers of catan.
     private void startNewRound()
     {
-        SiedlerGame siedlerGame = initializeSiedlerGame();
-        SiedlerBoardTextView view = initialSiedlerBoardTextview(siedlerGame.getBoard());
+        siedlerGame = initializeSiedlerGame();
+        SiedlerBoardTextView view = initialSiedlerBoardTextView(siedlerGame.getBoard());
 
         printSiedlerBoard(view);
 
@@ -79,12 +80,24 @@ public class SiedlerMain {
         while (running) {
             switch (getEnumValue(textIO, IngameMenuActions.class)) {
                 case BUILD:
-                    // TODO: Implement Build Structure
-                    /*
-                    case ROAD:
-                        siedlergame.buildRoad();
-                        printSiedlerBoard(view);
-                     */
+                	switch(getEnumValue(textIO, Config.Structure.class)) {
+                	case ROAD:
+                		textTerminal.println("Declare the beginning of your new road");
+                		Point beginning = chooseCorner();
+                		textTerminal.println("Declare the ending of your new road");
+                		Point ending = chooseCorner();
+                		if (siedlerGame.buildRoad(beginning, ending)) {
+                			printSiedlerBoard(view);
+                		} else {
+                			textTerminal.println("Not succeeded");
+                		}
+                		break;
+                	case SETTLEMENT:
+                		// TODO
+                		break;
+                	case CITY:
+                		// TODO
+                	}
                     break;
                 case TRADE:
                     // TODO: Implement Trade with Bank
@@ -143,7 +156,7 @@ public class SiedlerMain {
                 .read("Enter the number of Settlers: ");
     }
 
-    private SiedlerBoardTextView initialSiedlerBoardTextview(SiedlerBoard board)
+    private SiedlerBoardTextView initialSiedlerBoardTextView(SiedlerBoard board)
     {
         SiedlerBoardTextView view = new SiedlerBoardTextView(board);
 
@@ -214,4 +227,31 @@ public class SiedlerMain {
     {
         textTerminal.println(view.toString());
     }
+    
+	/**
+	 * Reads a specified x- and y-coordinate from the console and returns a point
+	 * with these coordinates.
+	 * 
+	 * @return a point with the specified coordinates
+	 */
+	private Point choosePoint() {
+		int xCoordinate = textIO.newIntInputReader().read("x-coordinate");
+		int yCoordinate = textIO.newIntInputReader().read("y-coordinate");
+		return new Point(xCoordinate, yCoordinate);
+	}
+	
+	/**
+	 * Reads a specified x- and y-coordinate from the console until the point refers
+	 * to a corner from the board. Only then the point is returned.
+	 * 
+	 * @return a point which refers to a corner
+	 */
+	private Point chooseCorner() {
+		Point point = choosePoint();
+		while (!siedlerGame.getBoard().hasCorner(point)) {
+			textTerminal.println("Not valid corner");
+			point = choosePoint();
+		}
+		return point;
+	}
 }
