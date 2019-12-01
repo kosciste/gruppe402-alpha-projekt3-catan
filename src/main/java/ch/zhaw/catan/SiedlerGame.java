@@ -122,9 +122,11 @@ public class SiedlerGame {
 
     //TODO: Überprüfung ob die Strasse des Player an Corner grenzt
 
+    Settlement settlement = new Settlement(getCurrentPlayer());
+
     if (board.hasCorner(position) && board.getAdjacentEdges(position)!=null && board.getCorner(position) == null) {
 
-      board.setCorner(position,null);
+      board.setCorner(position,settlement.toString());
       return true;
 
     }
@@ -152,9 +154,11 @@ public class SiedlerGame {
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
 
+    Road road = new Road(getCurrentPlayer());
+
   if(board.hasEdge(roadStart,roadEnd)&&board.getEdge(roadStart, roadEnd)==null)  {
 
-    board.setEdge(roadStart, roadEnd, null);
+    board.setEdge(roadStart, roadEnd, road.toString());
     return true;
   }
 
