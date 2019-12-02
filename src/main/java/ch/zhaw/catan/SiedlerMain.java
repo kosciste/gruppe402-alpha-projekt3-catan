@@ -1,15 +1,15 @@
 package ch.zhaw.catan;
 
 import ch.zhaw.hexboard.Label;
+
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.Map;
 
 import ch.zhaw.catanGameActions.*;
-
 
 public class SiedlerMain {
 
