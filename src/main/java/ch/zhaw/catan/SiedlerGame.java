@@ -4,23 +4,25 @@ import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 
 import java.awt.Point;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.*;
 
 public class SiedlerGame {
 
   SiedlerBoard board = new SiedlerBoard();
   private int winPoints;
   private int numberOfPlayers;
-  private List<Faction> players = new ArrayList<Faction>();
+  private List<Player> players = new ArrayList<>();
 
   private static int playerAtTurn = 0;
 
   public SiedlerGame(int winPoints, int numberOfPlayers) {
     this.winPoints = winPoints;
     this.numberOfPlayers = numberOfPlayers;
+    for(int i = 0; i < numberOfPlayers; i++){
+
+     Player player =  new Player(Faction.values()[i]);
+     players.add(player);
+    }
   }
 
   /**
@@ -52,7 +54,8 @@ public class SiedlerGame {
    * This method returns a list with all players.
    * @return List with all players
    */
-  public List<Faction> getPlayer() {
+  public List<Player> getPlayer() {
+
     return players;
   }
 
@@ -71,7 +74,7 @@ public class SiedlerGame {
    * Returns the current player who needs to make a turn.
    * @return the current player
    */
-  public Faction getCurrentPlayer() {
+  public Player getCurrentPlayer() {
    return players.get(playerAtTurn);
   }
 
@@ -122,21 +125,21 @@ public class SiedlerGame {
 
     //TODO: Überprüfung ob die Strasse des Player an Corner grenzt
 
-    Settlement settlement = new Settlement(getCurrentPlayer());
+    Settlement settlement = new Settlement(getCurrentPlayer().getPlayerFaction());
 
-    if (board.hasCorner(position) && board.getAdjacentEdges(position)!=null && board.getCorner(position) == null) {
+      if(board.hasCorner((position))&&board.getCorner(position) == null && board.getAdjacentEdges(position)!=null
+              && getCurrentPlayer().hasAvailableSettlements()) {
 
-      board.setCorner(position,settlement.toString());
-      return true;
+        getCurrentPlayer().initializeMeeple(settlement);
 
-    }
+        board.setCorner(position,settlement.toString());
+        return true;
+      }
+
 
     else {
       return false;
     }
-
-
-
 
   }
 
@@ -154,7 +157,7 @@ public class SiedlerGame {
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
 
-    Road road = new Road(getCurrentPlayer());
+    Road road = new Road(getCurrentPlayer().getPlayerFaction());
 
   if(board.hasEdge(roadStart,roadEnd)&&board.getEdge(roadStart, roadEnd)==null)  {
 
