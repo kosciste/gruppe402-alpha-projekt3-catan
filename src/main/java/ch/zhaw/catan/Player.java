@@ -11,8 +11,6 @@ import ch.zhaw.catan.Config.Faction;
  */
 public class Player {
 	private int winPoints;
-//	private static List<Faction> playerColors = new ArrayList<>();
-//	private static int colorIndex = 0;
 	private List<Meeple> meeples;
 	Faction playerFaction;
 	
@@ -26,7 +24,6 @@ public class Player {
 		this.playerFaction = playerFaction;
 		meeples = new ArrayList<>();
 		winPoints = 0;
-//		colorIndex++;
 	}
 	
 	/**
@@ -47,7 +44,6 @@ public class Player {
 		}
 		return Config.Structure.ROAD.getStockPerPlayer() > usedRoads;
 	}
-	
 	
 	/**
 	 * This method counts the numbers of settlements in the ArrayList of 
@@ -80,6 +76,15 @@ public class Player {
 //			return Config.Structure.CITY.getStockPerPlayer() > usedCities;
 //	 }
 
+	 /**
+	  * This method returns the list of meeples.
+	  * 
+	  * @return meeples ArrayList
+	  */
+	 public List<Meeple> getMeepleList() {
+		 return meeples;
+	 }
+	 
 	 /**
 	  * This method returns the colour of the player.
 	  * 
@@ -115,28 +120,4 @@ public class Player {
 	public void initializeMeeple(Meeple meeple) {
 		meeples.add(meeple);
 	}
-	
-//	public void initializeRoad(Faction owner) {
-//		meeples.add(new Road(owner));
-//	}
-	
-//	public void initializeSettlement(Faction owner) {
-//		meeples.add(new Settlement(owner));
-//	}
-	
-//	public void initializeCity(Faction owner) {
-//		meeples.add(new City(owner));
-//	}
-	
-	
-//TODO Liste in SidlerGame speichern??? Farbe wird dann an den Konstruktor
-	// von Player übergeben.
-	
-//	public static final void setColors() {
-//		playerColors.add(Config.Faction.RED);
-//		playerColors.add(Config.Faction.BLUE);
-//		playerColors.add(Config.Faction.GREEN);
-//		playerColors.add(Config.Faction.YELLOW);
-//	}
 }
-
