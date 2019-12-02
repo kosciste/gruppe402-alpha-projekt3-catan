@@ -22,11 +22,22 @@ class PlayerTest {
 		player.initializeMeeple(new Road(Config.Faction.RED));
 		player.initializeMeeple(new Road(Config.Faction.RED));
 		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED));
 		assertTrue(player.hasAvailableRoads());
 	}
 	
 	@Test
-	public void maxHasAvailableRoads() {
+	public void overMaxHasAvailableRoads() {
 		Player player = new Player(Config.Faction.RED);
 		player.initializeMeeple(new Road(Config.Faction.RED));
 		player.initializeMeeple(new Road(Config.Faction.RED));
@@ -58,22 +69,13 @@ class PlayerTest {
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
+		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		assertTrue(player.hasAvailableSettlements());
 	}
 	
 	@Test
-	public void maxHasAvailableSettlements() {
+	public void overMaxHasAvailableSettlements() {
 		Player player = new Player(Config.Faction.RED);
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
-		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
