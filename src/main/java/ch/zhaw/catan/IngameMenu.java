@@ -1,5 +1,6 @@
 package ch.zhaw.catan;
 
+import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catanGameActions.IngameMenuActions;
 import ch.zhaw.catanGameActions.YesAndNo;
 import ch.zhaw.hexboard.Label;
@@ -10,14 +11,18 @@ import java.util.Map;
 public class IngameMenu {
 
     public static final int MAX_NUMBER_OF_PLAYERS = 4;
-
+    private static SiedlerGame siedlerGame;
+    private static SiedlerBoardTextView view;
+    
     // This Method starts a new round of the Settlers of catan.
     public static void startNewGame()
     {
-        SiedlerGame siedlerGame = initializeSiedlerGame();
-        SiedlerBoardTextView view = initialSiedlerBoardTextView(siedlerGame.getBoard());
+        siedlerGame = initializeSiedlerGame();
+        view = initialSiedlerBoardTextView(siedlerGame.getBoard());
 
         InputOutputConsole.printSiedlerBoard(view);
+        
+        startFoundationPhase();
 
         // TODO: Implement initial round and role Dice
         // TODO: Implement Check wincondition
@@ -28,9 +33,9 @@ public class IngameMenu {
                     switch(InputOutputConsole.getEnumValue(Config.Structure.class)) {
                         case ROAD:
                             InputOutputConsole.printText("\nDeclare the beginning of your new road");
-                            Point beginning = chooseCorner(siedlerGame);
+                            Point beginning = chooseCorner();
                             InputOutputConsole.printText("\nDeclare the ending of your new road");
-                            Point ending = chooseCorner(siedlerGame);
+                            Point ending = chooseCorner();
                             if (siedlerGame.buildRoad(beginning, ending)) {
                                 InputOutputConsole.printSiedlerBoard(view);
                             } else {
@@ -39,7 +44,7 @@ public class IngameMenu {
                             break;
                         case SETTLEMENT:
                         	InputOutputConsole.printText("\nDeclare the location of your new settlement");
-                            Point location = chooseCorner(siedlerGame);
+                            Point location = chooseCorner();
                             if (siedlerGame.buildSettlement(location)) {
                             	InputOutputConsole.printSiedlerBoard(view);
                             } else {
@@ -103,10 +108,9 @@ public class IngameMenu {
 	 * Reads a specified x- and y-coordinate from the console until the point refers
 	 * to a corner from the board. Only then the point is returned.
 	 * 
-	 * @param siedlerGame the game which holds the board
 	 * @return a point which refers to a corner
 	 */
-	private static Point chooseCorner(SiedlerGame siedlerGame) {
+	private static Point chooseCorner() {
 		Point point = InputOutputConsole.choosePoint();
 		while (!siedlerGame.getBoard().hasCorner(point)) {
 			InputOutputConsole.printText(Output.getNotValidCornerMessage());
@@ -114,19 +118,39 @@ public class IngameMenu {
 		}
 		return point;
 	}
-	/*
-	// TODO
-		private void startFoundationPhase() {
-			for (int i = 0; i < siedlerGame.getPlayer().size(); i++) {
-				textTerminal.println("\nIt's player " + siedlerGame.getCurrentPlayer().getPlayerFaction() + "s turn");
-				
-				textTerminal.println("\nDeclare the location of your first settlement");
+	
+	private static void startFoundationPhase() {
+		for (int i = 0; i < siedlerGame.getPlayer().size(); i++) {
+			InputOutputConsole.printText("\nIt's player " + siedlerGame.getCurrentPlayer().getPlayerFaction() + "s turn");
+			
+			boolean settlementIsBuilt = false;
+			while (!settlementIsBuilt) {
+				InputOutputConsole.printText("\nDeclare the location of your first settlement");
 				Point location = chooseCorner();
 				if (siedlerGame.placeInitialSettlement(location)) {
-					printSiedlerBoard(view);
+					InputOutputConsole.printSiedlerBoard(view);
+					settlementIsBuilt = true;
 				} else {
-					printFailureMessage();
+					InputOutputConsole.printText(Output.getFailureMessage());
 				}
 			}
-		}*/
+			
+			boolean roadIsBuilt = false;
+			while (!roadIsBuilt) {
+				InputOutputConsole.printText("\nDeclare the beginning of your first road");
+                Point beginning = chooseCorner();
+                InputOutputConsole.printText("\nDeclare the ending of your first road");
+                Point ending = chooseCorner();
+                if (siedlerGame.placeInitialRoad(beginning, ending)) {
+                    InputOutputConsole.printSiedlerBoard(view);
+                    roadIsBuilt = true;
+                } else {
+                	InputOutputConsole.printText(Output.getFailureMessage());
+                }
+			}
+			
+			siedlerGame.switchToNextPlayer();
+			i++;
+		}
+	}
 }
