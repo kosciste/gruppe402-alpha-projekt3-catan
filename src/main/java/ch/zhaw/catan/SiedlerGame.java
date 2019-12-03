@@ -21,12 +21,21 @@ public class SiedlerGame {
     public SiedlerGame(int winPoints, int numberOfPlayers) {
         this.winPoints = winPoints;
         this.numberOfPlayers = numberOfPlayers;
+        setPlayers(numberOfPlayers);
+        placeInitialSettlement(new Point(4,0));
+
+    }
+
+    private void setPlayers(int numberOfPlayers){
+
         for (int i = 0; i < numberOfPlayers; i++) {
 
             Player player = new Player(Faction.values()[i]);
             players.add(player);
         }
-        placeInitialSettlement(new Point(4,0));
+
+        placeInitialSettlement(new Point(5,3));
+
 
     }
 
@@ -34,7 +43,7 @@ public class SiedlerGame {
      * This method switches to next player who needs to make a turn.
      */
     public void switchToNextPlayer() {
-        if (playerAtTurn < 4) {
+        if (playerAtTurn < numberOfPlayers) {
 
             playerAtTurn++;
         }
@@ -46,12 +55,12 @@ public class SiedlerGame {
      * This method switches to the previous player who needs to make a turn.
      */
     public void switchToPreviousPlayer() {
-        if (playerAtTurn > 0) {
+        if (playerAtTurn > numberOfPlayers) {
             playerAtTurn--;
 
         }
 
-        playerAtTurn = 4;
+        playerAtTurn = numberOfPlayers;
     }
 
 
@@ -101,6 +110,8 @@ public class SiedlerGame {
      */
     public boolean placeInitialSettlement(Point position) {
 
+        //TODO:kostet keine Resosurcen und Ressourcen gewinnen bei zweit Siedlung
+
       Settlement settlement = new Settlement(getCurrentPlayer().getPlayerFaction());
 
       if (board.hasCorner(position)
@@ -148,7 +159,7 @@ public class SiedlerGame {
      * @return
      */
     public boolean buildSettlement(Point position) {
-      //TODO: Überprüfen und abziehen der Rohstoffe
+        //TODO: Überprüfen und abziehen der Rohstoffe
         Settlement settlement = new Settlement(getCurrentPlayer().getPlayerFaction());
         boolean hasAdjacentRoads = false;
         List<Meeple> meeples = getCurrentPlayer().getMeepleList();
@@ -159,16 +170,29 @@ public class SiedlerGame {
             }
         }
         if (board.getCorner(position) == null && hasAdjacentRoads
-                && getCurrentPlayer().hasAvailableSettlements() && board.getNeighboursOfCorner(position).isEmpty()) {
+                && getCurrentPlayer().hasAvailableSettlements()
+                && isCornerNotTouchingWater(position)
+                && board.getNeighboursOfCorner(position).isEmpty()) {
 
             getCurrentPlayer().initializeMeeple(settlement);
 
             board.setCorner(position, settlement.toString());
             return true;
         }
-          else {
+        else {
             return false;
         }
+    }
+
+    private boolean isCornerNotTouchingWater(Point position){
+
+        boolean isCornerAtWater = false;
+        for(int i = 0; i < Config.Resource.values().length ; i++) {
+            if(board.getFields(position).contains(Config.Resource.values()[i])) {
+                isCornerAtWater = true;
+            }
+        }
+        return isCornerAtWater;
     }
 
 
@@ -192,44 +216,44 @@ public class SiedlerGame {
           meeples.add(meeple.toString());
         }
 
-        for(int i = 0; i < meeples.size() ;i++){
+        for(int i = 0; i < meeples.size(); i++){
 
-                if(board.getAdjacentEdges(roadStart).contains(meeples.get(i))|| board.getCorner(roadStart).equals(meeples.get(i))) {
-
-                    if(board.getCorner(roadEnd) == null ||meeples.contains(board.getCorner(roadEnd))){
+            if (board.getAdjacentEdges(roadStart).
+                    contains(meeples.get(i)) ||
+                    board.getCorner(roadStart) == (meeples.get(i))) {
+                if (board.getCorner(roadEnd) == null || meeples.contains(board.getCorner(roadEnd)))
+                {
+                    if(isCornerNotTouchingWater(roadEnd)) {
                         hasAdjacentElements = true;
                     }
+
                 }
-
-
-/**
-          if((!(board.getAdjacentEdges(roadStart).isEmpty())
-                  && board.getAdjacentEdges(roadEnd).
-                  contains(meeples.get(i)))
-                  || board.getCorner(roadEnd).
-                  equals(meeples.get(i))) {
-
-            if(board.getCorner(roadStart) == null ||meeples.contains(board.getCorner(roadStart))){
-              hasAdjacentElements = true;
             }
-          }
- */
 
+            if (board.getAdjacentEdges(roadEnd).
+                    contains(meeples.get(i)) ||
+                    board.getCorner(roadEnd) == (meeples.get(i))) {
+                if (board.getCorner(roadStart) == null ||
+                        meeples.contains(board.getCorner(roadStart))) {
+                    if(isCornerNotTouchingWater(roadStart)) {
+                        hasAdjacentElements = true;
+                    }
 
+                }
+            }
         }
 
-        if (board.hasEdge(roadStart, roadEnd) && board.getEdge(roadStart, roadEnd) == null && hasAdjacentElements) {
+            if (board.hasEdge(roadStart, roadEnd) &&
+                    board.getEdge(roadStart, roadEnd) == null
+                    && hasAdjacentElements) {
 
-            getCurrentPlayer().initializeMeeple(road);
-            board.setEdge(roadStart, roadEnd, road.toString());
+                getCurrentPlayer().initializeMeeple(road);
+                board.setEdge(roadStart, roadEnd, road.toString());
 
             return true;
-        }
-        else {
+        } else {
             return false;
         }
-
-
     }
 
     public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
@@ -237,7 +261,7 @@ public class SiedlerGame {
         return false;
     }
 
-    public Faction getWinner() {
+    public Player getWinner() {
         // TODO: Implement
         return null;
     }
