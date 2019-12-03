@@ -51,4 +51,16 @@ public class Output {
     {
         return "Something unexpected went wrong :(";
     }
+    
+	/**
+	 * Returns a string as a general failure message without any further
+	 * information.
+	 */
+	public static String getFailureMessage() {
+		return "Not succeeded";
+	}
+	
+	public static String getNotValidCornerMessage() {
+		return "Not valid corner\n";
+	}
 }

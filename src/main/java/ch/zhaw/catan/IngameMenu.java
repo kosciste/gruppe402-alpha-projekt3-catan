@@ -34,7 +34,7 @@ public class IngameMenu {
                             if (siedlerGame.buildRoad(beginning, ending)) {
                                 InputOutputConsole.printSiedlerBoard(view);
                             } else {
-                            	InputOutputConsole.printText("Not succeeded");
+                            	InputOutputConsole.printText(Output.getFailureMessage());
                             }
                             break;
                         case SETTLEMENT:
@@ -43,7 +43,7 @@ public class IngameMenu {
                             if (siedlerGame.buildSettlement(location)) {
                             	InputOutputConsole.printSiedlerBoard(view);
                             } else {
-                            	InputOutputConsole.printText("Not succeeded");
+                            	InputOutputConsole.printText(Output.getFailureMessage());
                             }
                             break;
                         case CITY:
@@ -103,13 +103,13 @@ public class IngameMenu {
 	 * Reads a specified x- and y-coordinate from the console until the point refers
 	 * to a corner from the board. Only then the point is returned.
 	 * 
-	 * @param siedlerGame 
+	 * @param siedlerGame the game which holds the board
 	 * @return a point which refers to a corner
 	 */
 	private static Point chooseCorner(SiedlerGame siedlerGame) {
 		Point point = InputOutputConsole.choosePoint();
 		while (!siedlerGame.getBoard().hasCorner(point)) {
-			InputOutputConsole.printText("Not valid corner\n");
+			InputOutputConsole.printText(Output.getNotValidCornerMessage());
 			point = InputOutputConsole.choosePoint();
 		}
 		return point;
