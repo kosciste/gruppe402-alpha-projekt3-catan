@@ -1,5 +1,7 @@
 package ch.zhaw.catan;
 
+import java.awt.Point;
+
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
@@ -44,6 +46,19 @@ public class InputOutputConsole {
                 .withMaxVal(IngameMenu.MAX_NUMBER_OF_PLAYERS)
                 .read("Enter the number of Settlers: ");
     }
+    
+    /**
+	 * Reads a specified x- and y-coordinate from the console and returns a point
+	 * with these coordinates.
+	 * 
+	 * @return a point with the specified coordinates
+	 */
+	public static Point choosePoint() {
+		int xCoordinate = textIO.newIntInputReader().read("x-coordinate");
+		int yCoordinate = textIO.newIntInputReader().read("y-coordinate");
+		return new Point(xCoordinate, yCoordinate);
+	}
+
 
     public static void closeInOutput()
     {

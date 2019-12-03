@@ -51,6 +51,4 @@ public class Output {
     {
         return "Something unexpected went wrong :(";
     }
-
-
 }
