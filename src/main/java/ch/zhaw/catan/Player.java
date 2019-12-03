@@ -3,6 +3,7 @@ package ch.zhaw.catan;
 import java.util.*;
 
 import ch.zhaw.catan.Config.Faction;
+import ch.zhaw.catan.Config.Resource;
 
 
 /**
@@ -12,7 +13,8 @@ import ch.zhaw.catan.Config.Faction;
 public class Player {
 	private int winPoints;
 	private List<Meeple> meeples;
-	Faction playerFaction;
+	private List<Resource> resourceStock;
+	private Faction playerFaction;
 	
 	/**
 	 * The constructor creats a player with a list for his meeples.
@@ -23,7 +25,87 @@ public class Player {
 	public Player(Config.Faction playerFaction) {
 		this.playerFaction = playerFaction;
 		meeples = new ArrayList<>();
+		resourceStock = new ArrayList<>();
 		winPoints = 0;
+	}
+	
+	/**
+	 * The player receives a resource for a settlement.
+	 * 
+	 * @param resource count this resource + 1
+	 */
+	public void addRescourceFromSettlement(Resource resource) {
+		resourceStock.add(resource);
+	}
+	
+	/**
+	 * The player receives two resources for a city.
+	 * 
+	 * @param resource Count this resource + 2
+	 */
+	public void addRescourceFromCity(Resource resource) {
+		resourceStock.add(resource);
+		resourceStock.add(resource);
+	}
+	
+	/**
+	 * This method removes a certain number of one resource type.
+	 * 
+	 * @param number The number of a certain resource type who get spend
+	 * @param resource The type of resource
+	 */
+	public void removeResource(int number, Resource resource) {
+		boolean running = true;
+		int index = 0;
+		Iterator<Resource> it = resourceStock.iterator();
+		while(running && it.hasNext()) {
+			Resource r1 = it.next();
+			if(r1 == resource) {
+				it.remove();
+				index++;
+			}
+			if(index == number) {
+				running = false;
+			}
+		}
+	}
+	
+	/**
+	 * This method returns the total number of  a certain resource 
+	 * type on the hand of the player. 
+	 * 
+	 * @param resource The type of resource
+	 * @return The number of a certain resource type 
+	 */
+	public int getNumberOfSingleResource(Resource resource) {
+		int numberOfSingleResource = 0;
+		Iterator<Resource> it = resourceStock.iterator();
+		while(it.hasNext()) {
+			Resource r1 = it.next();
+			if(r1 == resource) {
+				numberOfSingleResource++;
+			}
+		}
+		return numberOfSingleResource;
+	}
+	
+	/**
+	 * This method returns the number of total resources on the hand 
+	 * of the player.
+	 * 
+	 * @return number of total resources
+	 */
+	public int getNumberOfTotalResources() {
+		return resourceStock.size();
+	}
+	
+	/**
+	 * This method returns the list of resource.
+	 * 
+	 * @return resourceStock ArrayList
+	 */
+	public List<Resource> getResourceStock() {
+		return resourceStock;
 	}
 	
 	/**
