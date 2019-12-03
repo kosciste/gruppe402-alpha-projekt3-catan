@@ -8,13 +8,28 @@ import ch.zhaw.hexboard.Label;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * This class Displays the ingame menu of the Settlers of Catan. It also
+ * initialises a new round of the Settlers of Catan.
+ * Here you will be able to choose from 4 options.
+ * <p>
+ * 1. Build: Here you can build a structure.
+ * 2. Trade: Trade with the bank.
+ * 3. End my turn: ends the turn and switches to the next player.
+ * 4. End the game: Ends the game and returns to the main menu
+ * </p>
+ *
+ * @author Sileno Ennio
+ */
 public class IngameMenu {
 
     public static final int MAX_NUMBER_OF_PLAYERS = 4;
     private static SiedlerGame siedlerGame;
     private static SiedlerBoardTextView view;
-    
-    // This Method starts a new round of the Settlers of catan.
+
+    /**
+     * This method starts the main menu and initialises a new round of the Settlers of Catan
+     */
     public static void startNewGame()
     {
         siedlerGame = initializeSiedlerGame();

@@ -8,6 +8,11 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class holds every information about the Board
+ *
+ * @author Sileno Ennio
+ */
 public class SiedlerBoard extends HexBoard<Land, String, String, String> {
 
     private static final int FIRST_CHAR = 0;
@@ -16,7 +21,9 @@ public class SiedlerBoard extends HexBoard<Land, String, String, String> {
     private Map<Point, Land> standardLandPlacement = Config.getStandardLandPlacement();
     private Map<Point, Label> lowerFieldLabel = new HashMap<>();
 
-
+    /**
+     * Creates a new Siedlerboard with the standard properties
+     */
     public SiedlerBoard()
     {
         createStandardBoard();
