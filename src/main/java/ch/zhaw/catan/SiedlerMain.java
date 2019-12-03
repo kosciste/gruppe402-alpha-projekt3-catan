@@ -13,6 +13,8 @@ import ch.zhaw.catanGameActions.*;
 
 public class SiedlerMain {
 
+    private static final int MAX_NUMBER_OF_PLAYERS = 4;
+
     private TextIO textIO;
     private TextTerminal<?> textTerminal;
     private SiedlerGame siedlerGame;
@@ -33,7 +35,7 @@ public class SiedlerMain {
 
     public static void main(String[] args)
     {
-        new SiedlerMain().startMainMenu();
+        MainMenu.startMainMenu();
     }
 
     // This method starts and runs the main menu.
@@ -42,6 +44,7 @@ public class SiedlerMain {
         printTextWelcome();
         MainMenu();
         textTerminal.dispose();
+        MainMenu.startMainMenu();
     }
 
     // This method implements the main menu.
@@ -158,8 +161,8 @@ public class SiedlerMain {
     private int setNumberOfPlayers()
     {
         return textIO.newIntInputReader()
-                .withMinVal(2)
-                .withMaxVal(4)
+                .withMinVal(Config.MIN_NUMBER_OF_PLAYERS)
+                .withMaxVal(MAX_NUMBER_OF_PLAYERS)
                 .read("Enter the number of Settlers: ");
     }
 
@@ -234,7 +237,7 @@ public class SiedlerMain {
     {
         textTerminal.println(view.toString());
     }
-    
+
 	/**
 	 * Reads a specified x- and y-coordinate from the console and returns a point
 	 * with these coordinates.
@@ -246,7 +249,7 @@ public class SiedlerMain {
 		int yCoordinate = textIO.newIntInputReader().read("y-coordinate");
 		return new Point(xCoordinate, yCoordinate);
 	}
-	
+
 	/**
 	 * Reads a specified x- and y-coordinate from the console until the point refers
 	 * to a corner from the board. Only then the point is returned.
@@ -261,7 +264,7 @@ public class SiedlerMain {
 		}
 		return point;
 	}
-	
+
 	/**
 	 * Prints a general failure message to the console without any further
 	 * information.
