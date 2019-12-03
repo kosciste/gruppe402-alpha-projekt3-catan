@@ -1,15 +1,15 @@
 package ch.zhaw.catan;
 
 import ch.zhaw.hexboard.Label;
+
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.Map;
 
 import ch.zhaw.catanGameActions.*;
-
 
 public class SiedlerMain {
 
@@ -82,18 +82,24 @@ public class SiedlerMain {
                 case BUILD:
                 	switch(getEnumValue(textIO, Config.Structure.class)) {
                 	case ROAD:
-                		textTerminal.println("Declare the beginning of your new road");
+                		textTerminal.println("\nDeclare the beginning of your new road");
                 		Point beginning = chooseCorner();
-                		textTerminal.println("Declare the ending of your new road");
+                		textTerminal.println("\nDeclare the ending of your new road");
                 		Point ending = chooseCorner();
                 		if (siedlerGame.buildRoad(beginning, ending)) {
                 			printSiedlerBoard(view);
                 		} else {
-                			textTerminal.println("Not succeeded");
+                			printFailureMessage();
                 		}
                 		break;
                 	case SETTLEMENT:
-                		// TODO
+                		textTerminal.println("\nDeclare the location of your new settlement");
+                		Point location = chooseCorner();
+                		if (siedlerGame.buildSettlement(location)) {
+                			printSiedlerBoard(view);
+                		} else {
+                			printFailureMessage();
+                		}
                 		break;
                 	case CITY:
                 		// TODO
@@ -249,9 +255,17 @@ public class SiedlerMain {
 	private Point chooseCorner() {
 		Point point = choosePoint();
 		while (!siedlerGame.getBoard().hasCorner(point)) {
-			textTerminal.println("Not valid corner");
+			textTerminal.println("Not valid corner\n");
 			point = choosePoint();
 		}
 		return point;
+	}
+	
+	/**
+	 * Prints a general failure message to the console without any further
+	 * information.
+	 */
+	private void printFailureMessage() {
+		textTerminal.println("Not succeeded");
 	}
 }
