@@ -1,11 +1,10 @@
 package ch.zhaw.catan;
 
-import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catanGameActions.IngameMenuActions;
 import ch.zhaw.catanGameActions.YesAndNo;
 import ch.zhaw.hexboard.Label;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.Map;
 
 /**
@@ -37,7 +36,7 @@ public class IngameMenu {
 
         InputOutputConsole.printSiedlerBoard(view);
         
-        startFoundationPhase();
+        startInitialBuilding();
 
         // TODO: Implement initial round and role Dice
         // TODO: Implement Check wincondition
@@ -47,9 +46,9 @@ public class IngameMenu {
                 case BUILD:
                     switch(InputOutputConsole.getEnumValue(Config.Structure.class)) {
                         case ROAD:
-                            InputOutputConsole.printText("\nDeclare the beginning of your new road");
+                            InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", "new"));
                             Point beginning = chooseCorner();
-                            InputOutputConsole.printText("\nDeclare the ending of your new road");
+                            InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", "new"));
                             Point ending = chooseCorner();
                             if (siedlerGame.buildRoad(beginning, ending)) {
                                 InputOutputConsole.printSiedlerBoard(view);
@@ -58,7 +57,7 @@ public class IngameMenu {
                             }
                             break;
                         case SETTLEMENT:
-                        	InputOutputConsole.printText("\nDeclare the location of your new settlement");
+                        	InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
                             Point location = chooseCorner();
                             if (siedlerGame.buildSettlement(location)) {
                             	InputOutputConsole.printSiedlerBoard(view);
@@ -134,38 +133,77 @@ public class IngameMenu {
 		return point;
 	}
 	
-	private static void startFoundationPhase() {
-		for (int i = 0; i < siedlerGame.getPlayer().size(); i++) {
-			InputOutputConsole.printText("\nIt's player " + siedlerGame.getCurrentPlayer().getPlayerFaction() + "s turn");
-			
-			boolean settlementIsBuilt = false;
-			while (!settlementIsBuilt) {
-				InputOutputConsole.printText("\nDeclare the location of your first settlement");
-				Point location = chooseCorner();
-				if (siedlerGame.placeInitialSettlement(location)) {
-					InputOutputConsole.printSiedlerBoard(view);
-					settlementIsBuilt = true;
-				} else {
-					InputOutputConsole.printText(Output.getFailureMessage());
-				}
-			}
-			
-			boolean roadIsBuilt = false;
-			while (!roadIsBuilt) {
-				InputOutputConsole.printText("\nDeclare the beginning of your first road");
-                Point beginning = chooseCorner();
-                InputOutputConsole.printText("\nDeclare the ending of your first road");
-                Point ending = chooseCorner();
-                if (siedlerGame.placeInitialRoad(beginning, ending)) {
-                    InputOutputConsole.printSiedlerBoard(view);
-                    roadIsBuilt = true;
-                } else {
-                	InputOutputConsole.printText(Output.getFailureMessage());
-                }
-			}
-			
+	/**
+	 * Starts the initial building phase, which consists of two rounds. In the first
+	 * round every player builds a settlement and a road. In the second round they
+	 * do the same but in reverse order.
+	 */
+	private static void startInitialBuilding() {
+		int numberOfPlayers = siedlerGame.getPlayer().size();
+		for (int i = 0; i < numberOfPlayers; i++) {
+			showTurnOfCurrentPlayer();
+			buildInitialSettlement("first");
+			buildInitialRoad("first");
 			siedlerGame.switchToNextPlayer();
-			i++;
+		}
+		for (int i = 0; i < numberOfPlayers; i++) {
+			siedlerGame.switchToPreviousPlayer();
+			showTurnOfCurrentPlayer();
+			buildInitialSettlement("second");
+			buildInitialRoad("second");
+		}
+	}
+	
+	/**
+	 * Shows currently whose players turn it is and prints that information to the
+	 * console. The name of the player is the name of the enum constant from
+	 * {@link Config.Faction}. Examples: The name of the first player is 'RED'. The
+	 * name of the second player 'BLUE'.
+	 */
+	private static void showTurnOfCurrentPlayer() {
+		String currentPlayerName = siedlerGame.getCurrentPlayer().getPlayerFaction().name();
+		InputOutputConsole.printText(Output.getTurnOfCurrentPlayerMessage(currentPlayerName));
+	}
+
+	/**
+	 * Builds an initial settlement. The parameter specifies whether it is the
+	 * 'first' or 'second' initial settlement and affects only a message.
+	 * 
+	 * @param firstOrSecond the declaration, if it is the first or second settlement
+	 */
+	private static void buildInitialSettlement(String firstOrSecond) {
+		boolean settlementIsBuilt = false;
+		while (!settlementIsBuilt) {
+			InputOutputConsole.printText(Output.getSettlementBuildingMessage(firstOrSecond));
+			Point location = chooseCorner();
+			if (siedlerGame.placeInitialSettlement(location)) {
+				InputOutputConsole.printSiedlerBoard(view);
+				settlementIsBuilt = true;
+			} else {
+				InputOutputConsole.printText(Output.getFailureMessage());
+			}
+		}
+	}
+	
+	/**
+	 * Builds an initial road. The parameter specifies whether it is the
+	 * 'first' or 'second' initial road and affects only a message.
+	 * 
+	 * @param firstOrSecond the declaration, if it is the first or second road
+	 */
+	private static void buildInitialRoad(String firstOrSecond) {
+		boolean roadIsBuilt = false;
+		while (!roadIsBuilt) {
+			InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", firstOrSecond));
+            Point beginning = chooseCorner();
+            InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", firstOrSecond));
+            Point ending = chooseCorner();
+            if (siedlerGame.placeInitialRoad(beginning, ending)) {
+                InputOutputConsole.printSiedlerBoard(view);
+                roadIsBuilt = true;
+            } else {
+            	InputOutputConsole.printText(Output.getFailureMessage());
+            }
 		}
 	}
 }
