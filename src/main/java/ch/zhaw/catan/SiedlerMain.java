@@ -16,6 +16,7 @@ public class SiedlerMain {
     private TextIO textIO;
     private TextTerminal<?> textTerminal;
     private SiedlerGame siedlerGame;
+    private SiedlerBoardTextView view;
 
     private SiedlerMain()
     {
@@ -50,7 +51,7 @@ public class SiedlerMain {
         while(running) {
             switch (getEnumValue(textIO, MainMenuActions.class)) {
                 case PLAY:
-                    startNewRound();
+                    startNewGame();
                     break;
                 case ABOUT:
                     printTextAbout();
@@ -67,10 +68,10 @@ public class SiedlerMain {
     }
 
     // This Method starts a new round of the Settlers of catan.
-    private void startNewRound()
+    private void startNewGame()
     {
         siedlerGame = initializeSiedlerGame();
-        SiedlerBoardTextView view = initialSiedlerBoardTextView(siedlerGame.getBoard());
+        view = initialSiedlerBoardTextView(siedlerGame.getBoard());
 
         printSiedlerBoard(view);
 
@@ -267,5 +268,20 @@ public class SiedlerMain {
 	 */
 	private void printFailureMessage() {
 		textTerminal.println("Not succeeded");
+	}
+	
+	// TODO
+	private void startFoundationPhase() {
+		for (int i = 0; i < siedlerGame.getPlayer().size(); i++) {
+			textTerminal.println("\nIt's player " + siedlerGame.getCurrentPlayer().getPlayerFaction() + "s turn");
+			
+			textTerminal.println("\nDeclare the location of your first settlement");
+			Point location = chooseCorner();
+			if (siedlerGame.placeInitialSettlement(location)) {
+				printSiedlerBoard(view);
+			} else {
+				printFailureMessage();
+			}
+		}
 	}
 }
