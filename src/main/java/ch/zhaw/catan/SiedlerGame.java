@@ -26,7 +26,7 @@ public class SiedlerGame {
             Player player = new Player(Faction.values()[i]);
             players.add(player);
         }
-        placeInitialSettlement(new Point(4,0));
+        placeInitialSettlement(new Point(5,3));
 
     }
 
@@ -150,6 +150,12 @@ public class SiedlerGame {
     public boolean buildSettlement(Point position) {
         //TODO: Überprüfen und abziehen der Rohstoffe
         Settlement settlement = new Settlement(getCurrentPlayer().getPlayerFaction());
+        boolean hasAvailableField = false;
+        for(int i = 0; i < Config.Resource.values().length ; i++) {
+        	if(board.getFields(position).contains(Config.Resource.values()[i])) {
+        		hasAvailableField = true;
+        	}
+        }
         boolean hasAdjacentRoads = false;
         List<Meeple> meeples = getCurrentPlayer().getMeepleList();
         for (int i = 0; i < meeples.size(); i++) {
@@ -160,6 +166,7 @@ public class SiedlerGame {
         }
         if (board.getCorner(position) == null && hasAdjacentRoads
                 && getCurrentPlayer().hasAvailableSettlements()
+                && hasAvailableField
                 && board.getNeighboursOfCorner(position).isEmpty()) {
 
             getCurrentPlayer().initializeMeeple(settlement);
