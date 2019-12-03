@@ -21,20 +21,25 @@ public class SiedlerGame {
     public SiedlerGame(int winPoints, int numberOfPlayers) {
         this.winPoints = winPoints;
         this.numberOfPlayers = numberOfPlayers;
+        setPlayers(numberOfPlayers);
+        placeInitialSettlement(new Point(4,0));
+
+    }
+
+    private void setPlayers(int numberOfPlayers){
+
         for (int i = 0; i < numberOfPlayers; i++) {
 
             Player player = new Player(Faction.values()[i]);
             players.add(player);
         }
-        placeInitialSettlement(new Point(4,0));
-
     }
 
     /**
      * This method switches to next player who needs to make a turn.
      */
     public void switchToNextPlayer() {
-        if (playerAtTurn < 4) {
+        if (playerAtTurn < numberOfPlayers) {
 
             playerAtTurn++;
         }
@@ -46,12 +51,12 @@ public class SiedlerGame {
      * This method switches to the previous player who needs to make a turn.
      */
     public void switchToPreviousPlayer() {
-        if (playerAtTurn > 0) {
+        if (playerAtTurn > numberOfPlayers) {
             playerAtTurn--;
 
         }
 
-        playerAtTurn = 4;
+        playerAtTurn = numberOfPlayers;
     }
 
 
@@ -100,6 +105,8 @@ public class SiedlerGame {
      * @return true, if the settlement has been built
      */
     public boolean placeInitialSettlement(Point position) {
+
+        //TODO:kostet keine Resosurcen und Ressourcen gewinnen bei zweit Siedlung
 
       Settlement settlement = new Settlement(getCurrentPlayer().getPlayerFaction());
 
@@ -193,7 +200,7 @@ public class SiedlerGame {
           meeples.add(meeple.toString());
         }
 
-        for(int i = 0; i < meeples.size() ;i++){
+        for(int i = 0; i < meeples.size(); i++){
 
             if (board.getAdjacentEdges(roadStart).
                     contains(meeples.get(i)) ||
