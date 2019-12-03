@@ -117,6 +117,7 @@ public class SiedlerGame {
       if (board.hasCorner(position)
               && board.getCorner(position) == null
               && getCurrentPlayer().hasAvailableSettlements()
+              &&isValidCorner(position)
               && board.getNeighboursOfCorner(position).isEmpty()) {
 
         getCurrentPlayer().initializeMeeple(settlement);
