@@ -52,8 +52,7 @@ public class SiedlerGame {
 
             playerAtTurn = 0;
         }
-
-        playerAtTurn = 0;
+        
     }
 
     /**
