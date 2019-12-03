@@ -48,7 +48,11 @@ public class SiedlerGame {
             playerAtTurn++;
         }
 
-        playerAtTurn = 0;
+        else  {
+
+            playerAtTurn = 0;
+        }
+        
     }
 
     /**
@@ -60,7 +64,12 @@ public class SiedlerGame {
 
         }
 
-        playerAtTurn = numberOfPlayers;
+        else {
+            playerAtTurn = numberOfPlayers;
+
+        }
+
+
     }
 
 
