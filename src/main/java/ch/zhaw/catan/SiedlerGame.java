@@ -145,10 +145,29 @@ public class SiedlerGame {
 
     }
 
-
+    /**
     public Map<Faction, List<Resource>> throwDice(int dicethrow) {
         // TODO: Implement
         return null;
+    }
+     */
+
+    public void throwDice(int dicethrow){
+
+        List<String> affectedCorners;
+
+        for(Point point : board.getFields()) {
+
+
+        }
+
+        for(int i = 0; i < players.size();i++) {
+
+            for(int j = 0 ; j < players.get(i).getMeepleList().size();j++) {
+
+                //if (players.get(i).getMeepleList().toString() == )
+            }
+        }
     }
 
 
@@ -171,7 +190,7 @@ public class SiedlerGame {
         }
         if (board.getCorner(position) == null && hasAdjacentRoads
                 && getCurrentPlayer().hasAvailableSettlements()
-                && isCornerNotTouchingWater(position)
+                && isValidCorner(position)
                 && board.getNeighboursOfCorner(position).isEmpty()) {
 
             getCurrentPlayer().initializeMeeple(settlement);
@@ -184,15 +203,20 @@ public class SiedlerGame {
         }
     }
 
-    private boolean isCornerNotTouchingWater(Point position){
+    private boolean isValidCorner(Point position){
 
-        boolean isCornerAtWater = false;
+        boolean isValid = false;
         for(int i = 0; i < Config.Resource.values().length ; i++) {
-            if(board.getFields(position).contains(Config.Resource.values()[i])) {
-                isCornerAtWater = true;
+
+            for(int j = 0; j < board.getFields(position).size(); j++) {
+
+                if(board.getFields(position).get(j).getResource() == Config.Resource.values()[i]) {
+                    isValid = true;
+                }
+
             }
         }
-        return isCornerAtWater;
+        return isValid;
     }
 
 
@@ -223,7 +247,8 @@ public class SiedlerGame {
                     board.getCorner(roadStart) == (meeples.get(i))) {
                 if (board.getCorner(roadEnd) == null || meeples.contains(board.getCorner(roadEnd)))
                 {
-                    if(isCornerNotTouchingWater(roadEnd)) {
+
+                    if(isValidCorner(roadEnd)) {
                         hasAdjacentElements = true;
                     }
 
@@ -235,7 +260,7 @@ public class SiedlerGame {
                     board.getCorner(roadEnd) == (meeples.get(i))) {
                 if (board.getCorner(roadStart) == null ||
                         meeples.contains(board.getCorner(roadStart))) {
-                    if(isCornerNotTouchingWater(roadStart)) {
+                    if(isValidCorner(roadStart)) {
                         hasAdjacentElements = true;
                     }
 
