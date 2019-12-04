@@ -13,6 +13,8 @@ import java.util.*;
 public class SiedlerGame {
 
     private static int playerAtTurn = 0;
+    private static final int OFFSET = 1;
+
     SiedlerBoard board = new SiedlerBoard();
     private int winPoints;
     private int numberOfPlayers;
@@ -43,7 +45,7 @@ public class SiedlerGame {
      * This method switches to next player who needs to make a turn.
      */
     public void switchToNextPlayer() {
-        if (playerAtTurn < numberOfPlayers) {
+        if (playerAtTurn < numberOfPlayers - OFFSET ) {
 
             playerAtTurn++;
         }
@@ -52,20 +54,20 @@ public class SiedlerGame {
 
             playerAtTurn = 0;
         }
-        
+
     }
 
     /**
      * This method switches to the previous player who needs to make a turn.
      */
     public void switchToPreviousPlayer() {
-        if (playerAtTurn > numberOfPlayers) {
-            playerAtTurn--;
+        if (playerAtTurn == 0) {
+            playerAtTurn = numberOfPlayers - OFFSET;
 
         }
 
         else {
-            playerAtTurn = numberOfPlayers;
+            playerAtTurn--;
 
         }
 
