@@ -37,57 +37,58 @@ public class IngameMenu {
         InputOutputConsole.printSiedlerBoard(view);
         
         startInitialBuilding();
-
-        // TODO: Implement initial round and role Dice
-        // TODO: Implement Check wincondition
+        showTurnOfCurrentPlayer();
+        
         boolean running = true;
         while (running) {
-            switch (InputOutputConsole.getEnumValue(IngameMenuActions.class)) {
-                case BUILD:
-                    switch(InputOutputConsole.getEnumValue(Config.Structure.class)) {
-                        case ROAD:
-                            InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", "new"));
-                            Point beginning = chooseCorner();
-                            InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", "new"));
-                            Point ending = chooseCorner();
-                            if (siedlerGame.buildRoad(beginning, ending)) {
-                                InputOutputConsole.printSiedlerBoard(view);
-                            } else {
-                            	InputOutputConsole.printText(Output.getFailureMessage());
-                            }
-                            break;
-                        case SETTLEMENT:
-                        	InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
-                            Point location = chooseCorner();
-                            if (siedlerGame.buildSettlement(location)) {
-                            	InputOutputConsole.printSiedlerBoard(view);
-                            } else {
-                            	InputOutputConsole.printText(Output.getFailureMessage());
-                            }
-                            break;
-                        case CITY:
-                            // TODO
-                    }
-                    break;
-                case TRADE:
-                    // TODO: Implement Trade with Bank
-                    break;
-                case END_TURN:
-                    // TODO: Implement switch to next player
-                    // TODO: Role Dice
-                    break;
-                case END_THE_GAME:
-                    InputOutputConsole.printText(Output.getCantSafeWarning());
-                    running = shouldStillRun();
-                    break;
-
-                default:
-                    InputOutputConsole.printText(Output.getErrorMessage());
-                    break;
-            }
+    		switch (InputOutputConsole.getEnumValue(IngameMenuActions.class)) {
+    		case BUILD:
+    			switch (InputOutputConsole.getEnumValue(Config.Structure.class)) {
+    			case ROAD:
+    				InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", "new"));
+    				Point beginning = chooseCorner();
+    				InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", "new"));
+    				Point ending = chooseCorner();
+    				if (siedlerGame.buildRoad(beginning, ending)) {
+    					InputOutputConsole.printSiedlerBoard(view);
+    				} else {
+    					InputOutputConsole.printText(Output.getFailureMessage());
+    				}
+    				break;
+    			case SETTLEMENT:
+    				InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
+    				Point location = chooseCorner();
+    				if (siedlerGame.buildSettlement(location)) {
+    					InputOutputConsole.printSiedlerBoard(view);
+    				} else {
+    					InputOutputConsole.printText(Output.getFailureMessage());
+    				}
+    				break;
+    			case CITY:
+    				// TODO
+    				break;
+    			}
+    			break;
+    		case TRADE:
+    			// TODO: Implement Trade with Bank
+    			break;
+    		case END_TURN:
+    			siedlerGame.switchToNextPlayer();
+    			showTurnOfCurrentPlayer();
+    			// TODO: Implement switch to next player
+    			// TODO: Role Dice
+    			break;
+    		case END_THE_GAME:
+    			InputOutputConsole.printText(Output.getCantSafeWarning());
+    			running = shouldStillRun();
+    			break;
+    		default:
+    			InputOutputConsole.printText(Output.getErrorMessage());
+    			break;
+    		}
         }
     }
-
+    
     private static SiedlerGame initializeSiedlerGame()
     {
         return new SiedlerGame(InputOutputConsole.setNumberOfWinpointsToWin(), InputOutputConsole.setNumberOfPlayers());
