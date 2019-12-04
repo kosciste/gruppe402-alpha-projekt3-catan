@@ -83,4 +83,29 @@ class PlayerTest {
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		assertFalse(player.hasAvailableSettlements());
 	}
+	
+	@Test
+	public void startHasAvailableCities() {
+		Player player = new Player(Config.Faction.RED);
+		assertTrue(player.hasAvailableCities());
+	}
+	
+	@Test
+	public void normalHasAvailableCities() {
+		Player player = new Player(Config.Faction.RED);
+		player.initializeMeeple(new City(Config.Faction.RED));
+		player.initializeMeeple(new City(Config.Faction.RED));
+		player.initializeMeeple(new City(Config.Faction.RED));
+		assertTrue(player.hasAvailableCities());
+	}
+	
+	@Test
+	public void overMaxHasAvailableCities() {
+		Player player = new Player(Config.Faction.RED);
+		player.initializeMeeple(new City(Config.Faction.RED));
+		player.initializeMeeple(new City(Config.Faction.RED));
+		player.initializeMeeple(new City(Config.Faction.RED));
+		player.initializeMeeple(new City(Config.Faction.RED));
+		assertFalse(player.hasAvailableCities());
+	}
 }
