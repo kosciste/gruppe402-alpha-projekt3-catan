@@ -69,14 +69,45 @@ public class Output {
     }
     
 	/**
-	 * Returns a string as a general failure message without any further
-	 * information.
+	 * @return string as a general failure message without any further information
+	 *         e.g. building of settlement failed
 	 */
 	public static String getFailureMessage() {
 		return "Not succeeded";
 	}
-	
+
+	/**
+	 * @return string as a message that a choosen point is not a valid corner
+	 */
 	public static String getNotValidCornerMessage() {
 		return "Not valid corner\n";
+	}
+	
+	/**
+	 * @param currentPlayerName the name of the current player
+	 * @return string as an information about whose players turn it is
+	 */
+	public static String getTurnOfCurrentPlayerMessage(String currentPlayerName) {
+		return "\nIt's player " + currentPlayerName + "s turn";
+	}
+	
+	/**
+	 * @param beginningOrEnding the declaration, if it is the beginning or the
+	 *                          ending of the road
+	 * @param initialOrNew      the declaration, if it is the first, the second or a
+	 *                          new road
+	 * @return string as a prompt to build a road
+	 */
+	public static String getRoadBuildingMessage(String beginningOrEnding, String initialOrNew) {
+		return "\nDeclare the " + beginningOrEnding + " of your " + initialOrNew + " road";
+	}
+	
+	/**
+	 * @param initialOrNew the declaration, if it is the first, second or a new
+	 *                     settlement
+	 * @return string as a prompt to build a settlement
+	 */
+	public static String getSettlementBuildingMessage(String initialOrNew) {
+		return "\nDeclare the location of your " + initialOrNew + " settlement";
 	}
 }
