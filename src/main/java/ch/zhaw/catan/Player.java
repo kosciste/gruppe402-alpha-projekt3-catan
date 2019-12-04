@@ -146,17 +146,24 @@ public class Player {
 		return Config.Structure.SETTLEMENT.getStockPerPlayer() > usedSettlements;
 	 }
 	 
-//	 public boolean hasAvailableCities() {
-//			int usedCities = 0;
-//			Iterator<Meeple> it = meeples.iterator();
-//			while(it.hasNext()) {
-//				Meeple m1 = it.next();
-//				if(m1 instanceof City) {
-//					usedCities++;
-//				}
-//			}
-//			return Config.Structure.CITY.getStockPerPlayer() > usedCities;
-//	 }
+	 /**
+	  * This method counts the numbers of cities in the ArrayList of the 
+	  * player and checks the numbers with the maximal numbers of cities 
+	  * who are available pro player.
+	  * 
+	  * @return ture or false: for available cities.
+	  */
+	 public boolean hasAvailableCities() {
+		int usedCities = 0;
+		Iterator<Meeple> it = meeples.iterator();
+		while(it.hasNext()) {
+			Meeple m1 = it.next();
+			if(m1 instanceof City) {
+				usedCities++;
+			}	
+		}
+		return Config.Structure.CITY.getStockPerPlayer() > usedCities;
+	 }
 
 	 /**
 	  * This method returns the list of meeples.
