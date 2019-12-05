@@ -158,10 +158,11 @@ public class SiedlerGame {
     }
 
 
-    public void throwDice(int dicethrow) {
+    public Map<Player,List<Config.Resource>> throwDice(int dicethrow) {
 
         String dice = getFirstDigit(dicethrow).toString() + getLastDigit(dicethrow).toString();
         List<Point> affectedFields = new ArrayList<>();
+        Map<Player,List<Config.Resource>> changes = new HashMap<>();
 
         for (Map.Entry<Point, Label> label : board.getLowerFieldLabel().entrySet()) {
 
@@ -172,6 +173,8 @@ public class SiedlerGame {
 
 
             for (Player player : players) {
+
+                List<Config.Resource> resources = new ArrayList<>();
 
                 for (int i = 0; i < player.getMeepleList().size(); i++) {
 
@@ -186,12 +189,19 @@ public class SiedlerGame {
 
                                     player.addRescourceFromSettlement
                                             (board.getField(affectedFields.get(j)).getResource());
+
+                                    resources.add(board.getField(affectedFields.get(j)).getResource());
+
+
                                     System.out.println(player.getResourceStock().get(0).toString());
                                 }
                     }
                 }
+                changes.put(player,resources);
             }
         }
+
+        return changes;
 
     }
 
