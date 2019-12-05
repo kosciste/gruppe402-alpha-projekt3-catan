@@ -117,4 +117,12 @@ public class Output {
 	public static String getCityBuildingMessage() {
 		return "\nDeclare the location of your new city";
 	}
+	
+	/**
+	 * @param valueOfDice the value of two dice
+	 * @return string as an information, which value has been thrown
+	 */
+	public static String getValueOfDiceMessage(int valueOfDice) {
+		return "The dice roll " + valueOfDice;
+	}
 }

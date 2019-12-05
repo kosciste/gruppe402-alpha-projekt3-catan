@@ -24,12 +24,12 @@ import java.util.Random;
 public class IngameMenu {
 
     public static final int MAX_NUMBER_OF_PLAYERS = 4;
-    private static final int MIN_DICE_VALUE = 1;
-    private static final int MAX_DICE_VALUE = 6;
+    private static final int MIN_DIE_VALUE = 1;
+    private static final int MAX_DIE_VALUE = 6;
     private static SiedlerGame siedlerGame;
     private static SiedlerBoardTextView view;
-    private static Random firstDice = new Random();
-    private static Random secondDice = new Random(); 
+    private static Random firstDie = new Random();
+    private static Random secondDie = new Random(); 
 
     /**
      * This method starts the ingame menu and initialises a new round of the Settlers of Catan
@@ -38,71 +38,74 @@ public class IngameMenu {
     {
         siedlerGame = initializeSiedlerGame();
         view = initialSiedlerBoardTextView(siedlerGame.getBoard());
-
         InputOutputConsole.printSiedlerBoard(view);
-        
         startInitialBuilding();
-        showTurnOfCurrentPlayer();
-        
-        boolean running = true;
-        while (running) {
-    		switch (InputOutputConsole.getEnumValue(IngameMenuActions.class)) {
-			case SHOW_BOARD:
-				InputOutputConsole.printSiedlerBoard(view);
-				break;
-			case SHOW_RESOURCES:
-				InputOutputConsole.printText(showPlayerResources());
-				break;
-    		case BUILD:
-    			switch (InputOutputConsole.getEnumValue(Config.Structure.class)) {
-    			case ROAD:
-    				InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", "new"));
-    				Point beginning = chooseCorner();
-    				InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", "new"));
-    				Point ending = chooseCorner();
-    				if (siedlerGame.buildRoad(beginning, ending)) {
-    					InputOutputConsole.printSiedlerBoard(view);
-    				} else {
-    					InputOutputConsole.printText(Output.getFailureMessage());
-    				}
+       
+        boolean gameIsRunning = true;
+        boolean sameTurnIsRunning = true;
+        int valueOfDice;
+        while (gameIsRunning) {
+        	showTurnOfCurrentPlayer();
+        	valueOfDice = getValueOfDice();
+        	InputOutputConsole.printText(Output.getValueOfDiceMessage(valueOfDice));
+        	sameTurnIsRunning = true;
+        	while (gameIsRunning && sameTurnIsRunning) {
+        		switch (InputOutputConsole.getEnumValue(IngameMenuActions.class)) {
+    			case SHOW_BOARD:
+    				InputOutputConsole.printSiedlerBoard(view);
     				break;
-    			case SETTLEMENT:
-    				InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
-    				Point locationForSettlement = chooseCorner();
-    				if (siedlerGame.buildSettlement(locationForSettlement)) {
-    					InputOutputConsole.printSiedlerBoard(view);
-    				} else {
-    					InputOutputConsole.printText(Output.getFailureMessage());
-    				}
+    			case SHOW_RESOURCES:
+    				InputOutputConsole.printText(showPlayerResources());
     				break;
-    			case CITY:
-    				InputOutputConsole.printText(Output.getCityBuildingMessage());
-    				Point locationForCity = chooseCorner();
-    				if (siedlerGame.buildCity(locationForCity)) {
-    					InputOutputConsole.printSiedlerBoard(view);
-    				} else {
-    					InputOutputConsole.printText(Output.getFailureMessage());
-    				}
-    				break;
-    			}
-    			break;
-    		case TRADE:
-				actionTrade();
-    			break;
-    		case END_TURN:
-    			siedlerGame.switchToNextPlayer();
-    			showTurnOfCurrentPlayer();
-    			// TODO: Implement switch to next player
-    			// TODO: Role Dice
-    			break;
-    		case END_THE_GAME:
-    			InputOutputConsole.printText(Output.getCantSafeWarning());
-    			running = shouldStillRun();
-    			break;
-    		default:
-    			InputOutputConsole.printText(Output.getErrorMessage());
-    			break;
-    		}
+        		case BUILD:
+        			switch (InputOutputConsole.getEnumValue(Config.Structure.class)) {
+        			case ROAD:
+        				InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", "new"));
+        				Point beginning = chooseCorner();
+        				InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", "new"));
+        				Point ending = chooseCorner();
+        				if (siedlerGame.buildRoad(beginning, ending)) {
+        					InputOutputConsole.printSiedlerBoard(view);
+        				} else {
+        					InputOutputConsole.printText(Output.getFailureMessage());
+        				}
+        				break;
+        			case SETTLEMENT:
+        				InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
+        				Point locationForSettlement = chooseCorner();
+        				if (siedlerGame.buildSettlement(locationForSettlement)) {
+        					InputOutputConsole.printSiedlerBoard(view);
+        				} else {
+        					InputOutputConsole.printText(Output.getFailureMessage());
+        				}
+        				break;
+        			case CITY:
+        				InputOutputConsole.printText(Output.getCityBuildingMessage());
+        				Point locationForCity = chooseCorner();
+        				if (siedlerGame.buildCity(locationForCity)) {
+        					InputOutputConsole.printSiedlerBoard(view);
+        				} else {
+        					InputOutputConsole.printText(Output.getFailureMessage());
+        				}
+        				break;
+        			}
+        			break;
+        		case TRADE:
+    				actionTrade();
+        			break;
+        		case END_TURN:
+        			sameTurnIsRunning = false;
+        			siedlerGame.switchToNextPlayer();
+        			break;
+        		case END_THE_GAME:
+        			InputOutputConsole.printText(Output.getCantSafeWarning());
+        			gameIsRunning = shouldStillRun();
+        			break;
+        		default:
+        			InputOutputConsole.printText(Output.getErrorMessage());
+        			break;
+        		}
+        	}	
         }
     }
     
@@ -245,14 +248,14 @@ public class IngameMenu {
 	}
 
 	/**
-	 * Simulates a cast of two dices. Each dice delivers a value between 1 and 6
+	 * Simulates a cast of two dice. Each die delivers a value between 1 and 6
 	 * (inclusive). The sum of these values, which is between 2 and 12 is returned.
 	 * 
 	 * @return a sum of two dice values
 	 */
-	private static int getValueOfDices() {
-		int firstDiceValue = firstDice.nextInt(MAX_DICE_VALUE) + MIN_DICE_VALUE;
-		int secondDiceValue = secondDice.nextInt(MAX_DICE_VALUE) + MIN_DICE_VALUE;
-		return firstDiceValue + secondDiceValue;
+	private static int getValueOfDice() {
+		int firstDieValue = firstDie.nextInt(MAX_DIE_VALUE) + MIN_DIE_VALUE;
+		int secondDieValue = secondDie.nextInt(MAX_DIE_VALUE) + MIN_DIE_VALUE;
+		return firstDieValue + secondDieValue;
 	}
 }
