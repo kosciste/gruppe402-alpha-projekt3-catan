@@ -110,7 +110,7 @@ public class SiedlerGame {
      * @param position the specified position for the settlement
      * @return true, if the settlement has been built
      */
-    public boolean placeInitialSettlement(Point position) {
+    public boolean placeInitialSettlement(Point position, boolean payout) {
 
         //TODO: Ressourcen gewinnen bei zweiter Siedlung
 
@@ -123,10 +123,21 @@ public class SiedlerGame {
                 && board.getNeighboursOfCorner(position).isEmpty()) {
 
             getCurrentPlayer().initializeMeeple(settlement);
-
             board.setCorner(position, settlement.toString());
+
+            if(payout) {
+
+                    for(int i = 0; i < board.getFields(position).size();i++)
+                    {
+                        getCurrentPlayer().addRescourceFromSettlement
+                                (board.getFields(position).get(i).getResource());
+
+                    }
+
+            }
             return true;
-        } else {
+        }
+        else {
             return false;
         }
 
@@ -157,6 +168,13 @@ public class SiedlerGame {
 
     }
 
+    /**
+     * This method checks the number of the 'dicethrow' and searches the fields which are affected.
+     * After that it checks all adjacent corners(settlements or cities) and assigns the resources
+     * to thew corresponding player who owns this corners
+     * @param dicethrow The number of the dices
+     * @return 'Map' with the players and the added resources
+     */
 
     public Map<Player,List<Config.Resource>> throwDice(int dicethrow) {
 
@@ -170,7 +188,7 @@ public class SiedlerGame {
 
                 affectedFields.add(label.getKey());
             }
-
+        }
 
             for (Player player : players) {
 
@@ -199,7 +217,6 @@ public class SiedlerGame {
                 }
                 changes.put(player,resources);
             }
-        }
 
         return changes;
 
