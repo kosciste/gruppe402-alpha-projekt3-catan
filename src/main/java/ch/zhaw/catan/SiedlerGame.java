@@ -387,11 +387,18 @@ public class SiedlerGame {
         }
     }
 
-
+    /**
+     * This method trade 4 offered resources to one wished resource.
+     * @param offer The resource you offer 4 times.
+     * @param want The resource you get if your offer is valid.
+     * @return true if the trade went well, returns false if there wasn't enough resoureces offered.
+     */
     public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
         if(hasEnoughResourcesToTrade(offer)) {
-
-        }
+                getCurrentPlayer().removeResource(4, offer);
+                getCurrentPlayer().getResourceStock().add(want);
+                return true;
+            }
         return false;
     }
 
