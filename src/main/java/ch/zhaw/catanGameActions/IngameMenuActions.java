@@ -1,7 +1,12 @@
 package ch.zhaw.catanGameActions;
 
 public enum IngameMenuActions {
-    BUILD("Build"), TRADE("Trade"), END_TURN("End my turn"), END_THE_GAME("End the game");
+    SHOW_BOARD("Show board"),
+    SHOW_RESOURCES("Show my resources"),
+    BUILD("Build"),
+    TRADE("Trade"),
+    END_TURN("End my turn"),
+    END_THE_GAME("End the game");
 
     private String name;
 
