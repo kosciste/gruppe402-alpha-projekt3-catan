@@ -27,7 +27,7 @@ public class IngameMenu {
     private static SiedlerBoardTextView view;
 
     /**
-     * This method starts the main menu and initialises a new round of the Settlers of Catan
+     * This method starts the ingame menu and initialises a new round of the Settlers of Catan
      */
     public static void startNewGame()
     {
@@ -42,6 +42,12 @@ public class IngameMenu {
         boolean running = true;
         while (running) {
     		switch (InputOutputConsole.getEnumValue(IngameMenuActions.class)) {
+			case SHOW_BOARD:
+				InputOutputConsole.printSiedlerBoard(view);
+				break;
+			case SHOW_RESOURCES:
+				InputOutputConsole.printText(showPlayerResources());
+				break;
     		case BUILD:
     			switch (InputOutputConsole.getEnumValue(Config.Structure.class)) {
     			case ROAD:
@@ -70,7 +76,7 @@ public class IngameMenu {
     			}
     			break;
     		case TRADE:
-    			// TODO: Implement Trade with Bank
+    			// TODO: Implement Trade with Bank 1. Show resources, 2. choose offer, 3. choose want
     			break;
     		case END_TURN:
     			siedlerGame.switchToNextPlayer();
@@ -206,5 +212,10 @@ public class IngameMenu {
             	InputOutputConsole.printText(Output.getFailureMessage());
             }
 		}
+	}
+
+	private static String showPlayerResources()
+	{
+		return siedlerGame.getCurrentPlayer().getFormatResources();
 	}
 }
