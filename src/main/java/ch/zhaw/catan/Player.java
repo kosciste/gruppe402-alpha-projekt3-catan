@@ -83,6 +83,9 @@ public class Player {
 	public String getFormatResources() {
 		//TODO Funktioniert die Ausgabe?
 		String formatResources = "";
+		if(getNumberOfTotalResources() == 0) {
+			formatResources = "It seems like you don't have any resources :(";
+		}
 		for(Resource resource : resourceStock ) {
 			formatResources += resource + " | " + getNumberOfSingleResource(resource) + " Pieces \n";
 		}
