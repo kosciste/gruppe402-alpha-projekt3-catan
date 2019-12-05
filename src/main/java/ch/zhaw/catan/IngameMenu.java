@@ -87,7 +87,7 @@ public class IngameMenu {
     			}
     			break;
     		case TRADE:
-    			// TODO: Implement Trade with Bank 1. Show resources, 2. choose offer, 3. choose want
+				actionTrade();
     			break;
     		case END_TURN:
     			siedlerGame.switchToNextPlayer();
@@ -231,8 +231,19 @@ public class IngameMenu {
 	{
 		return siedlerGame.getCurrentPlayer().getFormatResources();
 	}
-	
-	
+
+	private static void actionTrade()
+	{
+		InputOutputConsole.printText(showPlayerResources());
+		if (siedlerGame.getCurrentPlayer().getNumberOfTotalResources() > 0) {
+			InputOutputConsole.printText("Which material do you offer?");
+			Config.Resource offer = InputOutputConsole.chooseResource();
+			InputOutputConsole.printText("Which material do you want?");
+			Config.Resource want = InputOutputConsole.chooseResource();
+			siedlerGame.tradeWithBankFourToOne(offer, want);
+		}
+	}
+
 	/**
 	 * Simulates a cast of two dices. Each dice delivers a value between 1 and 6
 	 * (inclusive). The sum of these values, which is between 2 and 12 is returned.
