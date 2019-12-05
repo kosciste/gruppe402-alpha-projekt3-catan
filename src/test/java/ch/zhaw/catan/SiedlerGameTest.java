@@ -71,10 +71,82 @@ class SiedlerGameTest {
     }
 
     @Test
-    void tradeWithBankFourToOne() {
+    void getWinner() {
+    }
+}
+
+/**
+ * This class tests the method tradeWithBankFourToOne from the class SiedlerGame
+ */
+class SiedlerGame_TradeWithBankFourToOneTest {
+    @Test
+    void tradeWithBankFourToOne_OfferIsNull() {
+        Config.Resource offer = null;
+        Config.Resource want = Config.Resource.WOOD;
+
+        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        for (int i = 0; i < 4; i++) {
+            siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+        }
+        assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
+        assertEquals(4, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
     }
 
     @Test
-    void getWinner() {
+    void tradeWithBankFourToOne_WantIsNull() {
+        Config.Resource offer = Config.Resource.CLAY;
+        Config.Resource want = null;
+
+        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        for (int i = 0; i < 4; i++) {
+            siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+        }
+        assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
+        assertEquals(4, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
+    }
+
+    @Test
+    void tradeWithBankFourToOne_NoResources()
+    {
+        Config.Resource offer = Config.Resource.WOOL;
+        Config.Resource want = Config.Resource.WOOD;
+
+        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        for (int i = 0; i < 4; i++) {
+            siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+        }
+        assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
+        assertEquals(4, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
+
+    }
+
+    @Test
+    void tradeWithBankFourToOne_WithTheRightResources()
+    {
+        Config.Resource offer = Config.Resource.CLAY;
+        Config.Resource want = Config.Resource.WOOD;
+
+        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        for (int i = 0; i < 4; i++) {
+            siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+        }
+        assertTrue(siedlerGame.tradeWithBankFourToOne(offer, want));
+        assertEquals(1, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
+        assertEquals(Config.Resource.WOOD, siedlerGame.getCurrentPlayer().getResourceStock().get(0));
+    }
+
+    @Test
+    void tradeWithBankFourToOne_WithWrongResources()
+    {
+        Config.Resource offer = Config.Resource.WOOL;
+        Config.Resource want = Config.Resource.WOOD;
+
+        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        for (int i = 0; i < 5; i++) {
+            siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+        }
+        assertEquals(5, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
+        assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
+        assertFalse(siedlerGame.getCurrentPlayer().getResourceStock().contains(want));
     }
 }
