@@ -299,44 +299,31 @@ public class SiedlerGame {
         }
     }
 
-
-
-
+    /**
+     * This Method build a city at a specified position 
+     * 
+     * @param position the specified position for the city
+     * @return true, if the city has been built
+     */
     public boolean buildCity(Point position) {
-        // TODO: OPTIONAL task - Implement
+    	Player currentPlayer = getCurrentPlayer();
         City city = new City(getCurrentPlayer().getPlayerFaction());
         boolean hasSettlement = false;
-        List<Meeple> meeples = getCurrentPlayer().getMeepleList();
-//        Iterator<Meeple> it = meeples.iterator();	//suche nach Siedlung mit den selben Position 
-//        while(it.hasNext()) {		
-//        	Meeple m1 = it.next();
-//        	if(m1 instanceof Settlement) {
-//        		if(position ueberpruefen) {
-        			
-//        			hasSettlement = true;
-//        		}
-//       	}
-//        }
-        	
-    	
-        
-        boolean hasEnoughResources = false;
-        // ressourcen überprüfen
-        
+         
+        if(board.getCorner(position).equals(getCurrentPlayer().getPlayerFaction().toString())) {
+        	hasSettlement = true;
+        }
         if(hasSettlement 
-        		&& hasEnoughResources
+        		&& hasEnoughRessources(Config.Structure.CITY.getCosts(), currentPlayer)
         		&& getCurrentPlayer().hasAvailableCities()) {
-        	//removeSettlement braucht noch methode in player
-        	
+
+        	getCurrentPlayer().removeSettlement();
         	getCurrentPlayer().initializeMeeple(city);
-        	
-        	//removeResources
-        	
-        	//changeWinPoints
-        
+        	board.setCorner(position, city.toString());
+        	payWithRessources(Config.Structure.CITY.getCosts(), currentPlayer);
+        	currentPlayer.setWinPoints(currentPlayer.getWinPoints() + 1);
     		return true;
-    	}
-    	else {
+    	} else {
     		return false;
     	}
     }

@@ -4,7 +4,7 @@ package ch.zhaw.catan;
  * This class models a city. A city is the next level from a settlement.
  * The city gives two point of resources back and also two winpoints.
  * 
- * @author blatt
+ * @author Peter Blattmann
  *
  */
 public class City extends Meeple {
@@ -22,6 +22,6 @@ public class City extends Meeple {
 	
 	@Override
 	public String toString() {
-		return super.toString();
+		return super.toString().toUpperCase();
 	}
 }

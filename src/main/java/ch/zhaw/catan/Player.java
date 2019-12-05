@@ -128,21 +128,17 @@ public class Player {
 	}
 	
 	/**
+	 * This method removes a settlement.
 	 * 
-	 * 
-	 * @param position
 	 */
-	public void removeSettlement(Point position) {
+	public void removeSettlement() {
 		boolean running = true;
 		Iterator<Meeple> it = meeples.iterator();
 		while(it.hasNext() && running) {
 			Meeple m1 = it.next();
 			if(m1 instanceof Settlement) {
-				//TODO Settlement Position vergleichen.
-//				if() {
-//					it.remove();
-//					running = false;
-//				}
+				it.remove();
+				running = false;
 			}
 		}	
 	}

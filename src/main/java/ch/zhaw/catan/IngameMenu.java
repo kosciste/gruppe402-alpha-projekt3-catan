@@ -63,15 +63,21 @@ public class IngameMenu {
     				break;
     			case SETTLEMENT:
     				InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
-    				Point location = chooseCorner();
-    				if (siedlerGame.buildSettlement(location)) {
+    				Point locationForSettlement = chooseCorner();
+    				if (siedlerGame.buildSettlement(locationForSettlement)) {
     					InputOutputConsole.printSiedlerBoard(view);
     				} else {
     					InputOutputConsole.printText(Output.getFailureMessage());
     				}
     				break;
     			case CITY:
-    				// TODO
+    				InputOutputConsole.printText(Output.getCityBuildingMessage());
+    				Point locationForCity = chooseCorner();
+    				if (siedlerGame.buildCity(locationForCity)) {
+    					InputOutputConsole.printSiedlerBoard(view);
+    				} else {
+    					InputOutputConsole.printText(Output.getFailureMessage());
+    				}
     				break;
     			}
     			break;
