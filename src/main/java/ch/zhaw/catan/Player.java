@@ -1,6 +1,5 @@
 package ch.zhaw.catan;
 
-import java.awt.Point;
 import java.util.*;
 
 import ch.zhaw.catan.Config.Faction;
@@ -81,12 +80,18 @@ public class Player {
 	 * @return formatResources A String with all counted resources.
 	 */
 	public String getFormatResources() {
-		//TODO Funktioniert die Ausgabe?
 		String formatResources = "";
-		for(Resource resource : resourceStock ) {
-			formatResources += resource + " | " + getNumberOfSingleResource(resource) + " Pieces \n";
+		if(getNumberOfTotalResources() == 0) {
+			formatResources = "It seems like you don't have any resources :(";
 		}
-		return formatResources;
+		else {
+			for(Resource resource : Resource.values() ) {
+				if(getNumberOfSingleResource(resource) > 0) {
+					formatResources += resource + " | " + getNumberOfSingleResource(resource) + " Pieces \n";	
+				}
+			}
+		}
+		return formatResources;	
 	}
 	
 	/**

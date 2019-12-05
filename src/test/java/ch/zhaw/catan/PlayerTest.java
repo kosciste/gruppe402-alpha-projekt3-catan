@@ -4,10 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * @author blatt
- *
- */
+import ch.zhaw.catan.Config.Resource;
+
 class PlayerTest {
 
 	@Test
@@ -107,5 +105,19 @@ class PlayerTest {
 		player.initializeMeeple(new City(Config.Faction.RED));
 		player.initializeMeeple(new City(Config.Faction.RED));
 		assertFalse(player.hasAvailableCities());
+	}
+	
+	@Test
+	public void GetFormatResourcesZero() {
+		Player player = new Player(Config.Faction.RED);
+		assertEquals("It seems like you don't have any resources :(", player.getFormatResources());
+	}	
+	
+	@Test
+	public void testGetFormatResources() {
+		Player player = new Player(Config.Faction.RED);
+		player.addRescourceFromSettlement(Resource.GRAIN);
+		player.addRescourceFromSettlement(Resource.GRAIN);
+		assertEquals("GR | 2 Pieces \n", player.getFormatResources());
 	}
 }

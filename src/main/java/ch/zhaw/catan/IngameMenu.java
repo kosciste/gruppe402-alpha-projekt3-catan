@@ -6,6 +6,7 @@ import ch.zhaw.hexboard.Label;
 
 import java.awt.Point;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * This class Displays the ingame menu of the Settlers of Catan. It also
@@ -23,8 +24,12 @@ import java.util.Map;
 public class IngameMenu {
 
     public static final int MAX_NUMBER_OF_PLAYERS = 4;
+    private static final int MIN_DICE_VALUE = 1;
+    private static final int MAX_DICE_VALUE = 6;
     private static SiedlerGame siedlerGame;
     private static SiedlerBoardTextView view;
+    private static Random firstDice = new Random();
+    private static Random secondDice = new Random(); 
 
     /**
      * This method starts the ingame menu and initialises a new round of the Settlers of Catan
@@ -82,7 +87,7 @@ public class IngameMenu {
     			}
     			break;
     		case TRADE:
-    			// TODO: Implement Trade with Bank 1. Show resources, 2. choose offer, 3. choose want
+				actionTrade();
     			break;
     		case END_TURN:
     			siedlerGame.switchToNextPlayer();
@@ -152,17 +157,18 @@ public class IngameMenu {
 	 * do the same but in reverse order.
 	 */
 	private static void startInitialBuilding() {
+		boolean payoutResources = true;
 		int numberOfPlayers = siedlerGame.getPlayer().size();
 		for (int i = 0; i < numberOfPlayers; i++) {
 			showTurnOfCurrentPlayer();
-			buildInitialSettlement("first");
+			buildInitialSettlement("first", !payoutResources);
 			buildInitialRoad("first");
 			siedlerGame.switchToNextPlayer();
 		}
 		for (int i = 0; i < numberOfPlayers; i++) {
 			siedlerGame.switchToPreviousPlayer();
 			showTurnOfCurrentPlayer();
-			buildInitialSettlement("second");
+			buildInitialSettlement("second", payoutResources);
 			buildInitialRoad("second");
 		}
 	}
@@ -183,13 +189,14 @@ public class IngameMenu {
 	 * 'first' or 'second' initial settlement and affects only a message.
 	 * 
 	 * @param firstOrSecond the declaration, if it is the first or second settlement
+	 * @param payoutResources true, if the resources should be paid out
 	 */
-	private static void buildInitialSettlement(String firstOrSecond) {
+	private static void buildInitialSettlement(String firstOrSecond, boolean payoutResources) {
 		boolean settlementIsBuilt = false;
 		while (!settlementIsBuilt) {
 			InputOutputConsole.printText(Output.getSettlementBuildingMessage(firstOrSecond));
 			Point location = chooseCorner();
-			if (siedlerGame.placeInitialSettlement(location)) {
+			if (siedlerGame.placeInitialSettlement(location, payoutResources)) {
 				InputOutputConsole.printSiedlerBoard(view);
 				settlementIsBuilt = true;
 			} else {
@@ -223,5 +230,29 @@ public class IngameMenu {
 	private static String showPlayerResources()
 	{
 		return siedlerGame.getCurrentPlayer().getFormatResources();
+	}
+
+	private static void actionTrade()
+	{
+		InputOutputConsole.printText(showPlayerResources());
+		if (siedlerGame.getCurrentPlayer().getNumberOfTotalResources() > 0) {
+			InputOutputConsole.printText("Which material do you offer?");
+			Config.Resource offer = InputOutputConsole.chooseResource();
+			InputOutputConsole.printText("Which material do you want?");
+			Config.Resource want = InputOutputConsole.chooseResource();
+			siedlerGame.tradeWithBankFourToOne(offer, want);
+		}
+	}
+
+	/**
+	 * Simulates a cast of two dices. Each dice delivers a value between 1 and 6
+	 * (inclusive). The sum of these values, which is between 2 and 12 is returned.
+	 * 
+	 * @return a sum of two dice values
+	 */
+	private static int getValueOfDices() {
+		int firstDiceValue = firstDice.nextInt(MAX_DICE_VALUE) + MIN_DICE_VALUE;
+		int secondDiceValue = secondDice.nextInt(MAX_DICE_VALUE) + MIN_DICE_VALUE;
+		return firstDiceValue + secondDiceValue;
 	}
 }
