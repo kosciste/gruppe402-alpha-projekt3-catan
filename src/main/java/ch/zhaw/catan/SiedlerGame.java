@@ -241,6 +241,7 @@ public class SiedlerGame {
             getCurrentPlayer().initializeMeeple(settlement);
             board.setCorner(position, settlement.toString());
             payWithRessources(Config.Structure.SETTLEMENT.getCosts(),currentPlayer);
+            currentPlayer.setWinPoints(currentPlayer.getWinPoints() + 1);
             return true;
         } else {
             return false;
@@ -265,7 +266,6 @@ public class SiedlerGame {
             getCurrentPlayer().initializeMeeple(road);
             board.setEdge(roadStart, roadEnd, road.toString());
             payWithRessources(Config.Structure.ROAD.getCosts(),currentPlayer);
-
             return true;
         } else {
             return false;
@@ -393,8 +393,23 @@ public class SiedlerGame {
         return false;
     }
 
+    /**
+     * Searches for the Player who has won the game
+     * @return 'Player' who has reached the max amount of points,
+     * if there is no winner return 'null'
+     */
     public Player getWinner() {
-        // TODO: Implement
-        return null;
+        Player winner = null;
+
+        for (Player player : players) {
+
+            if(player.getWinPoints() >= winPoints) {
+
+                winner = player;
+            }
+
+        }
+
+        return winner;
     }
 }
