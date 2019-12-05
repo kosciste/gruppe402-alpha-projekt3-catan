@@ -71,6 +71,21 @@ public class Player {
 	}
 	
 	/**
+	 * This method gives a String with all counted resources. The player
+	 * can show his stock of resources.
+	 * 
+	 * @return formatResources A String with all counted resources.
+	 */
+	public String getFormatResources() {
+		//TODO Funktioniert die Ausgabe?
+		String formatResources = "";
+		for(Resource resource : resourceStock ) {
+			formatResources += resource + " | " + getNumberOfSingleResource(resource) + " Pieces \n";
+		}
+		return formatResources;
+	}
+	
+	/**
 	 * This method returns the total number of  a certain resource 
 	 * type on the hand of the player. 
 	 * 
