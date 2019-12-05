@@ -105,11 +105,6 @@ public class SiedlerGame {
     }
 
 
-    public int getCurrentPlayerResourceStock(Resource resource) {
-        // TODO: Implement
-        return 0;
-    }
-
 
     /**
      * Builds an  initial settlement
@@ -154,29 +149,6 @@ public class SiedlerGame {
 
     }
 
-    /**
-     * public Map<Faction, List<Resource>> throwDice(int dicethrow) {
-     * // TODO: Implement
-     * return null;
-     * }
-     */
-
-    private Integer getFirstDigit(int number) {
-        Integer digit;
-        if (number >= 10) {
-            digit = number / 10;
-        } else {
-            digit = 0;
-        }
-        return digit;
-    }
-
-    private Integer getLastDigit(int number) {
-        Integer digit;
-        digit = number % 10;
-        return digit;
-    }
-
 
     public void throwDice(int dicethrow) {
 
@@ -204,7 +176,8 @@ public class SiedlerGame {
                                 if (player.getMeepleList().get(i).toString()
                                         .equals(board.getCornersOfField(affectedFields.get(j)).get(k))) {
 
-                                    player.addRescourceFromSettlement(board.getField(affectedFields.get(j)).getResource());
+                                    player.addRescourceFromSettlement
+                                            (board.getField(affectedFields.get(j)).getResource());
                                     System.out.println(player.getResourceStock().get(0).toString());
                                 }
                     }
@@ -214,6 +187,24 @@ public class SiedlerGame {
 
     }
 
+    private Integer getFirstDigit(int number) {
+        Integer digit;
+        if (number >= 10) {
+            digit = number / 10;
+        } else {
+            digit = 0;
+        }
+        return digit;
+    }
+
+    private Integer getLastDigit(int number) {
+        Integer digit;
+        digit = number % 10;
+        return digit;
+    }
+
+
+
     /**
      * This method builds a settlement at a specified position
      *
@@ -222,7 +213,8 @@ public class SiedlerGame {
      */
     public boolean buildSettlement(Point position) {
         //TODO: Überprüfen und abziehen der Rohstoffe
-        Settlement settlement = new Settlement(getCurrentPlayer().getPlayerFaction());
+        Player currentPlayer = getCurrentPlayer();
+        Settlement settlement = new Settlement(currentPlayer.getPlayerFaction());
         boolean hasAdjacentRoads = false;
         List<Meeple> meeples = getCurrentPlayer().getMeepleList();
         for (int i = 0; i < meeples.size(); i++) {
@@ -231,51 +223,53 @@ public class SiedlerGame {
                 hasAdjacentRoads = true;
             }
         }
-        boolean hasEnoughRessources = true;
-        for (Resource resource : Config.Structure.SETTLEMENT.getCosts()) {
-
-            if (getCurrentPlayer().getNumberOfSingleResource(resource) < 1) {
-                hasEnoughRessources = false;
-            }
-        }
-
-
         if (board.getCorner(position) == null
                 && hasAdjacentRoads
-                && hasEnoughRessources
+                && hasEnoughRessources(Config.Structure.SETTLEMENT.getCosts(),currentPlayer)
                 && getCurrentPlayer().hasAvailableSettlements()
                 && isValidCorner(position)
                 && board.getNeighboursOfCorner(position).isEmpty()) {
 
             getCurrentPlayer().initializeMeeple(settlement);
-
             board.setCorner(position, settlement.toString());
-
-            for (Resource resource : Config.Structure.SETTLEMENT.getCosts()) {
-
-                getCurrentPlayer().removeResource(1, resource);
-            }
+            payWithRessources(Config.Structure.SETTLEMENT.getCosts(),currentPlayer);
             return true;
         } else {
             return false;
         }
     }
 
-    private boolean isValidCorner(Point position) {
 
-        boolean isValid = false;
-        for (int i = 0; i < Config.Resource.values().length; i++) {
+    /**
+     * This method builds a road at a specicfied location
+     *
+     * @param roadStart the Point where the road starts
+     * @param roadEnd   the Point where the road ends
+     * @return true, if the road has been built
+     */
+    public boolean buildRoad(Point roadStart, Point roadEnd) {
+        Player currentPlayer = getCurrentPlayer();
+        Road road = new Road(currentPlayer.getPlayerFaction());
 
-            for (int j = 0; j < board.getFields(position).size(); j++) {
+        if (board.hasEdge(roadStart, roadEnd) &&
+                board.getEdge(roadStart, roadEnd) == null
+                && (hasAdjacentElementsForRoad(currentPlayer, roadStart, roadEnd)
+                ||hasAdjacentElementsForRoad(currentPlayer,roadEnd,roadStart))
+                && hasEnoughRessources(Config.Structure.ROAD.getCosts(),currentPlayer)) {
 
-                if (board.getFields(position).get(j).getResource() == Config.Resource.values()[i]) {
-                    isValid = true;
-                }
+            getCurrentPlayer().initializeMeeple(road);
+            board.setEdge(roadStart, roadEnd, road.toString());
 
-            }
+
+            payWithRessources(Config.Structure.ROAD.getCosts(),currentPlayer);
+
+            return true;
+        } else {
+            return false;
         }
-        return isValid;
     }
+
+
 
 
     public boolean buildCity(Point position) {
@@ -317,23 +311,16 @@ public class SiedlerGame {
     	}
     }
 
-    /**
-     * This method builds a road at a specicfied location
-     *
-     * @param roadStart the Point where the road starts
-     * @param roadEnd   the Point where the road ends
-     * @return true, if the road has been built
-     */
-    public boolean buildRoad(Point roadStart, Point roadEnd) {
-        Road road = new Road(getCurrentPlayer().getPlayerFaction());
+    private boolean hasAdjacentElementsForRoad(Player currentPlayer, Point roadStart, Point roadEnd){
+
         boolean hasAdjacentElements = false;
+
         List<String> meeples = new ArrayList<>();
-        for (Meeple meeple : getCurrentPlayer().getMeepleList()) {
+        for (Meeple meeple : currentPlayer.getMeepleList()) {
             meeples.add(meeple.toString());
         }
 
         for (int i = 0; i < meeples.size(); i++) {
-
             if (board.getAdjacentEdges(roadStart).
                     contains(meeples.get(i)) ||
                     board.getCorner(roadStart) == (meeples.get(i))) {
@@ -346,46 +333,50 @@ public class SiedlerGame {
                 }
             }
 
-            if (board.getAdjacentEdges(roadEnd).
-                    contains(meeples.get(i)) ||
-                    board.getCorner(roadEnd) == (meeples.get(i))) {
-                if (board.getCorner(roadStart) == null ||
-                        meeples.contains(board.getCorner(roadStart))) {
-                    if (isValidCorner(roadStart)) {
-                        hasAdjacentElements = true;
-                    }
-
-                }
-            }
         }
 
+        return hasAdjacentElements;
+
+    }
+
+    private boolean isValidCorner(Point position) {
+
+        boolean isValid = false;
+        for (int i = 0; i < Config.Resource.values().length; i++) {
+
+            for (int j = 0; j < board.getFields(position).size(); j++) {
+
+                if (board.getFields(position).get(j).getResource() == Config.Resource.values()[i]) {
+                    isValid = true;
+                }
+
+            }
+        }
+        return isValid;
+    }
+
+    private boolean hasEnoughRessources(List<Config.Resource> list, Player currentPlayer) {
+
         boolean hasEnoughRessources = true;
-        for (Resource resource : Config.Structure.ROAD.getCosts()) {
+        for (Resource resource : list) {
 
             if (getCurrentPlayer().getNumberOfSingleResource(resource) < 1) {
                 hasEnoughRessources = false;
             }
         }
 
-        if (board.hasEdge(roadStart, roadEnd) &&
-                board.getEdge(roadStart, roadEnd) == null
-                && hasAdjacentElements
-                && hasEnoughRessources) {
+        return hasEnoughRessources;
 
-            getCurrentPlayer().initializeMeeple(road);
-            board.setEdge(roadStart, roadEnd, road.toString());
+    }
 
+    private void payWithRessources(List<Config.Resource> list, Player currentPlayer){
 
-            for (Resource resource : Config.Structure.ROAD.getCosts()) {
+        for (Resource resource : list) {
 
-                getCurrentPlayer().removeResource(1, resource);
-            }
-
-            return true;
-        } else {
-            return false;
+            getCurrentPlayer().removeResource(1, resource);
         }
     }
+
 
     public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
         // TODO: Implement
