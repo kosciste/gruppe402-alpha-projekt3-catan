@@ -14,13 +14,16 @@ import org.beryx.textio.TextTerminal;
  */
 public class InputOutputConsole {
 
+    public static final int TERMINAL_WIDTH = 1280;
+    public static final int TERMINAL_HEIGHT = 720;
+
     private static TextIO textIO =TextIoFactory.getTextIO();
     private  static TextTerminal<?> textTerminal = textIO.getTextTerminal();
 
     //defines the Window to a specified size.
     static
     {
-        textTerminal.getProperties().setPaneDimension(1280,720);
+        textTerminal.getProperties().setPaneDimension(TERMINAL_WIDTH,TERMINAL_HEIGHT);
     }
 
     // TODO to comment!
@@ -78,6 +81,14 @@ public class InputOutputConsole {
 		int yCoordinate = textIO.newIntInputReader().read("y-coordinate");
 		return new Point(xCoordinate, yCoordinate);
 	}
+
+    /**
+     * This method returns a resouce from the userinput
+     * @return resource
+     */
+    public static Config.Resource chooseResource() {
+        return getEnumValue(Config.Resource.class);
+    }
 
     /**
      * Closes the terminal
