@@ -110,4 +110,11 @@ public class Output {
 	public static String getSettlementBuildingMessage(String initialOrNew) {
 		return "\nDeclare the location of your " + initialOrNew + " settlement";
 	}
+	
+	/**
+	 * @return string as a prompt to build a city
+	 */
+	public static String getCityBuildingMessage() {
+		return "\nDeclare the location of your new city";
+	}
 }
