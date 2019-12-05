@@ -280,7 +280,41 @@ public class SiedlerGame {
 
     public boolean buildCity(Point position) {
         // TODO: OPTIONAL task - Implement
-        return false;
+        City city = new City(getCurrentPlayer().getPlayerFaction());
+        boolean hasSettlement = false;
+        List<Meeple> meeples = getCurrentPlayer().getMeepleList();
+//        Iterator<Meeple> it = meeples.iterator();	//suche nach Siedlung mit den selben Position 
+//        while(it.hasNext()) {		
+//        	Meeple m1 = it.next();
+//        	if(m1 instanceof Settlement) {
+//        		if(position ueberpruefen) {
+        			
+//        			hasSettlement = true;
+//        		}
+//       	}
+//        }
+        	
+    	
+        
+        boolean hasEnoughResources = false;
+        // ressourcen überprüfen
+        
+        if(hasSettlement 
+        		&& hasEnoughResources
+        		&& getCurrentPlayer().hasAvailableCities()) {
+        	//removeSettlement braucht noch methode in player
+        	
+        	getCurrentPlayer().initializeMeeple(city);
+        	
+        	//removeResources
+        	
+        	//changeWinPoints
+        
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
     }
 
     /**
