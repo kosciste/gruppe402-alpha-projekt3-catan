@@ -455,4 +455,18 @@ public class SiedlerGame {
 
         return winner;
     }
+    
+    private void stealResources() {
+    	for(Player player : players) {
+    		int numberOfResources = player.getNumberOfTotalResources();
+    		if(numberOfResources > Config.MAX_CARDS_IN_HAND_NO_DROP) {
+    			if(numberOfResources % 2 == 0) {  //gerade
+    				player.stealingResources(numberOfResources / 2);
+    			}
+    			else {	//ungerade
+    				player.stealingResources((numberOfResources - 1) / 2);
+    			}
+    		}
+    	}
+    } 
 }
