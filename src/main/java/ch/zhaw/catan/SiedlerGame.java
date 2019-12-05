@@ -26,7 +26,7 @@ public class SiedlerGame {
         this.winPoints = winPoints;
         this.numberOfPlayers = numberOfPlayers;
         setPlayers(numberOfPlayers);
-        placeInitialSettlement(new Point(4, 0));
+
 
     }
 
@@ -37,8 +37,6 @@ public class SiedlerGame {
             Player player = new Player(Faction.values()[i]);
             players.add(player);
         }
-
-        placeInitialSettlement(new Point(6, 6));
 
 
     }
@@ -145,7 +143,17 @@ public class SiedlerGame {
     public boolean placeInitialRoad(Point roadStart, Point roadEnd) {
 
 
-        return buildRoad(roadStart, roadEnd);
+        Player currentPlayer = getCurrentPlayer();
+        Road road = new Road(currentPlayer.getPlayerFaction());
+
+        if (hasValidConditionsForRoad(currentPlayer,roadStart,roadEnd)) {
+            getCurrentPlayer().initializeMeeple(road);
+            board.setEdge(roadStart, roadEnd, road.toString());
+
+            return true;
+        } else {
+            return false;
+        }
 
     }
 
@@ -251,16 +259,11 @@ public class SiedlerGame {
         Player currentPlayer = getCurrentPlayer();
         Road road = new Road(currentPlayer.getPlayerFaction());
 
-        if (board.hasEdge(roadStart, roadEnd) &&
-                board.getEdge(roadStart, roadEnd) == null
-                && (hasAdjacentElementsForRoad(currentPlayer, roadStart, roadEnd)
-                ||hasAdjacentElementsForRoad(currentPlayer,roadEnd,roadStart))
-                && hasEnoughRessources(Config.Structure.ROAD.getCosts(),currentPlayer)) {
+        if (hasValidConditionsForRoad(currentPlayer,roadStart,roadEnd)
+                &&hasEnoughRessources(Config.Structure.ROAD.getCosts(),currentPlayer)) {
 
             getCurrentPlayer().initializeMeeple(road);
             board.setEdge(roadStart, roadEnd, road.toString());
-
-
             payWithRessources(Config.Structure.ROAD.getCosts(),currentPlayer);
 
             return true;
@@ -309,6 +312,13 @@ public class SiedlerGame {
     	else {
     		return false;
     	}
+    }
+
+    private boolean hasValidConditionsForRoad(Player currentPlayer, Point roadStart, Point roadEnd) {
+       return (board.hasEdge(roadStart, roadEnd) &&
+                board.getEdge(roadStart, roadEnd) == null
+                && (hasAdjacentElementsForRoad(currentPlayer, roadStart, roadEnd)
+                ||hasAdjacentElementsForRoad(currentPlayer,roadEnd,roadStart)));
     }
 
     private boolean hasAdjacentElementsForRoad(Player currentPlayer, Point roadStart, Point roadEnd){
