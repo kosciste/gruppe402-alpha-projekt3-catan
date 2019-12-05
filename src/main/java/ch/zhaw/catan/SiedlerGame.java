@@ -389,8 +389,28 @@ public class SiedlerGame {
 
 
     public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
-        // TODO: Implement
+        if(hasEnoughResourcesToTrade(offer)) {
+
+        }
         return false;
+    }
+
+    private boolean hasEnoughResourcesToTrade(Resource offer)
+    {
+        if(offer == null) {return false;}
+
+        int resourceCounter = 0;
+        for(Resource resource : getCurrentPlayer().getResourceStock()) {
+            if(resource.equals(offer)) {
+                resourceCounter++;
+            }
+        }
+        if(resourceCounter >= 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
