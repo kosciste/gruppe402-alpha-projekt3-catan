@@ -1,11 +1,10 @@
 package ch.zhaw.hexboard;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.awt.Point;
 
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /***
  * <p>
@@ -41,7 +40,7 @@ public class EdgeTest {
 
   @Test
   public void notEquals() {
-    org.junit.Assert.assertNotEquals(new Edge(hexagon22[0], hexagon22[1]),
+    assertNotEquals(new Edge(hexagon22[0], hexagon22[1]),
         new Edge(hexagon22[1], hexagon22[2]));
   }
 

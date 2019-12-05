@@ -26,6 +26,8 @@ public class SiedlerGame {
         this.winPoints = winPoints;
         this.numberOfPlayers = numberOfPlayers;
         setPlayers(numberOfPlayers);
+        City city = new City(Faction.RED);
+        board.setCorner(new Point(5,3), city.toString());
 
 
     }
@@ -111,8 +113,6 @@ public class SiedlerGame {
      * @return true, if the settlement has been built
      */
     public boolean placeInitialSettlement(Point position, boolean payout) {
-
-        //TODO: Ressourcen gewinnen bei zweiter Siedlung
 
         Settlement settlement = new Settlement(getCurrentPlayer().getPlayerFaction());
 
@@ -345,11 +345,12 @@ public class SiedlerGame {
         }
 
         for (int i = 0; i < meeples.size(); i++) {
-            if (board.getAdjacentEdges(roadStart).
-                    contains(meeples.get(i)) ||
-                    board.getCorner(roadStart) == (meeples.get(i))) {
-                if (board.getCorner(roadEnd) == null
-                        || meeples.contains(board.getCorner(roadEnd))) {
+            if (board.getAdjacentEdges(roadStart).contains(meeples.get(i))
+                    || meeples.get(i).equals(board.getCorner(roadStart))
+                    || meeples.get(i).toUpperCase().equals((board.getCorner(roadStart))))
+            {
+                if (board.getCorner(roadEnd) == null ||
+                        meeples.contains(board.getCorner(roadEnd))) {
                     if (isValidCorner(roadEnd)) {
                         hasAdjacentElements = true;
                     }
@@ -362,6 +363,7 @@ public class SiedlerGame {
         return hasAdjacentElements;
 
     }
+
 
     private boolean isValidCorner(Point position) {
 
