@@ -1,5 +1,6 @@
 package ch.zhaw.catan;
 
+import java.awt.Point;
 import java.util.*;
 
 import ch.zhaw.catan.Config.Faction;
@@ -7,7 +8,10 @@ import ch.zhaw.catan.Config.Resource;
 
 
 /**
- * @author blatt
+ * This class models a player, the player is identified by his color. 
+ * The player has two lists, one for his meeples and one for his resources.
+ * 
+ * @author Peter Blattmann
  *
  */
 public class Player {
@@ -18,9 +22,9 @@ public class Player {
 	
 	/**
 	 * The constructor creats a player with a list for his meeples.
-	 * The player is identified by his colour.
+	 * The player is identified by his color.
 	 * 
-	 * @param playerFaction The colour from faction.
+	 * @param playerFaction The color from faction.
 	 */
 	public Player(Config.Faction playerFaction) {
 		this.playerFaction = playerFaction;
@@ -86,7 +90,7 @@ public class Player {
 	}
 	
 	/**
-	 * This method returns the total number of  a certain resource 
+	 * This method returns the total number of  a certain resource
 	 * type on the hand of the player. 
 	 * 
 	 * @param resource The type of resource
@@ -121,6 +125,26 @@ public class Player {
 	 */
 	public List<Resource> getResourceStock() {
 		return resourceStock;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param position
+	 */
+	public void removeSettlement(Point position) {
+		boolean running = true;
+		Iterator<Meeple> it = meeples.iterator();
+		while(it.hasNext() && running) {
+			Meeple m1 = it.next();
+			if(m1 instanceof Settlement) {
+				//TODO Settlement Position vergleichen.
+//				if() {
+//					it.remove();
+//					running = false;
+//				}
+			}
+		}	
 	}
 	
 	/**
@@ -166,7 +190,7 @@ public class Player {
 	  * player and checks the numbers with the maximal numbers of cities 
 	  * who are available pro player.
 	  * 
-	  * @return ture or false: for available cities.
+	  * @return true or false: for available cities.
 	  */
 	 public boolean hasAvailableCities() {
 		int usedCities = 0;
@@ -190,7 +214,7 @@ public class Player {
 	 }
 	 
 	 /**
-	  * This method returns the colour of the player.
+	  * This method returns the color of the player.
 	  * 
 	  * @return playerFaction
 	  */
