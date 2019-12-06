@@ -1,5 +1,6 @@
 package ch.zhaw.catan;
 
+import ch.zhaw.catanGameActions.BuildingMenuActions;
 import java.awt.*;
 
 /**
@@ -27,16 +28,30 @@ public class BuildingMenu {
     }
 
     private void startBuildingMenu() {
-        switch (InputOutputConsole.getEnumValue(Config.Structure.class)) {
-            case ROAD:
-                buildRoad();
-                break;
-            case SETTLEMENT:
-                buildSettlement();
-                break;
-            case CITY:
-                buildCity();
-                break;
+        boolean running = true;
+        while(running) {
+            switch (InputOutputConsole.getEnumValue(BuildingMenuActions.class)) {
+                case GO_BACK:
+                    running = false;
+                    break;
+                case SHOW_RESOURCES:
+                    InputOutputConsole.printText(IngameMenu.showPlayerResources());
+                    break;
+                case SHOW_NEEDED_RESOURCES:
+                    break;
+                case ROAD:
+                    buildRoad();
+                    running = false;
+                    break;
+                case SETTLEMENT:
+                    buildSettlement();
+                    running = false;
+                    break;
+                case CITY:
+                    buildCity();
+                    running = false;
+                    break;
+            }
         }
     }
 

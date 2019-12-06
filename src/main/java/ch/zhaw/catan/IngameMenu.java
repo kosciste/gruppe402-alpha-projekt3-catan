@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.HashMap;
 
 /**
  * This class Displays the ingame menu of the Settlers of Catan. It also
@@ -202,7 +203,7 @@ public class IngameMenu {
 		}
 	}
 
-	private static String showPlayerResources()
+	public static String showPlayerResources()
 	{
 		return siedlerGame.getCurrentPlayer().getFormatResources();
 	}
@@ -232,19 +233,55 @@ public class IngameMenu {
 	}
 	
 	/**
-	 * TODO
-	 * @param payout
+	 * Prints all payouts of resources per player to the console. A print shows the
+	 * players name, the received resource(s) and the amount of the resource(s). If
+	 * a player didn't receive any resources, there is no print out. Example:
+	 * 'Player RED received 2 WD, 1 ST'
+	 * 
+	 * @param payouts a Map with all players as key and their respective List of
+	 *                resources which they got newly
 	 */
-	private static void showPayoutOfResources(Map<Player, List<Config.Resource>> payout) {
-		for (Map.Entry<Player, List<Config.Resource>> entry : payout.entrySet()) {
-			Player player = entry.getKey();
-			List<Config.Resource> resources = entry.getValue();
-			if (!resources.contains(null) && !resources.isEmpty()) {
-				InputOutputConsole.printText(player.getPlayerFaction().name());
-				for (Config.Resource resource: resources) {
-					InputOutputConsole.printText(resource.toString());
+	private static void showPayoutOfResources(Map<Player, List<Config.Resource>> payouts) {
+		for (Map.Entry<Player, List<Config.Resource>> payout : payouts.entrySet()) {
+			Player player = payout.getKey();
+			List<Config.Resource> resources = payout.getValue();
+
+			Map<Config.Resource, Integer> countedResources = getMapOfCountedResources(resources);
+			if (!countedResources.isEmpty()) {
+				String playerName = player.getPlayerFaction().name();
+				String amountsAndResources = "";
+				for (Map.Entry<Config.Resource, Integer> countedResource : countedResources.entrySet()) {
+					amountsAndResources += ", " + countedResource.getValue() + " "
+							+ countedResource.getKey().toString();
+				}
+				InputOutputConsole.printText(
+						Output.getPayoutOfResourcesMessage(playerName, amountsAndResources.replaceFirst(",", "")));
+			}
+		}
+	}
+	
+	/**
+	 * Counts the amount of each resource out of a List of resources. Creates and
+	 * returns a Map, in which a key is the respective resource and the value is its
+	 * amount.
+	 * 
+	 * @param resources a List of resources, which possibly contains duplicates
+	 * @return a Map with one entry per resource with the resource itself as key and
+	 *         the amount as value, if the List of resources contains no elements or
+	 *         null then an empty Map is returned
+	 */
+	private static Map<Config.Resource, Integer> getMapOfCountedResources(List<Config.Resource> resources) {
+		Map<Config.Resource, Integer> countedResources = new HashMap<>();
+		if (!resources.contains(null) && !resources.isEmpty()) {
+			for (Config.Resource resource : resources) {
+				if (countedResources.containsKey(resource)) {
+					int amount = countedResources.get(resource);
+					countedResources.put(resource, amount + 1);
+				} else {
+					countedResources.put(resource, 1);
 				}
 			}
 		}
+		return countedResources;
 	}
 }

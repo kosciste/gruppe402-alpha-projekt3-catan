@@ -125,4 +125,16 @@ public class Output {
 	public static String getValueOfDiceMessage(int valueOfDice) {
 		return "The dice roll " + valueOfDice;
 	}
+	
+	/**
+	 * @param playerName          the name of the player, who received some
+	 *                            resources
+	 * @param amountsAndResources string with all resources and their amount the
+	 *                            player received
+	 * @return string as an information, which player got which resources and how
+	 *         many of them
+	 */
+	public static String getPayoutOfResourcesMessage(String playerName, String amountsAndResources) {
+		return "Player " + playerName + " received" + amountsAndResources;
+	}
 }

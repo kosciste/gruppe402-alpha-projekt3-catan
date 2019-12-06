@@ -22,7 +22,7 @@ public class SiedlerBoard extends HexBoard<Land, String, String, String> {
     private Map<Point, Label> lowerFieldLabel = new HashMap<>();
 
     /**
-     * Creates a new Siedlerboard with the standard properties
+     * Creates a new Siedlerboard with the standard properties.
      */
     public SiedlerBoard()
     {
@@ -38,38 +38,28 @@ public class SiedlerBoard extends HexBoard<Land, String, String, String> {
         }
     }
 
-    // This method converts the dicenumbers into chars and puts them into the Map lowerFieldlabel.
+    // This method puts dicenumbers as chars into the Map lowerFieldlabel.
     private void putDicevaluesForStandardBoard()
     {
         for(Map.Entry<Point, Integer> dicevalue : Config.getStandardDiceNumberPlacement().entrySet()) {
-            String dicevalueAsString = dicevalue.getValue().toString();
-            char firstChar = '0';
-            char secondChar = '0';
-            if(dicevalueAsString.length() == 2) {
-                firstChar = dicevalueAsString.charAt(0);
-                secondChar = dicevalueAsString.charAt(1);
-            }
-            else {
-                secondChar = dicevalueAsString.charAt(0);
-            }
-            lowerFieldLabel.put(dicevalue.getKey(), new Label(firstChar, secondChar) );
+            char[] dicevalueAsChars = convertDicenumberIntoArrayOfChars(dicevalue);
+            lowerFieldLabel.put(dicevalue.getKey(), new Label(dicevalueAsChars[FIRST_CHAR], dicevalueAsChars[SECOND_CHAR]));
         }
     }
 
-    /*private char[] convertDicenumberInttoChar(int dicevalue)
+    private char[] convertDicenumberIntoArrayOfChars(Map.Entry<Point, Integer> dicevalue)
     {
         char[] dicenumberAsChars = {'0', '0'};
         String dicevalueAsString = dicevalue.getValue().toString();
-        char firstChar = '0';
-        char secondChar = '0';
         if(dicevalueAsString.length() == 2) {
-            firstChar = dicevalueAsString.charAt(0);
-            secondChar = dicevalueAsString.charAt(1);
+            dicenumberAsChars[FIRST_CHAR] = dicevalueAsString.charAt(FIRST_CHAR);
+            dicenumberAsChars[SECOND_CHAR] = dicevalueAsString.charAt(SECOND_CHAR);
         }
         else {
-            secondChar = dicevalueAsString.charAt(0);
+            dicenumberAsChars[SECOND_CHAR] = dicevalueAsString.charAt(FIRST_CHAR);
         }
-    }*/
+        return dicenumberAsChars;
+    }
 
     /**
      * @return lowerFieldLabel in this map are dicevalues in form of chars stored.
