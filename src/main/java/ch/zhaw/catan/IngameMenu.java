@@ -5,6 +5,7 @@ import ch.zhaw.catanGameActions.YesAndNo;
 import ch.zhaw.hexboard.Label;
 
 import java.awt.Point;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -40,7 +41,7 @@ public class IngameMenu {
         view = initialSiedlerBoardTextView(siedlerGame.getBoard());
         InputOutputConsole.printSiedlerBoard(view);
         startInitialBuilding();
-       
+        
         boolean gameIsRunning = true;
         boolean sameTurnIsRunning = true;
         int valueOfDice;
@@ -48,6 +49,7 @@ public class IngameMenu {
         	showTurnOfCurrentPlayer();
         	valueOfDice = getValueOfDice();
         	InputOutputConsole.printText(Output.getValueOfDiceMessage(valueOfDice));
+        	showPayoutOfResources(siedlerGame.throwDice(valueOfDice));
         	sameTurnIsRunning = true;
         	while (gameIsRunning && sameTurnIsRunning) {
         		switch (InputOutputConsole.getEnumValue(IngameMenuActions.class)) {
@@ -257,5 +259,22 @@ public class IngameMenu {
 		int firstDieValue = firstDie.nextInt(MAX_DIE_VALUE) + MIN_DIE_VALUE;
 		int secondDieValue = secondDie.nextInt(MAX_DIE_VALUE) + MIN_DIE_VALUE;
 		return firstDieValue + secondDieValue;
+	}
+	
+	/**
+	 * TODO
+	 * @param payout
+	 */
+	private static void showPayoutOfResources(Map<Player, List<Config.Resource>> payout) {
+		for (Map.Entry<Player, List<Config.Resource>> entry : payout.entrySet()) {
+			Player player = entry.getKey();
+			List<Config.Resource> resources = entry.getValue();
+			if (!resources.contains(null) && !resources.isEmpty()) {
+				InputOutputConsole.printText(player.getPlayerFaction().name());
+				for (Config.Resource resource: resources) {
+					InputOutputConsole.printText(resource.toString());
+				}
+			}
+		}
 	}
 }
