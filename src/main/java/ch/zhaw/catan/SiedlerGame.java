@@ -190,33 +190,42 @@ public class SiedlerGame {
             }
         }
 
-            for (Player player : players) {
+        for(Player player : players) {
+            List<Config.Resource> resources = new ArrayList<>();
 
-                List<Config.Resource> resources = new ArrayList<>();
+            for(Point field : affectedFields) {
 
-                for (int i = 0; i < player.getMeepleList().size(); i++) {
+                List<String> corners = board.getCornersOfField(field);
 
-                    if (player.getMeepleList().get(i) instanceof Settlement) {
+                for(String corner : corners) {
 
-                        for (int j = 0; j < affectedFields.size(); j++)
+                    if(corner.equals(player.getPlayerFaction().toString())){
 
-                            for (int k = 0; k < board.getCornersOfField(affectedFields.get(j)).size(); k++)
+                        player.addRescourceFromSettlement
+                                (board.getField(field).getResource());
 
-                                if (player.getMeepleList().get(i).toString()
-                                        .equals(board.getCornersOfField(affectedFields.get(j)).get(k))) {
+                        resources.add(board.getField(field).getResource());
 
-                                    player.addRescourceFromSettlement
-                                            (board.getField(affectedFields.get(j)).getResource());
-
-                                    resources.add(board.getField(affectedFields.get(j)).getResource());
-
-
-                                    System.out.println(player.getResourceStock().get(0).toString());
-                                }
                     }
+
+                    if(corner.equals(player.getPlayerFaction().toString().toUpperCase())){
+
+                        player.addRescourceFromCity
+                                (board.getField(field).getResource());
+
+                        resources.add(board.getField(field).getResource());
+                        resources.add(board.getField(field).getResource());
+                    }
+
+
                 }
-                changes.put(player,resources);
+                for(int x = 0; x<resources.size();x++) {
+                    System.out.println(resources.get(x)); }
             }
+            changes.put(player,resources);
+
+        }
+
 
         return changes;
 
