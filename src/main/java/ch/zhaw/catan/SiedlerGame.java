@@ -231,7 +231,7 @@ public class SiedlerGame {
         }
 
         else {
-
+            changes.clear();
           stealResourcesFromPlayer();
 
         }
