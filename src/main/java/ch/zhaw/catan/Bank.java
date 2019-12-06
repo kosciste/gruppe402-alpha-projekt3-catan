@@ -7,12 +7,13 @@ import java.util.List;
 import ch.zhaw.catan.Config.Resource;
 
 /**
+ * This class models a bank. The bank stores and manages resources.
+ * 
  * @author Peter Blattmann
  *
  */
 public class Bank {
 	private List<Resource> resourceBank;
-	
 	
 	/**
 	 * The constructor creates the bank that stores and manages the 
@@ -27,7 +28,7 @@ public class Bank {
 	
 	/**
 	 * This method fills the ArrayList with the resources needed for
-	 * the game.
+	 * the game. The number of resources from {@link Config.Resource}.
 	 * 
 	 */
 	private void fillBank() {
@@ -57,7 +58,6 @@ public class Bank {
 		else {
 			System.out.println("It seems like the bank doesn't has enough resources :(");
 			return false;
-			
 		}
 	}
 	
