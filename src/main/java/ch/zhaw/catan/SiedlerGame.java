@@ -3,6 +3,7 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 import ch.zhaw.hexboard.Label;
+import org.w3c.dom.Node;
 
 import java.awt.*;
 import java.util.*;
@@ -28,9 +29,6 @@ public class SiedlerGame {
         this.winPoints = winPoints;
         this.numberOfPlayers = numberOfPlayers;
         setPlayers(numberOfPlayers);
-        City city = new City(Faction.RED);
-        board.setCorner(new Point(5,3), city.toString());
-
 
     }
 
@@ -136,6 +134,13 @@ public class SiedlerGame {
                         bank.removeBankResource(1,board.getFields(position)
                                 .get(i).getResource());
 
+                        getCurrentPlayer().addRescourceFromSettlement(Resource.GRAIN);
+                        getCurrentPlayer().addRescourceFromSettlement(Resource.STONE);
+                        getCurrentPlayer().addRescourceFromSettlement(Resource.CLAY);
+                        getCurrentPlayer().addRescourceFromSettlement(Resource.WOOD);
+                        getCurrentPlayer().addRescourceFromSettlement(Resource.WOOL);
+                        getCurrentPlayer().addRescourceFromSettlement(Resource.WOOD);
+
                     }
 
             }
@@ -159,7 +164,7 @@ public class SiedlerGame {
 
 
         Player currentPlayer = getCurrentPlayer();
-        Road road = new Road(currentPlayer.getPlayerFaction());
+        Road road = new Road(currentPlayer.getPlayerFaction(),roadStart,roadEnd);
 
         if (hasValidConditionsForRoad(currentPlayer,roadStart,roadEnd)) {
             getCurrentPlayer().initializeMeeple(road);
@@ -233,11 +238,9 @@ public class SiedlerGame {
         else {
             changes.clear();
           stealResourcesFromPlayer();
-
         }
 
         return changes;
-
     }
 
     private Integer getFirstDigit(int number) {
@@ -265,7 +268,6 @@ public class SiedlerGame {
      * @return
      */
     public boolean buildSettlement(Point position) {
-        //TODO: Überprüfen und abziehen der Rohstoffe
         Player currentPlayer = getCurrentPlayer();
         Settlement settlement = new Settlement(currentPlayer.getPlayerFaction());
         boolean hasAdjacentRoads = false;
@@ -303,7 +305,7 @@ public class SiedlerGame {
      */
     public boolean buildRoad(Point roadStart, Point roadEnd) {
         Player currentPlayer = getCurrentPlayer();
-        Road road = new Road(currentPlayer.getPlayerFaction());
+        Road road = new Road(currentPlayer.getPlayerFaction(),roadStart, roadEnd);
 
         if (hasValidConditionsForRoad(currentPlayer,roadStart,roadEnd)
                 &&hasEnoughRessources(Config.Structure.ROAD.getCosts(),currentPlayer)) {
@@ -498,24 +500,50 @@ public class SiedlerGame {
 		}
     }
 
-    /**
-    public Player getLongestRoad(){
 
-        List<Point> fields = new ArrayList<>();
-        fields = board.getFields();
+    private int getLongestRoad(Player player){
+        int length = 1;
 
-        for(Player player: players) {
+        //potential start nodes
+        Set<Point> roadCorners = new HashSet<>();
+
+        //fill in potential nodes
+        for(Meeple meepple : player.getMeepleList()){
+
+            if(meepple instanceof Road) {
+
+                roadCorners.add(((Road) meepple).getRoadStart());
+                roadCorners.add(((Road) meepple).getRoadEnd());
+            }
+        }
 
 
-            for(Point field : fields) {
+        //map of visited roads;
 
-                board.getCornersOfField()
 
+        Map<Integer,Integer> visitedRoads = new HashMap<>();
+
+        for(Point corner : roadCorners) {
+           visitedRoads.clear();
+
+        }
+
+
+    return 0;
+
+        }
+
+        private void searchForLongesRoad(Point corner, Player player, int currentLength){
+
+            for(String road : board.getAdjacentEdges(corner)) {
+
+                if(road.equals(player.getPlayerFaction().toString().substring(0, 1))) {
+
+                }
             }
 
 
-
         }
-    }
-     */
+
+
 }
