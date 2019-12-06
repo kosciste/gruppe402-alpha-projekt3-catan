@@ -40,7 +40,7 @@ public class IngameMenu {
         siedlerGame = initializeSiedlerGame();
         view = initialSiedlerBoardTextView(siedlerGame.getBoard());
         InputOutputConsole.printSiedlerBoard(view);
-        startInitialBuilding();
+        //startInitialBuilding();
         
         boolean gameIsRunning = true;
         boolean sameTurnIsRunning = true;
@@ -202,7 +202,7 @@ public class IngameMenu {
 		}
 	}
 
-	private static String showPlayerResources()
+	public static String showPlayerResources()
 	{
 		return siedlerGame.getCurrentPlayer().getFormatResources();
 	}
