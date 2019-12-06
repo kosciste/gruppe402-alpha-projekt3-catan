@@ -431,9 +431,14 @@ public class SiedlerGame {
      * @return true if the trade went well, returns false if there wasn't enough resoureces offered.
      */
     public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
-        if(want != null && hasEnoughResourcesToTrade(offer)) {
+        if(want != null
+                && bank.hasBankEnoughResources(1, want)
+                && hasEnoughResourcesToTrade(offer)) {
+
                 getCurrentPlayer().removeResource(4, offer);
+                bank.addBankResources(4, offer);
                 getCurrentPlayer().getResourceStock().add(want);
+                bank.removeBankResource(1, want);
                 return true;
             }
         return false;

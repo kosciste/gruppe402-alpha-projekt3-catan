@@ -137,4 +137,19 @@ public class Output {
 	public static String getPayoutOfResourcesMessage(String playerName, String amountsAndResources) {
 		return "Player " + playerName + " received" + amountsAndResources;
 	}
+	
+	/**
+	 * @return string as an information that resources have been stolen
+	 */
+	public static String getStolenResourcesMessage() {
+		return "Some resources have been stolen!\nThe current situation is:";
+	}
+	
+	/**
+	 * @param player the player, whose description is requested
+	 * @return string with a indication for a player and the players name
+	 */
+	public static String getPlayerWithName(Player player) {
+		return "Player " + player.getPlayerFaction().name();
+	}
 }

@@ -56,7 +56,7 @@ public class Bank {
 			return true;
 		} 
 		else {
-			System.out.println("It seems like the bank doesn't has enough resources :(");
+			System.out.println("It seems like the bank doesn't have enough resources :(");
 			return false;
 		}
 	}
