@@ -148,21 +148,6 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void teststealingResources() {
-		Player player = new Player(Config.Faction.RED);
-		player.addRescourceFromSettlement(Resource.GRAIN);
-		player.addRescourceFromSettlement(Resource.STONE);
-		player.addRescourceFromSettlement(Resource.WOOD);
-		player.addRescourceFromSettlement(Resource.CLAY);
-		player.addRescourceFromSettlement(Resource.WOOD);
-		player.addRescourceFromSettlement(Resource.WOOL);
-		player.addRescourceFromSettlement(Resource.GRAIN);
-		player.addRescourceFromSettlement(Resource.STONE);
-		player.stealingResources(4);
-		assertEquals(4, player.getNumberOfTotalResources());
-	}
-	
-	@Test
 	public void testremoveResources() {
 		Player player = new Player(Config.Faction.RED);
 		player.addRescourceFromSettlement(Resource.GRAIN);
