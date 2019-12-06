@@ -1,7 +1,11 @@
 package ch.zhaw.catan;
 
 import ch.zhaw.catanGameActions.BuildingMenuActions;
+import ch.zhaw.catan.Config.Structure;
+import ch.zhaw.catan.Config.Resource;
+
 import java.awt.*;
+import java.util.Map;
 
 /**
  * This class displays the building-menu from The Settlers of Catan.
@@ -38,18 +42,16 @@ public class BuildingMenu {
                     InputOutputConsole.printText(IngameMenu.showPlayerResources());
                     break;
                 case SHOW_NEEDED_RESOURCES:
+                    showNeededResources();
                     break;
                 case ROAD:
                     buildRoad();
-                    running = false;
                     break;
                 case SETTLEMENT:
                     buildSettlement();
-                    running = false;
                     break;
                 case CITY:
                     buildCity();
-                    running = false;
                     break;
             }
         }
@@ -85,5 +87,24 @@ public class BuildingMenu {
         } else {
             InputOutputConsole.printText(Output.getFailureMessage());
         }
+    }
+
+    private void showNeededResources()
+    {
+        InputOutputConsole.printText("");
+        for(Structure structure : Structure.values()) {
+            InputOutputConsole.printText(getStringOfCostsforMeeple(structure));
+        }
+    }
+
+    private String getStringOfCostsforMeeple(Structure structure)
+    {
+        if(structure == null){ return "";}
+
+        Map<Resource, Long> structureCostsAsMap = structure.getCostsAsMap();
+        String structureResourcesString = structure +" needs: ";
+        for(Map.Entry<Resource, Long> resourceEntry : structureCostsAsMap.entrySet())
+            structureResourcesString += resourceEntry.getKey() + ": " + resourceEntry.getValue() + ", ";
+        return structureResourcesString;
     }
 }
