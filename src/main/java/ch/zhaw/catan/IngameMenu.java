@@ -58,37 +58,7 @@ public class IngameMenu {
     				InputOutputConsole.printText(showPlayerResources());
     				break;
         		case BUILD:
-        			switch (InputOutputConsole.getEnumValue(Config.Structure.class)) {
-        			case ROAD:
-        				InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", "new"));
-        				Point beginning = chooseCorner();
-        				InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", "new"));
-        				Point ending = chooseCorner();
-        				if (siedlerGame.buildRoad(beginning, ending)) {
-        					InputOutputConsole.printSiedlerBoard(view);
-        				} else {
-        					InputOutputConsole.printText(Output.getFailureMessage());
-        				}
-        				break;
-        			case SETTLEMENT:
-        				InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
-        				Point locationForSettlement = chooseCorner();
-        				if (siedlerGame.buildSettlement(locationForSettlement)) {
-        					InputOutputConsole.printSiedlerBoard(view);
-        				} else {
-        					InputOutputConsole.printText(Output.getFailureMessage());
-        				}
-        				break;
-        			case CITY:
-        				InputOutputConsole.printText(Output.getCityBuildingMessage());
-        				Point locationForCity = chooseCorner();
-        				if (siedlerGame.buildCity(locationForCity)) {
-        					InputOutputConsole.printSiedlerBoard(view);
-        				} else {
-        					InputOutputConsole.printText(Output.getFailureMessage());
-        				}
-        				break;
-        			}
+  					new BuildingMenu(siedlerGame, view);
         			break;
         		case TRADE:
     				actionTrade();
@@ -138,14 +108,14 @@ public class IngameMenu {
         }
         return view;
     }
-    
+
     /**
 	 * Reads a specified x- and y-coordinate from the console until the point refers
 	 * to a corner from the board. Only then the point is returned.
-	 * 
+	 *
 	 * @return a point which refers to a corner
 	 */
-	private static Point chooseCorner() {
+	public static Point chooseCorner() {
 		Point point = InputOutputConsole.choosePoint();
 		while (!siedlerGame.getBoard().hasCorner(point)) {
 			InputOutputConsole.printText(Output.getNotValidCornerMessage());
