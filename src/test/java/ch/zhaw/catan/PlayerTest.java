@@ -108,16 +108,76 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void GetFormatResourcesZero() {
+	public void testRemoveSettlement() {
+		Player player = new Player(Config.Faction.RED);
+		player.initializeMeeple(new Settlement(Config.Faction.RED));
+		player.initializeMeeple(new Settlement(Config.Faction.RED));
+		player.initializeMeeple(new Settlement(Config.Faction.RED));
+		player.initializeMeeple(new Settlement(Config.Faction.RED));
+		player.initializeMeeple(new Settlement(Config.Faction.RED));
+		player.removeSettlement();
+		assertTrue(player.hasAvailableSettlements());
+	}
+	
+	@Test
+	public void zeroGetFormatResources() {
 		Player player = new Player(Config.Faction.RED);
 		assertEquals("It seems like you don't have any resources :(", player.getFormatResources());
 	}	
 	
 	@Test
-	public void testGetFormatResources() {
+	public void twoGetFormatResources() {
 		Player player = new Player(Config.Faction.RED);
 		player.addRescourceFromSettlement(Resource.GRAIN);
 		player.addRescourceFromSettlement(Resource.GRAIN);
 		assertEquals("GR | 2 Pieces \n", player.getFormatResources());
 	}
+	
+	@Test
+	public void sixGetFormatResources() {
+		Player player = new Player(Config.Faction.RED);
+		player.addRescourceFromCity(Resource.WOOL);
+		player.addRescourceFromSettlement(Resource.WOOD);
+		player.addRescourceFromSettlement(Resource.WOOD);
+		player.addRescourceFromSettlement(Resource.CLAY);
+		player.addRescourceFromSettlement(Resource.STONE);
+		assertEquals("WL | 2 Pieces \n"
+				+ "WD | 2 Pieces \n"
+				+ "ST | 1 Pieces \n"
+				+ "CL | 1 Pieces \n" , player.getFormatResources());
+	}
+	
+	@Test
+	public void teststealingResources() {
+		Player player = new Player(Config.Faction.RED);
+		player.addRescourceFromSettlement(Resource.GRAIN);
+		player.addRescourceFromSettlement(Resource.STONE);
+		player.addRescourceFromSettlement(Resource.WOOD);
+		player.addRescourceFromSettlement(Resource.CLAY);
+		player.addRescourceFromSettlement(Resource.WOOD);
+		player.addRescourceFromSettlement(Resource.WOOL);
+		player.addRescourceFromSettlement(Resource.GRAIN);
+		player.addRescourceFromSettlement(Resource.STONE);
+		player.stealingResources(4);
+		assertEquals(4, player.getNumberOfTotalResources());
+	}
+	
+	@Test
+	public void testremoveResources() {
+		Player player = new Player(Config.Faction.RED);
+		player.addRescourceFromSettlement(Resource.GRAIN);
+		player.addRescourceFromSettlement(Resource.GRAIN);
+		player.addRescourceFromSettlement(Resource.WOOD);
+		player.addRescourceFromSettlement(Resource.WOOD);
+		player.addRescourceFromSettlement(Resource.CLAY);
+		player.addRescourceFromSettlement(Resource.CLAY);
+		player.addRescourceFromSettlement(Resource.GRAIN);
+		player.addRescourceFromSettlement(Resource.STONE);
+		player.removeResource(2, Resource.WOOD);
+		assertEquals("GR | 3 Pieces \n"
+				+ "ST | 1 Pieces \n"
+				+ "CL | 2 Pieces \n", player.getFormatResources());
+	}
+	
+	
 }
