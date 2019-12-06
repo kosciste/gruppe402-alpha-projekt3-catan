@@ -482,6 +482,13 @@ public class SiedlerGame {
         return winner;
     }
     
+    /**
+     * The robber method is called when the number 7 is rolled. The method checks the number
+     * of resources pro player. Players who have more than 7 resources will be robbed of half
+     * the resources.
+     * 
+     * An example of the rounding system: A player with 9 resources must give 4 resources back.
+     */
     private void stealResourcesFromPlayer() {
     	for(Player player : players) {
     		int numberOfResources = player.getNumberOfTotalResources();
@@ -496,6 +503,13 @@ public class SiedlerGame {
     	}
     }
     
+    /**
+     * This method performs the Robber's function. It removes a certain number of random resources 
+     * from the player and add them back to the bank.
+     * 
+     * @param player The player who gets robbed.
+     * @param numberOfResources Number of resources robbed
+     */
     private void stealingResources(Player player, int numberOfResources) {
     	int index = 0;
     	for(int i = 0; i < numberOfResources ; i++) {
