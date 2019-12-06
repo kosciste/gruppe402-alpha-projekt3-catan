@@ -52,16 +52,6 @@ public class Player {
 	}
 	
 	/**
-	 * 
-	 * @param numberOfResources
-	 */
-	public void stealingResources(int numberOfResources) {
-		for(int i = 0; i < numberOfResources ; i++) {
-			resourceStock.remove((int)(Math.random() * getNumberOfTotalResources()));
-		}
-	}
-	
-	/**
 	 * This method removes a certain number of one resource type.
 	 * 
 	 * @param number The number of a certain resource type who get spend

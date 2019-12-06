@@ -232,7 +232,7 @@ public class SiedlerGame {
 
         else {
 
-          stealResources();
+          stealResourcesFromPlayer();
 
         }
 
@@ -475,18 +475,27 @@ public class SiedlerGame {
         return winner;
     }
     
-    private void stealResources() {
+    private void stealResourcesFromPlayer() {
     	for(Player player : players) {
     		int numberOfResources = player.getNumberOfTotalResources();
     		if(numberOfResources > Config.MAX_CARDS_IN_HAND_NO_DROP) {
-    			if(numberOfResources % 2 == 0) {  //gerade
-    				player.stealingResources(numberOfResources / 2);
+    			if(numberOfResources % 2 == 0) {  //even number
+    				stealingResources(player, numberOfResources / 2);
     			}
-    			else {	//ungerade
-    				player.stealingResources((numberOfResources - 1) / 2);
+    			else {	//uneven number
+    				stealingResources(player, (numberOfResources - 1) / 2);
     			}
     		}
     	}
+    }
+    
+    private void stealingResources(Player player, int numberOfResources) {
+    	int index = 0;
+    	for(int i = 0; i < numberOfResources ; i++) {
+    		index = (int)(Math.random() * player.getNumberOfTotalResources());
+    		bank.addBankResources(1, player.getResourceStock().get(index));
+			player.getResourceStock().remove(index);
+		}
     }
 
     /**
