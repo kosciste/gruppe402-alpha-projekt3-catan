@@ -477,5 +477,26 @@ public class SiedlerGame {
     			}
     		}
     	}
-    } 
+    }
+
+    /**
+    public Player getLongestRoad(){
+
+        List<Point> fields = new ArrayList<>();
+        fields = board.getFields();
+
+        for(Player player: players) {
+
+
+            for(Point field : fields) {
+
+                board.getCornersOfField()
+
+            }
+
+
+
+        }
+    }
+     */
 }
