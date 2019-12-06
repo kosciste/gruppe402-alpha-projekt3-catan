@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import ch.zhaw.catan.Config.Resource;
 
+import java.awt.Point;
+
 class PlayerTest {
 
 	@Test
@@ -17,41 +19,43 @@ class PlayerTest {
 	@Test
 	public void normalHasAvailableRoads() {
 		Player player = new Player(Config.Faction.RED);
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Settlement(Config.Faction.RED));
+		player.initializeMeeple(new City(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,3), new Point(4,4)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,4), new Point(4,6)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,6), new Point(5,7)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,7), new Point(5,9)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,9), new Point(4,10)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,10), new Point(4,12)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,12), new Point(5,13)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,13), new Point(6,12)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(6,12), new Point(7,13)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(7,13), new Point(8,12)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(8,12), new Point(8,10)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(8,10), new Point(9,9)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(9,9), new Point(9,7)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(9,7), new Point(10,6)));
 		assertTrue(player.hasAvailableRoads());
 	}
 	
 	@Test
 	public void overMaxHasAvailableRoads() {
 		Player player = new Player(Config.Faction.RED);
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
-		player.initializeMeeple(new Road(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,3), new Point(4,4)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,4), new Point(4,6)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,6), new Point(5,7)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,7), new Point(5,9)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,9), new Point(4,10)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,10), new Point(4,12)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,12), new Point(5,13)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,13), new Point(6,12)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(6,12), new Point(7,13)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(7,13), new Point(8,12)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(8,12), new Point(8,10)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(8,10), new Point(9,9)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(9,9), new Point(9,7)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(9,7), new Point(10,6)));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(10,6), new Point(10,4)));
 		assertFalse(player.hasAvailableRoads());
 	}
 	
@@ -64,6 +68,8 @@ class PlayerTest {
 	@Test
 	public void normalHasAvailableSettlements() {
 		Player player = new Player(Config.Faction.RED);
+		player.initializeMeeple(new City(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,3), new Point(4,4)));		
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
@@ -91,6 +97,8 @@ class PlayerTest {
 	@Test
 	public void normalHasAvailableCities() {
 		Player player = new Player(Config.Faction.RED);
+		player.initializeMeeple(new Settlement(Config.Faction.RED));
+		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,3), new Point(4,4)));
 		player.initializeMeeple(new City(Config.Faction.RED));
 		player.initializeMeeple(new City(Config.Faction.RED));
 		player.initializeMeeple(new City(Config.Faction.RED));
