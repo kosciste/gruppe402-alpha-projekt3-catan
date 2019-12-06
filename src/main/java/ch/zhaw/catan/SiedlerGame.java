@@ -18,9 +18,11 @@ public class SiedlerGame {
     private static final int OFFSET = 1;
     private static int playerAtTurn = 0;
     SiedlerBoard board = new SiedlerBoard();
+    Bank bank = new Bank();
     private int winPoints;
     private int numberOfPlayers;
     private List<Player> players = new ArrayList<>();
+
 
     public SiedlerGame(int winPoints, int numberOfPlayers) {
         this.winPoints = winPoints;
@@ -131,6 +133,8 @@ public class SiedlerGame {
                     {
                         getCurrentPlayer().addRescourceFromSettlement
                                 (board.getFields(position).get(i).getResource());
+                        bank.removeBankResource(1,board.getFields(position)
+                                .get(i).getResource());
 
                     }
 
@@ -182,50 +186,55 @@ public class SiedlerGame {
         List<Point> affectedFields = new ArrayList<>();
         Map<Player,List<Config.Resource>> changes = new HashMap<>();
 
-        for (Map.Entry<Point, Label> label : board.getLowerFieldLabel().entrySet()) {
+        if(!(dicethrow==7)) {
 
-            if (label.getValue().toString().equals(dice)) {
+            for (Map.Entry<Point, Label> label : board.getLowerFieldLabel().entrySet()) {
 
-                affectedFields.add(label.getKey());
-            }
-        }
+                if (label.getValue().toString().equals(dice)) {
 
-        for(Player player : players) {
-            List<Config.Resource> resources = new ArrayList<>();
-
-            for(Point field : affectedFields) {
-
-                List<String> corners = board.getCornersOfField(field);
-
-                for(String corner : corners) {
-
-                    if(corner.equals(player.getPlayerFaction().toString())){
-
-                        player.addRescourceFromSettlement
-                                (board.getField(field).getResource());
-
-                        resources.add(board.getField(field).getResource());
-
-                    }
-
-                    if(corner.equals(player.getPlayerFaction().toString().toUpperCase())){
-
-                        player.addRescourceFromCity
-                                (board.getField(field).getResource());
-
-                        resources.add(board.getField(field).getResource());
-                        resources.add(board.getField(field).getResource());
-                    }
-
-
+                    affectedFields.add(label.getKey());
                 }
-                for(int x = 0; x<resources.size();x++) {
-                    System.out.println(resources.get(x)); }
             }
-            changes.put(player,resources);
 
+            for(Player player : players) {
+                List<Config.Resource> resources = new ArrayList<>();
+
+                for(Point field : affectedFields) {
+
+                    List<String> corners = board.getCornersOfField(field);
+
+                    for(String corner : corners) {
+
+                        if(corner.equals(player.getPlayerFaction().toString())){
+
+                            player.addRescourceFromSettlement
+                                    (board.getField(field).getResource());
+
+                            resources.add(board.getField(field).getResource());
+                            bank.removeBankResource(1,board.getField(field).getResource());
+
+                        }
+
+                        if(corner.equals(player.getPlayerFaction().toString().toUpperCase())){
+
+                            player.addRescourceFromCity
+                                    (board.getField(field).getResource());
+
+                            resources.add(board.getField(field).getResource());
+                            resources.add(board.getField(field).getResource());
+                            bank.removeBankResource(2,board.getField(field).getResource());
+                        }
+                    }
+                }
+                changes.put(player,resources);
+            }
         }
 
+        else {
+
+          stealResources();
+
+        }
 
         return changes;
 
@@ -409,6 +418,7 @@ public class SiedlerGame {
         for (Resource resource : list) {
 
             getCurrentPlayer().removeResource(1, resource);
+            bank.addBankResources(1,resource);
         }
     }
 
