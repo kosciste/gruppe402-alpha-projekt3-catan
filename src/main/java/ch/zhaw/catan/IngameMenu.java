@@ -31,7 +31,8 @@ public class IngameMenu {
 	private static SiedlerBoardTextView view;
 	private static Random firstDie = new Random();
 	private static Random secondDie = new Random();
-
+	private static boolean gameIsRunning = true;
+	
 	/**
 	 * This method starts the ingame menu and initialises a new round of the
 	 * Settlers of Catan
@@ -42,7 +43,6 @@ public class IngameMenu {
 		InputOutputConsole.printSiedlerBoard(view);
 		startInitialBuilding();
 
-		boolean gameIsRunning = true;
 		boolean sameTurnIsRunning = true;
 		int valueOfDice;
 		while (gameIsRunning) {
@@ -60,7 +60,8 @@ public class IngameMenu {
 					InputOutputConsole.printText(showPlayerResources());
 					break;
 				case BUILD:
-					new BuildingMenu(siedlerGame, view);
+					BuildingMenu buildingMenu = new BuildingMenu(siedlerGame, view);
+					gameIsRunning = buildingMenu.startBuildingMenu();
 					break;
 				case TRADE:
 					actionTrade();
@@ -78,6 +79,9 @@ public class IngameMenu {
 					break;
 				}
 			}
+		}
+		if (BuildingMenu.winner != null) {
+			InputOutputConsole.printText(Output.getWinnerMessage(BuildingMenu.winner));
 		}
 	}
 

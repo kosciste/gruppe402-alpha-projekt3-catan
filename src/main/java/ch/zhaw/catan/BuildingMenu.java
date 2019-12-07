@@ -21,6 +21,7 @@ public class BuildingMenu {
 
     private SiedlerGame siedlerGame;
     private SiedlerBoardTextView view;
+    protected static Player winner;
 
     /**
      * Starts the building-menu. From Here a player can build meeples.
@@ -28,15 +29,15 @@ public class BuildingMenu {
     public BuildingMenu(SiedlerGame siedlerGame, SiedlerBoardTextView view) {
         this.siedlerGame = siedlerGame;
         this.view = view;
-        startBuildingMenu();
     }
 
-    private void startBuildingMenu() {
-        boolean running = true;
-        while(running) {
+    public boolean startBuildingMenu() {
+    	boolean gameIsRunning = true;
+        boolean menuIsRunning = true;
+        while(menuIsRunning) {
             switch (InputOutputConsole.getEnumValue(BuildingMenuActions.class)) {
                 case GO_BACK:
-                    running = false;
+                    menuIsRunning = false;
                     break;
                 case SHOW_RESOURCES:
                     InputOutputConsole.printText(IngameMenu.showPlayerResources());
@@ -49,12 +50,23 @@ public class BuildingMenu {
                     break;
                 case SETTLEMENT:
                     buildSettlement();
+                    if (isWinnerAvailable()) {
+                    	winner = siedlerGame.getWinner();
+                    	menuIsRunning = false;
+                    	gameIsRunning = false;
+                    }
                     break;
                 case CITY:
                     buildCity();
+                    if (isWinnerAvailable()) {
+                    	winner = siedlerGame.getWinner();
+                    	menuIsRunning = false;
+                    	gameIsRunning = false;
+                    }
                     break;
             }
         }
+        return gameIsRunning;
     }
 
     private void buildRoad() {
@@ -107,4 +119,13 @@ public class BuildingMenu {
             structureResourcesString += resourceEntry.getKey() + ": " + resourceEntry.getValue() + ", ";
         return structureResourcesString;
     }
+    
+	/**
+	 * Checks if there is a winner.
+	 * 
+	 * @return true, if there is a winner
+	 */
+	private boolean isWinnerAvailable() {
+		return (siedlerGame.getWinner() != null) ? true : false;
+	}
 }

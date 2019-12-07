@@ -152,4 +152,12 @@ public class Output {
 	public static String getPlayerWithName(Player player) {
 		return "Player " + player.getPlayerFaction().name();
 	}
+	
+	/**
+	 * @param winner the player, who has won the game
+	 * @return string as an information, who has won the game
+	 */
+	public static String getWinnerMessage(Player winner) {
+		return "Game over! The winner is " + getPlayerWithName(winner);
+	}
 }
