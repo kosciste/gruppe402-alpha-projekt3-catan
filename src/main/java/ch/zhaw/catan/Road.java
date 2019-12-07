@@ -1,6 +1,6 @@
 package ch.zhaw.catan;
 
-import java.awt.*;
+import java.awt.Point;
 
 /**
  * This class models a road. A road defines an owner and a string

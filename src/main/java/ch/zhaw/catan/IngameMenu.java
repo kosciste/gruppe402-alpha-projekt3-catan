@@ -7,8 +7,8 @@ import ch.zhaw.hexboard.Label;
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * This class Displays the ingame menu of the Settlers of Catan. It also
@@ -24,7 +24,6 @@ import java.util.HashMap;
  */
 public class IngameMenu {
 
-	public static final int MAX_NUMBER_OF_PLAYERS = 4;
 	private static final int MIN_DIE_VALUE = 1;
 	private static final int MAX_DIE_VALUE = 6;
 	private static SiedlerGame siedlerGame;
@@ -64,7 +63,8 @@ public class IngameMenu {
 					gameIsRunning = buildingMenu.startBuildingMenu();
 					break;
 				case TRADE:
-					actionTrade();
+					TradingMenu tradingMenu = new TradingMenu(siedlerGame);
+					tradingMenu.startTradingMenu();
 					break;
 				case END_TURN:
 					sameTurnIsRunning = false;
@@ -83,16 +83,16 @@ public class IngameMenu {
 		if (BuildingMenu.winner != null) {
 			InputOutputConsole.printText(Output.getWinnerMessage(BuildingMenu.winner));
 		}
+		InputOutputConsole.printText(Output.getTextWelcome());
 	}
 
 	private static SiedlerGame initializeSiedlerGame() {
-		return new SiedlerGame(InputOutputConsole.setNumberOfWinpointsToWin(), InputOutputConsole.setNumberOfPlayers());
+		return new SiedlerGame(InputOutputConsole.setNumberOfPlayers());
 	}
 
 	private static boolean shouldStillRun() {
 		switch (InputOutputConsole.getEnumValue(YesAndNo.class)) {
 		case YES:
-			InputOutputConsole.printText(Output.getTextWelcome());
 			return false;
 		case NO:
 			return true;
@@ -153,7 +153,7 @@ public class IngameMenu {
 	 * Shows currently whose players turn it is and prints that information to the
 	 * console. The name of the player is the name of the enum constant from
 	 * {@link Config.Faction}. Examples: The name of the first player is 'RED'. The
-	 * name of the second player 'BLUE'.
+	 * name of the second player is 'BLUE'.
 	 */
 	private static void showTurnOfCurrentPlayer() {
 		String currentPlayerName = siedlerGame.getCurrentPlayer().getPlayerFaction().name();
@@ -204,19 +204,12 @@ public class IngameMenu {
 		}
 	}
 
+	/**
+	 * returns a String of the amount of resources the current player holds.
+	 * @return String
+	 */
 	public static String showPlayerResources() {
 		return siedlerGame.getCurrentPlayer().getFormatResources();
-	}
-
-	private static void actionTrade() {
-		InputOutputConsole.printText(showPlayerResources());
-		if (siedlerGame.getCurrentPlayer().getNumberOfTotalResources() > 0) {
-			InputOutputConsole.printText("Which material do you offer?");
-			Config.Resource offer = InputOutputConsole.chooseResource();
-			InputOutputConsole.printText("Which material do you want?");
-			Config.Resource want = InputOutputConsole.chooseResource();
-			siedlerGame.tradeWithBankFourToOne(offer, want);
-		}
 	}
 
 	/**

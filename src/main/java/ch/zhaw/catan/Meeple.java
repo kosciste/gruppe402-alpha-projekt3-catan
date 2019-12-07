@@ -1,13 +1,13 @@
 package ch.zhaw.catan;
 
 /**
- * This class is a superclass for specific meeples. A meeple defines an owner
- * and a string representation.
+ * This abstract class is a superclass for specific meeples. A meeple defines an
+ * owner and a string representation.
  * 
  * @author Nikola Jovanovic
  *
  */
-public class Meeple {
+public abstract class Meeple {
 
 	public final Config.Faction OWNER;
 

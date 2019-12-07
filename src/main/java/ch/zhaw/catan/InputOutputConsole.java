@@ -16,6 +16,7 @@ public class InputOutputConsole {
 
     public static final int TERMINAL_WIDTH = 1280;
     public static final int TERMINAL_HEIGHT = 720;
+    private static final int MAX_NUMBER_OF_PLAYERS = 4;
 
     private static TextIO textIO =TextIoFactory.getTextIO();
     private  static TextTerminal<?> textTerminal = textIO.getTextTerminal();
@@ -50,14 +51,6 @@ public class InputOutputConsole {
         textTerminal.println(view.toString());
     }
 
-    public static int setNumberOfWinpointsToWin()
-    {
-        return textIO.newIntInputReader()
-                .withMinVal(3)
-                .withMaxVal(10)
-                .read("Declare number of winpoints: ");
-    }
-
     /**
      * Reads an input between 2 and 4.
      * @return int, number of Players
@@ -66,7 +59,7 @@ public class InputOutputConsole {
     {
         return textIO.newIntInputReader()
                 .withMinVal(Config.MIN_NUMBER_OF_PLAYERS)
-                .withMaxVal(IngameMenu.MAX_NUMBER_OF_PLAYERS)
+                .withMaxVal(MAX_NUMBER_OF_PLAYERS)
                 .read("Enter the number of Settlers: ");
     }
     
@@ -86,7 +79,8 @@ public class InputOutputConsole {
      * This method returns a resouce from the userinput
      * @return resource
      */
-    public static Config.Resource chooseResource() {
+    public static Config.Resource chooseResource(String addition) {
+        InputOutputConsole.printText("Which resource do you " + addition + "?");
         return getEnumValue(Config.Resource.class);
     }
 
