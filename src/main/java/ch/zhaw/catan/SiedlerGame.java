@@ -39,8 +39,6 @@ public class SiedlerGame {
             Player player = new Player(Faction.values()[i]);
             players.add(player);
         }
-
-
     }
 
     /**
@@ -324,9 +322,9 @@ public class SiedlerGame {
     	Player currentPlayer = getCurrentPlayer();
         City city = new City(getCurrentPlayer().getPlayerFaction());
         boolean hasSettlement = false;
-         
-        if(board.getCorner(position).equals(getCurrentPlayer().getPlayerFaction().toString())) {
-        	hasSettlement = true;
+
+        if(currentPlayer.getPlayerFaction().toString().equals(board.getCorner(position))){
+            hasSettlement = true;
         }
         if(hasSettlement 
         		&& hasEnoughRessources(Config.Structure.CITY.getCosts(), currentPlayer)
@@ -537,24 +535,25 @@ public class SiedlerGame {
 
         Map<Integer,Integer> visitedRoads = new HashMap<>();
 
-        for(Point corner : roadCorners) {
+       /** for(Point corner : roadCorners) {
            visitedRoads.clear();
+            for(String road : board.getAdjacentEdges(corner)) {
 
-        }
+                if(road.equals(player.getPlayerFaction().toString().substring(0, 1))&&!visitedRoads.containsKey(road.g)) {
+
+                }
+            }
+
+        }*/
 
 
     return 0;
 
         }
 
-        private void searchForLongesRoad(Point corner, Player player, int currentLength){
+        private void searchForLongestRoad(Point corner, Player player, int currentLength){
 
-            for(String road : board.getAdjacentEdges(corner)) {
 
-                if(road.equals(player.getPlayerFaction().toString().substring(0, 1))) {
-
-                }
-            }
 
 
         }
