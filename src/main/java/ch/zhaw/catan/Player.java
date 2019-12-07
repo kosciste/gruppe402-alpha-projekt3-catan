@@ -135,13 +135,15 @@ public class Player {
 	/**
 	 * This method removes a settlement.
 	 * 
+	 * Settlement != City
+	 * 
 	 */
 	public void removeSettlement() {
 		boolean running = true;
 		Iterator<Meeple> it = meeples.iterator();
 		while(it.hasNext() && running) {
 			Meeple m1 = it.next();
-			if(m1 instanceof Settlement) {
+			if(m1 instanceof Settlement && !(m1 instanceof City)) {
 				it.remove();
 				running = false;
 			}
@@ -172,6 +174,8 @@ public class Player {
 	 * the player and checks the numbers with the maximal numbers of 
 	 * settlements who are available pro player.
 	 * 
+	 * Settlement != City
+	 * 
 	 * @return true or false: for available settlements.
 	 */
 	 public boolean hasAvailableSettlements() {
@@ -179,7 +183,7 @@ public class Player {
 		Iterator<Meeple> it = meeples.iterator();
 		while(it.hasNext()) {
 			Meeple m1 = it.next();
-			if(m1 instanceof Settlement) {
+			if(m1 instanceof Settlement && !(m1 instanceof City)) {
 				usedSettlements++;
 			}
 		}
