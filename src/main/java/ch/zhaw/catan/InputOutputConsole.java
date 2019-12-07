@@ -79,7 +79,8 @@ public class InputOutputConsole {
      * This method returns a resouce from the userinput
      * @return resource
      */
-    public static Config.Resource chooseResource() {
+    public static Config.Resource chooseResource(String addition) {
+        InputOutputConsole.printText("Which resource do you " + addition + "?");
         return getEnumValue(Config.Resource.class);
     }
 

@@ -63,7 +63,8 @@ public class IngameMenu {
 					gameIsRunning = buildingMenu.startBuildingMenu();
 					break;
 				case TRADE:
-					actionTrade();
+					TradingMenu tradingMenu = new TradingMenu(siedlerGame);
+					tradingMenu.startTradingMenu();
 					break;
 				case END_TURN:
 					sameTurnIsRunning = false;
@@ -82,6 +83,7 @@ public class IngameMenu {
 		if (BuildingMenu.winner != null) {
 			InputOutputConsole.printText(Output.getWinnerMessage(BuildingMenu.winner));
 		}
+		InputOutputConsole.printText(Output.getTextWelcome());
 	}
 
 	private static SiedlerGame initializeSiedlerGame() {
@@ -91,7 +93,6 @@ public class IngameMenu {
 	private static boolean shouldStillRun() {
 		switch (InputOutputConsole.getEnumValue(YesAndNo.class)) {
 		case YES:
-			InputOutputConsole.printText(Output.getTextWelcome());
 			return false;
 		case NO:
 			return true;
@@ -203,19 +204,12 @@ public class IngameMenu {
 		}
 	}
 
+	/**
+	 * returns a String of the amount of resources the current player holds.
+	 * @return String
+	 */
 	public static String showPlayerResources() {
 		return siedlerGame.getCurrentPlayer().getFormatResources();
-	}
-
-	private static void actionTrade() {
-		InputOutputConsole.printText(showPlayerResources());
-		if (siedlerGame.getCurrentPlayer().getNumberOfTotalResources() > 0) {
-			InputOutputConsole.printText("Which material do you offer?");
-			Config.Resource offer = InputOutputConsole.chooseResource();
-			InputOutputConsole.printText("Which material do you want?");
-			Config.Resource want = InputOutputConsole.chooseResource();
-			siedlerGame.tradeWithBankFourToOne(offer, want);
-		}
 	}
 
 	/**
