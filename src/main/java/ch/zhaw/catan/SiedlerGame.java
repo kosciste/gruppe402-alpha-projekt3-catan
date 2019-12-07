@@ -16,17 +16,16 @@ import java.util.List;
 
 public class SiedlerGame {
 
+    private static final int WINPOINTS = 5;
     private static final int OFFSET = 1;
     private static int playerAtTurn = 0;
+    private int numberOfPlayers;
     SiedlerBoard board = new SiedlerBoard();
     Bank bank = new Bank();
-    private int winPoints;
-    private int numberOfPlayers;
     private List<Player> players = new ArrayList<>();
 
 
-    public SiedlerGame(int winPoints, int numberOfPlayers) {
-        this.winPoints = winPoints;
+    public SiedlerGame(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
         setPlayers(numberOfPlayers);
 
@@ -467,7 +466,7 @@ public class SiedlerGame {
 
         for (Player player : players) {
 
-            if(player.getWinPoints() >= winPoints) {
+            if(player.getWinPoints() >= WINPOINTS) {
 
                 winner = player;
             }

@@ -50,14 +50,6 @@ public class InputOutputConsole {
         textTerminal.println(view.toString());
     }
 
-    public static int setNumberOfWinpointsToWin()
-    {
-        return textIO.newIntInputReader()
-                .withMinVal(3)
-                .withMaxVal(10)
-                .read("Declare number of winpoints: ");
-    }
-
     /**
      * Reads an input between 2 and 4.
      * @return int, number of Players

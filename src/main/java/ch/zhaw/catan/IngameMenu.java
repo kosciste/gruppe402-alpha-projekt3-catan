@@ -86,7 +86,7 @@ public class IngameMenu {
 	}
 
 	private static SiedlerGame initializeSiedlerGame() {
-		return new SiedlerGame(InputOutputConsole.setNumberOfWinpointsToWin(), InputOutputConsole.setNumberOfPlayers());
+		return new SiedlerGame(InputOutputConsole.setNumberOfPlayers());
 	}
 
 	private static boolean shouldStillRun() {
