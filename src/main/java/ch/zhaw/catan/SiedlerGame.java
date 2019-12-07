@@ -134,13 +134,6 @@ public class SiedlerGame {
                         bank.removeBankResource(1,board.getFields(position)
                                 .get(i).getResource());
 
-                        getCurrentPlayer().addRescourceFromSettlement(Resource.GRAIN);
-                        getCurrentPlayer().addRescourceFromSettlement(Resource.STONE);
-                        getCurrentPlayer().addRescourceFromSettlement(Resource.CLAY);
-                        getCurrentPlayer().addRescourceFromSettlement(Resource.WOOD);
-                        getCurrentPlayer().addRescourceFromSettlement(Resource.WOOL);
-                        getCurrentPlayer().addRescourceFromSettlement(Resource.WOOD);
-
                     }
 
             }
