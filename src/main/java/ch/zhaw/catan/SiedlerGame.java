@@ -114,6 +114,7 @@ public class SiedlerGame {
      */
     public boolean placeInitialSettlement(Point position, boolean payout) {
 
+        Player currentPlayer = getCurrentPlayer();
         Settlement settlement = new Settlement(getCurrentPlayer().getPlayerFaction());
 
         if (board.hasCorner(position)
@@ -124,6 +125,7 @@ public class SiedlerGame {
 
             getCurrentPlayer().initializeMeeple(settlement);
             board.setCorner(position, settlement.toString());
+            currentPlayer.setWinPoints(currentPlayer.getWinPoints() + 1);
 
             if(payout) {
 
