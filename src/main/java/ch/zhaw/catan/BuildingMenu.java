@@ -64,7 +64,7 @@ public class BuildingMenu {
                     }
                     break;
                 case CITY:
-                    buildCity();
+                    startCityBuilding();
                     if (isWinnerAvailable()) {
                     	winner = siedlerGame.getWinner();
                     	menuIsRunning = false;
@@ -115,7 +115,7 @@ public class BuildingMenu {
 	 * the new city. If the city has been built successfully, the updated board is
 	 * printed to the console. Otherwise a failure message is displayed.
 	 */
-	private void buildCity() {
+	private void startCityBuilding() {
 		InputOutputConsole.printText(Output.getCityBuildingMessage());
 		Point location = IngameMenu.chooseCorner();
 		if (siedlerGame.buildCity(location)) {
