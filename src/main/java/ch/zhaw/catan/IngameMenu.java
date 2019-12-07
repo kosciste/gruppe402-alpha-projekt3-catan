@@ -255,14 +255,13 @@ public class IngameMenu {
 
 				Map<Config.Resource, Integer> countedResources = getMapOfCountedResources(resources);
 				if (!countedResources.isEmpty()) {
-					String playerName = player.getPlayerFaction().name();
 					String amountsAndResources = "";
 					for (Map.Entry<Config.Resource, Integer> countedResource : countedResources.entrySet()) {
 						amountsAndResources += ", " + countedResource.getValue() + " "
 								+ countedResource.getKey().toString();
 					}
 					InputOutputConsole.printText(
-							Output.getPayoutOfResourcesMessage(playerName, amountsAndResources.replaceFirst(",", "")));
+							Output.getPayoutOfResourcesMessage(player, amountsAndResources.replaceFirst(",", "")));
 				}
 			}
 		}

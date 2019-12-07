@@ -127,15 +127,14 @@ public class Output {
 	}
 	
 	/**
-	 * @param playerName          the name of the player, who received some
-	 *                            resources
+	 * @param player              the player, who received some resources
 	 * @param amountsAndResources string with all resources and their amount the
 	 *                            player received
 	 * @return string as an information, which player got which resources and how
 	 *         many of them
 	 */
-	public static String getPayoutOfResourcesMessage(String playerName, String amountsAndResources) {
-		return "Player " + playerName + " received" + amountsAndResources;
+	public static String getPayoutOfResourcesMessage(Player player, String amountsAndResources) {
+		return getPlayerWithName(player) + " received" + amountsAndResources;
 	}
 	
 	/**
