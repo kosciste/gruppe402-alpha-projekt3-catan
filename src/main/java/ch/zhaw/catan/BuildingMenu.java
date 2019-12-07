@@ -9,11 +9,15 @@ import java.util.Map;
 
 /**
  * This class displays the building-menu from The Settlers of Catan.
- * Here you will be able to choose From 3 Options.
+ * Here you will be able to choose from 6 Options. Each meeple built, the menu will
+ * calculate if the current player has won the game.
  * <p>
- * 1. Road: Builds a road on your chosen coordinates.
- * 2. Settlement: Builds a settlement on your chosen coordinates.
- * 3. City: Builds a city on your chosen coordinates.
+ * 1. Go Back: return to the ingame-menu
+ * 2. Show my resources: shows the resources of the current player.
+ * 3. Show needed resources: shows the needed resources for each meeple to build.
+ * 4. Road: Builds a road on your chosen coordinates.
+ * 5. Settlement: Builds a settlement on your chosen coordinates.
+ * 6. City: Builds a city on your chosen coordinates.
  * </p>
  * @author Nikola Jovanovic
  */
@@ -24,7 +28,7 @@ public class BuildingMenu {
     protected static Player winner;
 
     /**
-     * Starts the building-menu. From Here a player can build meeples.
+     * Initializes the building menu and all of its instance variables.
      */
     public BuildingMenu(SiedlerGame siedlerGame, SiedlerBoardTextView view) {
         this.siedlerGame = siedlerGame;
