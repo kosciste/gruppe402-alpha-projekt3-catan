@@ -1,5 +1,8 @@
 package ch.zhaw.catanGameActions;
 
+/**
+ * This Enum holds the available actions for the yes/no interaction.
+ */
 public enum YesAndNo {
     YES("Yes"), NO("No");
 
@@ -10,6 +13,9 @@ public enum YesAndNo {
         this.name = name;
     }
 
+    /**
+     * @return String, the instance-variable from the enum.
+     */
     @Override
     public String toString()
     {
