@@ -4,7 +4,7 @@ import ch.zhaw.catanGameActions.BuildingMenuActions;
 import ch.zhaw.catan.Config.Structure;
 import ch.zhaw.catan.Config.Resource;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.Map;
 
 /**
@@ -31,6 +31,13 @@ public class BuildingMenu {
         this.view = view;
     }
 
+	/**
+	 * Starts the menu for building actions. The menu is running until the player
+	 * chooses the option to go back or until the player builds a game-winning
+	 * settlement or city.
+	 * 
+	 * @return false to stop the game if there is a winner
+	 */
     public boolean startBuildingMenu() {
     	boolean gameIsRunning = true;
         boolean menuIsRunning = true;
@@ -46,10 +53,10 @@ public class BuildingMenu {
                     showNeededResources();
                     break;
                 case ROAD:
-                    buildRoad();
+                    startRoadBuilding();
                     break;
                 case SETTLEMENT:
-                    buildSettlement();
+                    startSettlementBuilding();
                     if (isWinnerAvailable()) {
                     	winner = siedlerGame.getWinner();
                     	menuIsRunning = false;
@@ -69,37 +76,54 @@ public class BuildingMenu {
         return gameIsRunning;
     }
 
-    private void buildRoad() {
-        InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", "new"));
-        Point beginning = IngameMenu.chooseCorner();
-        InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", "new"));
-        Point ending = IngameMenu.chooseCorner();
-        if (siedlerGame.buildRoad(beginning, ending)) {
-            InputOutputConsole.printSiedlerBoard(view);
-        } else {
-            InputOutputConsole.printText(Output.getFailureMessage());
-        }
-    }
+	/**
+	 * Starts the process of building a new road. The player chooses a beginning and
+	 * an ending for the new road. If the road has been built successfully, the
+	 * updated board is printed to the console. Otherwise a failure message is
+	 * displayed.
+	 */
+	private void startRoadBuilding() {
+		InputOutputConsole.printText(Output.getRoadBuildingMessage("beginning", "new"));
+		Point beginning = IngameMenu.chooseCorner();
+		InputOutputConsole.printText(Output.getRoadBuildingMessage("ending", "new"));
+		Point ending = IngameMenu.chooseCorner();
+		if (siedlerGame.buildRoad(beginning, ending)) {
+			InputOutputConsole.printSiedlerBoard(view);
+		} else {
+			InputOutputConsole.printText(Output.getFailureMessage());
+		}
+	}
 
-    private void buildSettlement() {
-        InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
-        Point locationForSettlement = IngameMenu.chooseCorner();
-        if (siedlerGame.buildSettlement(locationForSettlement)) {
-            InputOutputConsole.printSiedlerBoard(view);
-        } else {
-            InputOutputConsole.printText(Output.getFailureMessage());
-        }
-    }
+	/**
+	 * Starts the process of building a new settlement. The player chooses a
+	 * location for the new settlement. If the settlement has been built
+	 * successfully, the updated board is printed to the console. Otherwise a
+	 * failure message is displayed.
+	 */
+	private void startSettlementBuilding() {
+		InputOutputConsole.printText(Output.getSettlementBuildingMessage("new"));
+		Point location = IngameMenu.chooseCorner();
+		if (siedlerGame.buildSettlement(location)) {
+			InputOutputConsole.printSiedlerBoard(view);
+		} else {
+			InputOutputConsole.printText(Output.getFailureMessage());
+		}
+	}
 
-    private void buildCity() {
-        InputOutputConsole.printText(Output.getCityBuildingMessage());
-        Point locationForCity = IngameMenu.chooseCorner();
-        if (siedlerGame.buildCity(locationForCity)) {
-            InputOutputConsole.printSiedlerBoard(view);
-        } else {
-            InputOutputConsole.printText(Output.getFailureMessage());
-        }
-    }
+	/**
+	 * Starts the process of building a new city. The player chooses a location for
+	 * the new city. If the city has been built successfully, the updated board is
+	 * printed to the console. Otherwise a failure message is displayed.
+	 */
+	private void buildCity() {
+		InputOutputConsole.printText(Output.getCityBuildingMessage());
+		Point location = IngameMenu.chooseCorner();
+		if (siedlerGame.buildCity(location)) {
+			InputOutputConsole.printSiedlerBoard(view);
+		} else {
+			InputOutputConsole.printText(Output.getFailureMessage());
+		}
+	}
 
     private void showNeededResources()
     {

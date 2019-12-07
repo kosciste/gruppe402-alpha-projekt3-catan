@@ -16,6 +16,7 @@ public class InputOutputConsole {
 
     public static final int TERMINAL_WIDTH = 1280;
     public static final int TERMINAL_HEIGHT = 720;
+    private static final int MAX_NUMBER_OF_PLAYERS = 4;
 
     private static TextIO textIO =TextIoFactory.getTextIO();
     private  static TextTerminal<?> textTerminal = textIO.getTextTerminal();
@@ -58,7 +59,7 @@ public class InputOutputConsole {
     {
         return textIO.newIntInputReader()
                 .withMinVal(Config.MIN_NUMBER_OF_PLAYERS)
-                .withMaxVal(IngameMenu.MAX_NUMBER_OF_PLAYERS)
+                .withMaxVal(MAX_NUMBER_OF_PLAYERS)
                 .read("Enter the number of Settlers: ");
     }
     

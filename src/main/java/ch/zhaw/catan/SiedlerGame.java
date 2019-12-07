@@ -3,11 +3,14 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 import ch.zhaw.hexboard.Label;
-import org.w3c.dom.Node;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Point;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * This class models a single Game with his information and functionalities.

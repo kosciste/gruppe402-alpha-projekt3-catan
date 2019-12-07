@@ -7,8 +7,8 @@ import ch.zhaw.hexboard.Label;
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * This class Displays the ingame menu of the Settlers of Catan. It also
@@ -24,7 +24,6 @@ import java.util.HashMap;
  */
 public class IngameMenu {
 
-	public static final int MAX_NUMBER_OF_PLAYERS = 4;
 	private static final int MIN_DIE_VALUE = 1;
 	private static final int MAX_DIE_VALUE = 6;
 	private static SiedlerGame siedlerGame;
@@ -153,7 +152,7 @@ public class IngameMenu {
 	 * Shows currently whose players turn it is and prints that information to the
 	 * console. The name of the player is the name of the enum constant from
 	 * {@link Config.Faction}. Examples: The name of the first player is 'RED'. The
-	 * name of the second player 'BLUE'.
+	 * name of the second player is 'BLUE'.
 	 */
 	private static void showTurnOfCurrentPlayer() {
 		String currentPlayerName = siedlerGame.getCurrentPlayer().getPlayerFaction().name();
