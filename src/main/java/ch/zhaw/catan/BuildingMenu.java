@@ -28,7 +28,7 @@ public class BuildingMenu {
     protected static Player winner;
 
     /**
-     * Initializes the building menu and all of its instance variables.
+     * Initialises the building menu and all of its instance variables.
      */
     public BuildingMenu(SiedlerGame siedlerGame, SiedlerBoardTextView view) {
         this.siedlerGame = siedlerGame;
