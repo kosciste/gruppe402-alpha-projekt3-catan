@@ -11,13 +11,13 @@ import java.awt.Point;
 class PlayerTest {
 
 	@Test
-	public void startHasAvailableRoads() {
+	void startHasAvailableRoads() {
 		Player player = new Player(Config.Faction.RED);
 		assertTrue(player.hasAvailableRoads());
 	}
 
 	@Test
-	public void normalHasAvailableRoads() {
+	void normalHasAvailableRoads() {
 		Player player = new Player(Config.Faction.RED);
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new City(Config.Faction.RED));
@@ -39,7 +39,7 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void overMaxHasAvailableRoads() {
+	void overMaxHasAvailableRoads() {
 		Player player = new Player(Config.Faction.RED);
 		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,3), new Point(4,4)));
 		player.initializeMeeple(new Road(Config.Faction.RED, new Point(4,4), new Point(4,6)));
@@ -60,13 +60,13 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void startHasAvailableSettlements() {
+	void startHasAvailableSettlements() {
 		Player player = new Player(Config.Faction.RED);
 		assertTrue(player.hasAvailableSettlements());
 	}
 	
 	@Test
-	public void normalHasAvailableSettlements() {
+	void normalHasAvailableSettlements() {
 		Player player = new Player(Config.Faction.RED);
 		player.initializeMeeple(new City(Config.Faction.RED));
 		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,3), new Point(4,4)));		
@@ -78,7 +78,7 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void overMaxHasAvailableSettlements() {
+	void overMaxHasAvailableSettlements() {
 		Player player = new Player(Config.Faction.RED);
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
@@ -89,13 +89,13 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void startHasAvailableCities() {
+	void startHasAvailableCities() {
 		Player player = new Player(Config.Faction.RED);
 		assertTrue(player.hasAvailableCities());
 	}
 	
 	@Test
-	public void normalHasAvailableCities() {
+	void normalHasAvailableCities() {
 		Player player = new Player(Config.Faction.RED);
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Road(Config.Faction.RED, new Point(5,3), new Point(4,4)));
@@ -106,7 +106,7 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void overMaxHasAvailableCities() {
+	void overMaxHasAvailableCities() {
 		Player player = new Player(Config.Faction.RED);
 		player.initializeMeeple(new City(Config.Faction.RED));
 		player.initializeMeeple(new City(Config.Faction.RED));
@@ -116,7 +116,7 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void testRemoveSettlement() {
+	void testRemoveSettlement() {
 		Player player = new Player(Config.Faction.RED);
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
 		player.initializeMeeple(new Settlement(Config.Faction.RED));
@@ -128,13 +128,13 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void zeroGetFormatResources() {
+	void zeroGetFormatResources() {
 		Player player = new Player(Config.Faction.RED);
 		assertEquals("It seems like you don't have any resources :(", player.getFormatResources());
 	}	
 	
 	@Test
-	public void twoGetFormatResources() {
+	void twoGetFormatResources() {
 		Player player = new Player(Config.Faction.RED);
 		player.addRescourceFromSettlement(Resource.GRAIN);
 		player.addRescourceFromSettlement(Resource.GRAIN);
@@ -142,7 +142,7 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void sixGetFormatResources() {
+	void sixGetFormatResources() {
 		Player player = new Player(Config.Faction.RED);
 		player.addRescourceFromCity(Resource.WOOL);
 		player.addRescourceFromSettlement(Resource.WOOD);
@@ -156,7 +156,7 @@ class PlayerTest {
 	}
 	
 	@Test
-	public void testremoveResources() {
+	void testremoveResources() {
 		Player player = new Player(Config.Faction.RED);
 		player.addRescourceFromSettlement(Resource.GRAIN);
 		player.addRescourceFromSettlement(Resource.GRAIN);
@@ -171,6 +171,4 @@ class PlayerTest {
 				+ "ST | 1 Pieces \n"
 				+ "CL | 2 Pieces \n", player.getFormatResources());
 	}
-	
-	
 }
