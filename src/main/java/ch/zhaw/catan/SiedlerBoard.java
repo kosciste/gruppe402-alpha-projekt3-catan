@@ -5,8 +5,8 @@ import ch.zhaw.hexboard.HexBoard;
 import ch.zhaw.hexboard.Label;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * This class holds every information about the Board
@@ -68,4 +68,23 @@ public class SiedlerBoard extends HexBoard<Land, String, String, String> {
     {
         return lowerFieldLabel;
     }
+
+
+    /**
+     * Returns the (non-null) corner data elements of the corners that are direct
+     * @param position the location of the corner for which to return the direct
+     * neighbors
+     * @return list with non-null corner data elements
+     */
+    public List<Point> getNeighborsOfCornerAsPoints(Point position){
+
+        List<Point> result = new ArrayList<>();
+        for (Point corner : super.getAdjacentCorners(position)) { ;
+            if (corner != null) {
+                result.add(corner);
+            }
+        }
+        return result;
+    }
+
 }
