@@ -32,7 +32,6 @@ public class SiedlerGame {
     public SiedlerGame(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
         setPlayers(numberOfPlayers);
-
     }
 
     private void setPlayers(int numberOfPlayers) {
@@ -462,19 +461,12 @@ public class SiedlerGame {
                     || meeples.get(i).equals(board.getCorner(roadStart))
                     || meeples.get(i).toUpperCase().equals((board.getCorner(roadStart))))
             {
-                if (board.getCorner(roadEnd) == null ||
-                        meeples.contains(board.getCorner(roadEnd))) {
                     if (isValidCorner(roadEnd)) {
                         hasAdjacentElements = true;
                     }
-
-                }
             }
-
         }
-
         return hasAdjacentElements;
-
     }
 
 
