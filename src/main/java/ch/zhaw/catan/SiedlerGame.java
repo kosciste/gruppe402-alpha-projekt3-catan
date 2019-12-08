@@ -77,7 +77,6 @@ public class SiedlerGame {
 
     /**
      * This method returns a list with all players.
-     *
      * @return List with all players
      */
     public List<Player> getPlayer() {
@@ -88,7 +87,6 @@ public class SiedlerGame {
 
     /**
      * This method returns the GameBoard
-     *
      * @return the GameBoard
      */
     public SiedlerBoard getBoard() {
@@ -99,7 +97,6 @@ public class SiedlerGame {
 
     /**
      * Returns the current player who needs to make a turn.
-     *
      * @return the current player
      */
     public Player getCurrentPlayer() {
@@ -109,9 +106,10 @@ public class SiedlerGame {
 
 
     /**
-     * Builds an  initial settlement
-     *
+     * The method builds an  initial settlement without the need to pay
+     * with resources. It also pays out resources at the second initial round.
      * @param position the specified position for the settlement
+     * @param payout 'true' if a payout of resources is needed
      * @return true, if the settlement has been built
      */
     public boolean placeInitialSettlement(Point position, boolean payout) {
@@ -137,22 +135,18 @@ public class SiedlerGame {
                                 (board.getFields(position).get(i).getResource());
                         bank.removeBankResource(1,board.getFields(position)
                                 .get(i).getResource());
-
                     }
-
             }
             return true;
         }
         else {
             return false;
         }
-
-
     }
 
     /**
-     * Builds an initial road
-     *
+     * The method builds an  initial settlement without the need to pay
+     * with resources.
      * @param roadStart the Point where the road starts
      * @param roadEnd   the Point where the road ends
      * @return true, if the road has been built
@@ -240,6 +234,12 @@ public class SiedlerGame {
         return changes;
     }
 
+    /**
+     * Returns the first digit of a two-digit number
+     * @param number
+     * @return first digit as 'int'
+     */
+
     private Integer getFirstDigit(int number) {
         Integer digit;
         if (number >= 10) {
@@ -249,6 +249,13 @@ public class SiedlerGame {
         }
         return digit;
     }
+
+
+    /**
+     * Returns the last digit of a two-digit number
+     * @param number
+     * @return last digit as 'int'
+     */
 
     private Integer getLastDigit(int number) {
         Integer digit;
@@ -260,7 +267,6 @@ public class SiedlerGame {
      * The robber method is called when the number 7 is rolled. The method checks the number
      * of resources pro player. Players who have more than 7 resources will be robbed of half
      * the resources.
-     *
      * An example of the rounding system: A player with 9 resources must give 4 resources back.
      */
     private void stealResourcesFromPlayer() {
@@ -280,7 +286,6 @@ public class SiedlerGame {
     /**
      * This method performs the Robber's function. It removes a certain number of random resources
      * from the player and add them back to the bank.
-     *
      * @param player The player who gets robbed.
      * @param numberOfResources Number of resources robbed
      */
@@ -296,10 +301,10 @@ public class SiedlerGame {
 
 
     /**
-     * This method builds a settlement at a specified position
-     *
+     * This method builds a settlement at a specified position.
+     * if all needed conditions match.
      * @param position the specified position for the settlement
-     * @return
+     * @return 'true' if the settlement has been successfully built.
      */
     public boolean buildSettlement(Point position) {
         Player currentPlayer = getCurrentPlayer();
@@ -329,6 +334,13 @@ public class SiedlerGame {
         }
     }
 
+
+    /**
+     * The method checks if the corner which is approached is
+     * positioned at a valid field of the game board.
+     * @param position the position the player wants to approach
+     * @return 'true' if the corner who is approached is a valid postition
+     */
     private boolean isValidCorner(Point position) {
 
         boolean isValid = false;
@@ -345,6 +357,16 @@ public class SiedlerGame {
         return isValid;
     }
 
+
+    /**
+     * The method checks if the player has enough resources to build
+     * a specified kind of meeple.
+     * @param list the costs of resources fot the specified meeple
+     * @param currentPlayer the player who wants to build
+     * @return 'true' if the player can pay the costs.
+     */
+
+
     private boolean hasEnoughResources(List<Config.Resource> list, Player currentPlayer) {
 
         boolean hasEnoughRessources = true;
@@ -359,6 +381,13 @@ public class SiedlerGame {
 
     }
 
+
+    /**
+     * This method removes resources from the player which he uses
+     * to build something.
+     * @param list the costs of resources fot the specified meeple
+     * @param currentPlayer the player who wants to build
+     */
     private void payWithResources(List<Config.Resource> list, Player currentPlayer){
 
         for (Resource resource : list) {
@@ -369,11 +398,11 @@ public class SiedlerGame {
     }
 
     /**
-     * This method builds a road at a specicfied location
-     *
-     * @param roadStart the Point where the road starts
-     * @param roadEnd   the Point where the road ends
-     * @return true, if the road has been built
+     * This method builds a road at a specicfied location,
+     * if all needed conditions match.
+     * @param roadStart the point where the road starts
+     * @param roadEnd   the point where the road ends
+     * @return 'true' if the road has been successfully built.
      */
     public boolean buildRoad(Point roadStart, Point roadEnd) {
         Player currentPlayer = getCurrentPlayer();
@@ -391,6 +420,14 @@ public class SiedlerGame {
         }
     }
 
+    /**
+     * This method checks if all conditions are given to build
+     * a road at specified position
+     * @param currentPlayer
+     * @param roadStart the point where the road starts
+     * @param roadEnd he point where the road ends
+     * @return 'true' if the road has been successfully built.
+     */
     private boolean hasValidConditionsForRoad(Player currentPlayer, Point roadStart, Point roadEnd) {
         return (board.hasEdge(roadStart, roadEnd) &&
                 board.getEdge(roadStart, roadEnd) == null
@@ -399,6 +436,15 @@ public class SiedlerGame {
     }
 
 
+    /**
+     * This method checks if the position where a player wants to build
+     * a road is valid.That means a adjacent meeple needs to be
+     * in connection to the new road.
+     * @param currentPlayer
+     * @param roadStart
+     * @param roadEnd
+     * @return
+     */
     private boolean hasAdjacentElementsForRoad(Player currentPlayer, Point roadStart, Point roadEnd){
 
         boolean hasAdjacentElements = false;
@@ -430,8 +476,8 @@ public class SiedlerGame {
 
 
     /**
-     * This Method build a city at a specified position 
-     * 
+     * This Method build a city at a specified position,
+     * if all needed conditions match.
      * @param position the specified position for the city
      * @return true, if the city has been built
      */
@@ -457,9 +503,6 @@ public class SiedlerGame {
     		return false;
     	}
     }
-
-
-
 
 
     /**
@@ -551,6 +594,12 @@ public class SiedlerGame {
     }
 
 
+    /**
+     * This method returns the size of the longest road of a specified player
+     * regarding the game rules.
+     * @param player the player whose roads need to be checked
+     * @return 'int' size of the longest road
+     */
     private int getLongestRoad(Player player){
         int longestRoad = 0;
 
@@ -576,7 +625,16 @@ public class SiedlerGame {
                 return longestRoad;
         }
 
-        private void searchForLongestRoadAtCorner(Point corner, Player player, int length) {
+    /**
+     * This method is called by 'getLongestRoad' an searches the
+     * longest road at specified corner that could be the ending or beginning
+     * of a road. When the  length of the road is found it saves then the road
+     * with the calculated length to a Map.
+     * @param corner the corner that needs to be checked
+     * @param player the currentPlayer who is checked
+     * @param length the current length of the road
+     */
+    private void searchForLongestRoadAtCorner(Point corner, Player player, int length) {
 
             for(Road road : getAdjacentRoads(corner,player.getPlayerFaction())) {
 
@@ -612,7 +670,13 @@ public class SiedlerGame {
 
         }
 
-
+    /**
+     * Returns the non-null roads of the roads that directly connect
+     * to the specified corner.
+     * @param corner the position of the corner
+     * @param player the faction of the player whose roads are checked
+     * @return the non-null road elements
+     */
     private List<Road> getAdjacentRoads(Point corner, Faction player){
 
         List<Road> roads = new ArrayList<>();
