@@ -40,10 +40,11 @@ public class Bank {
 	/**
 	 * The method checks whether the bank has sufficient resources in stock.
 	 * 
-	 * @param number Number of resources to check
-	 * @param resource The type of resource
-	 * @return true, if if the bank has enough resources 
+	 * @param number Number of resources to check.
+	 * @param resource The type of resource.
+	 * @return true, if the bank has enough resources. 
 	 */
+	//TODO Fehler, wird nicht überprüft bei: placeInitialSettlement, throwDice 2 mal.
 	public boolean hasBankEnoughResources(int number, Resource resource){
 		int index = 0;
 		Iterator<Resource> it = resourceBank.iterator();
@@ -64,8 +65,8 @@ public class Bank {
 	/**
 	 * This method adds resources to the bank.
 	 * 
-	 * @param number Number of resources to add
-	 * @param resource The type of resource
+	 * @param number Number of resources to add.
+	 * @param resource The type of resource.
 	 */
 	public void addBankResources(int number, Resource resource) {
     	for(int i = 0; i < number; i++) {
@@ -76,8 +77,8 @@ public class Bank {
 	/**
 	 * This method removes the output resources from the bank. 
 	 * 
-	 * @param number Number of resources to be spent 
-	 * @param resource The type of resource
+	 * @param number Number of resources to be spent.
+	 * @param resource The type of resource.
 	 */
 	public void removeBankResource(int number, Resource resource) {
 		boolean running = true;
@@ -100,6 +101,7 @@ public class Bank {
 	 * 
 	 * @return resource ArrayList
 	 */
+	//TODO Wird nur für Testing gebraucht
 	public List<Resource> getBankResources() {
 		return resourceBank;
 	}
