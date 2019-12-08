@@ -17,26 +17,26 @@ class SiedlerGameTest {
 
     @Test
     void switchToNextPlayer() {
-        SiedlerGame siedlerGame = new SiedlerGame(4,4);
+        SiedlerGame siedlerGame = new SiedlerGame(4);
         siedlerGame.switchToNextPlayer();
         assertEquals(siedlerGame.getCurrentPlayer(),siedlerGame.getPlayer().get(1));
     }
 
     @Test
     void switchToPreviousPlayer() {
-        SiedlerGame siedlerGame = new SiedlerGame(4,4);
+        SiedlerGame siedlerGame = new SiedlerGame(4);
         siedlerGame.switchToNextPlayer();
         assertEquals(siedlerGame.getCurrentPlayer(),siedlerGame.getPlayer().get(4));
     }
 
     @Test
     void placeInitialSettlementValidValue() {
-        SiedlerGame siedlerGame = new SiedlerGame(4,4);
+        SiedlerGame siedlerGame = new SiedlerGame(4);
         assertEquals(siedlerGame.placeInitialSettlement(new Point(5,3), false),true);
     }
     @Test
     void placeInitialSettlementNotValidValue() {
-        SiedlerGame siedlerGame = new SiedlerGame(4,4);
+        SiedlerGame siedlerGame = new SiedlerGame(4);
 
         //Not a valid corner
         assertEquals(siedlerGame.placeInitialSettlement(new Point(4,0), false),false);
@@ -111,7 +111,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         Config.Resource offer = null;
         Config.Resource want = Config.Resource.WOOD;
 
-        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 4; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
         }
@@ -124,7 +124,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         Config.Resource offer = Config.Resource.CLAY;
         Config.Resource want = null;
 
-        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 4; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
         }
@@ -138,7 +138,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         Config.Resource offer = Config.Resource.WOOL;
         Config.Resource want = Config.Resource.WOOD;
 
-        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 4; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
         }
@@ -153,7 +153,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         Config.Resource offer = Config.Resource.CLAY;
         Config.Resource want = Config.Resource.WOOD;
 
-        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 4; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
         }
@@ -168,7 +168,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         Config.Resource offer = Config.Resource.CLAY;
         Config.Resource want = Config.Resource.WOOD;
 
-        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 2; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
         }
@@ -183,7 +183,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         Config.Resource offer = Config.Resource.WOOL;
         Config.Resource want = Config.Resource.WOOD;
 
-        SiedlerGame siedlerGame = new SiedlerGame(1, 2);
+        SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 5; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
         }

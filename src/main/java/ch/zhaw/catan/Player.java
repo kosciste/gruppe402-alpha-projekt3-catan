@@ -23,7 +23,7 @@ public class Player {
 	 * The constructor creats a player with a list for his meeples.
 	 * The player is identified by his color.
 	 * 
-	 * @param playerFaction The color from faction.
+	 * @param playerFaction The color from {@link Config.Faction}.
 	 */
 	public Player(Config.Faction playerFaction) {
 		this.playerFaction = playerFaction;
@@ -35,7 +35,7 @@ public class Player {
 	/**
 	 * The player receives a resource for a settlement.
 	 * 
-	 * @param resource count this resource + 1
+	 * @param resource Count this resource + 1.
 	 */
 	public void addRescourceFromSettlement(Resource resource) {
 		resourceStock.add(resource);
@@ -44,7 +44,7 @@ public class Player {
 	/**
 	 * The player receives two resources for a city.
 	 * 
-	 * @param resource Count this resource + 2
+	 * @param resource Count this resource + 2.
 	 */
 	public void addRescourceFromCity(Resource resource) {
 		resourceStock.add(resource);
@@ -54,8 +54,8 @@ public class Player {
 	/**
 	 * This method removes a certain number of one resource type.
 	 * 
-	 * @param number The number of a certain resource type who get spend
-	 * @param resource The type of resource
+	 * @param number The number of a certain resource type who get spend.
+	 * @param resource The type of resource.
 	 */
 	public void removeResource(int number, Resource resource) {
 		boolean running = true;
@@ -95,11 +95,11 @@ public class Player {
 	}
 	
 	/**
-	 * This method returns the total number of  a certain resource
+	 * This method returns the total number of a certain resource
 	 * type on the hand of the player. 
 	 * 
-	 * @param resource The type of resource
-	 * @return The number of a certain resource type 
+	 * @param resource The type of resource.
+	 * @return The number of a certain resource type.
 	 */
 	public int getNumberOfSingleResource(Resource resource) {
 		int numberOfSingleResource = 0;
@@ -117,7 +117,7 @@ public class Player {
 	 * This method returns the number of total resources on the hand 
 	 * of the player.
 	 * 
-	 * @return number of total resources
+	 * @return The number of total resources.
 	 */
 	public int getNumberOfTotalResources() {
 		return resourceStock.size();

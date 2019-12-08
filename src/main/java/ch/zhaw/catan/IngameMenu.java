@@ -11,13 +11,16 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * This class Displays the ingame menu of the Settlers of Catan. It also
+ * This class Displays the ingame-menu of the Settlers of Catan. It also
  * initialises a new round of the Settlers of Catan. Here you will be able to
  * choose from 4 options.
  * <p>
- * 1. Build: Here you can build a structure. 2. Trade: Trade with the bank. 3.
- * End my turn: ends the turn and switches to the next player. 4. End the game:
- * Ends the game and returns to the main menu
+ * 1. Show board: shows the actual situation of the board.
+ * 2. Show my resources: shows the resources of the current player.
+ * 1. Build: here you can build a structure.
+ * 2. Trade: trade with the bank.
+ * 3. End my turn: ends the turn and switches to the next player.
+ * 4. End the game: ends the game and returns to the main menu
  * </p>
  *
  * @author Sileno Ennio

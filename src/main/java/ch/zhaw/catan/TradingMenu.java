@@ -3,17 +3,36 @@ package ch.zhaw.catan;
 import ch.zhaw.catanGameActions.TradingMenuActions;
 import ch.zhaw.catan.Config.Resource;
 
+/**
+ * This class displays the trading-menu from The Settlers of Catan.
+ * Here you will be able to choose from 3 Options.
+ * <p>
+ * 1. Go Back: return to the ingame-menu
+ * 2. Show my resources: shows the resources of the current player.
+ * 3. Trade: trades with the bank. You offer 4 equal resources to get one wished resource. But only if the bank
+ * holds the wished resource.
+ * </p>
+ * @author Sileno Ennio
+ */
 public class TradingMenu {
     private static final int OFFER = 0;
     private static final int WANT = 1;
 
     private SiedlerGame siedlerGame;
 
+    /**
+     * Initialises a trading-menu obeject with all of its instance variables.
+     * @param siedlerGame
+     */
     public TradingMenu(SiedlerGame siedlerGame)
     {
         this.siedlerGame = siedlerGame;
     }
 
+    /**
+     * This method starts the trading-menu. The menu will run until the player made a trade or has chosen
+     * the 1. action Go Back. It will then return to the ingame-menu.
+     */
     public void startTradingMenu()
     {
         boolean menuIsRunning = true;
