@@ -13,7 +13,6 @@ public class Road extends Meeple {
 
 	private Point roadStart;
 	private Point roadEnd;
-	private boolean isChecked = false;
 
 	/**
 	 * Creates a new road with a specified owner. The owner is a player from
@@ -25,6 +24,7 @@ public class Road extends Meeple {
 		super(owner);
 		this.roadStart = roadStart;
 		this.roadEnd = roadEnd;
+
 	}
 
 	@Override
@@ -42,5 +42,13 @@ public class Road extends Meeple {
 
 	public Point getRoadStart() {
 		return roadStart;
+	}
+
+	public String getUniqueID(){
+		return super.toString().substring(0, 1) + roadStart + roadEnd;
+	}
+
+	public String getUniqueIDreverse(){
+		return super.toString().substring(0, 1) + roadEnd + roadStart;
 	}
 }

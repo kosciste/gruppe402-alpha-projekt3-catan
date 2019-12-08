@@ -1,5 +1,6 @@
 package ch.zhaw.catan;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SiedlerGameTest {
 
-    @BeforeEach
+    @BeforeAll
     void setUp() {
 
     }
@@ -72,6 +73,32 @@ class SiedlerGameTest {
 
     @Test
     void getWinner() {
+    }
+
+    @Test
+    void hasLongestRoad(){
+
+        Settlement settlement = new Settlement(Config.Faction.RED);
+        board.setCorner(new Point(5,3),settlement.toString());
+        Road road = new Road(Config.Faction.RED,new Point(5,3), new Point(6,4));
+        board.setEdge(new Point(5,3), new Point(6,4),road.toString());
+        Road road2 = new Road(Config.Faction.RED,new Point(6,4), new Point(6,6));
+        Road road3 = new Road(Config.Faction.RED,new Point(6,6), new Point(7,7));
+        Settlement settlement1 = new Settlement(Config.Faction.BLUE);
+        Settlement settlement2 = new Settlement(Config.Faction.BLUE);
+        board.setCorner(new Point(6,6), settlement2.toString());
+        getPlayer().get(1).initializeMeeple(settlement2);
+        board.setCorner(new Point(10,4),settlement1.toString());
+        Road road4 = new Road(Config.Faction.BLUE,new Point(10,4), new Point(10,6));
+        board.setEdge(new Point(10,4), new Point(10,6),road4.toString());
+        getPlayer().get(1).initializeMeeple(road4);
+        getPlayer().get(0).initializeMeeple(road);
+        getPlayer().get(0).initializeMeeple(road2);
+        getPlayer().get(0).initializeMeeple(road3);
+        board.setEdge(new Point(6,4), new Point(6,6),road2.toString());
+        board.setEdge(new Point(6,6), new Point(7,7),road3.toString());
+        System.out.println(getLongestRoad(getPlayer().get(0)));
+        System.out.println(getLongestRoad(getPlayer().get(1)));
     }
 }
 

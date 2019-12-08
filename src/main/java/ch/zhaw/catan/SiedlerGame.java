@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 /**
- * This class models a single Game with his information and functionalities.
+ * This class models a single siedler game with its information and functionalities.
  * author: Stefan Koscica
  */
 
@@ -26,6 +26,7 @@ public class SiedlerGame {
     SiedlerBoard board = new SiedlerBoard();
     Bank bank = new Bank();
     private List<Player> players = new ArrayList<>();
+    Map<String,Integer> visitedRoads = new HashMap<>();
 
 
     public SiedlerGame(int numberOfPlayers) {
@@ -41,6 +42,7 @@ public class SiedlerGame {
             Player player = new Player(Faction.values()[i]);
             players.add(player);
         }
+
     }
 
     /**
@@ -254,6 +256,43 @@ public class SiedlerGame {
         return digit;
     }
 
+    /**
+     * The robber method is called when the number 7 is rolled. The method checks the number
+     * of resources pro player. Players who have more than 7 resources will be robbed of half
+     * the resources.
+     *
+     * An example of the rounding system: A player with 9 resources must give 4 resources back.
+     */
+    private void stealResourcesFromPlayer() {
+        for(Player player : players) {
+            int numberOfResources = player.getNumberOfTotalResources();
+            if(numberOfResources > Config.MAX_CARDS_IN_HAND_NO_DROP) {
+                if(numberOfResources % 2 == 0) {  //even number
+                    stealingResources(player, numberOfResources / 2);
+                }
+                else {	//uneven number
+                    stealingResources(player, (numberOfResources - 1) / 2);
+                }
+            }
+        }
+    }
+
+    /**
+     * This method performs the Robber's function. It removes a certain number of random resources
+     * from the player and add them back to the bank.
+     *
+     * @param player The player who gets robbed.
+     * @param numberOfResources Number of resources robbed
+     */
+    private void stealingResources(Player player, int numberOfResources) {
+        int index = 0;
+        for(int i = 0; i < numberOfResources ; i++) {
+            index = (int)(Math.random() * player.getNumberOfTotalResources());
+            bank.addBankResources(1, player.getResourceStock().get(index));
+            player.getResourceStock().remove(index);
+        }
+    }
+
 
 
     /**
@@ -275,14 +314,14 @@ public class SiedlerGame {
         }
         if (board.getCorner(position) == null
                 && hasAdjacentRoads
-                && hasEnoughRessources(Config.Structure.SETTLEMENT.getCosts(),currentPlayer)
+                && hasEnoughResources(Config.Structure.SETTLEMENT.getCosts(),currentPlayer)
                 && getCurrentPlayer().hasAvailableSettlements()
                 && isValidCorner(position)
                 && board.getNeighboursOfCorner(position).isEmpty()) {
 
             getCurrentPlayer().initializeMeeple(settlement);
             board.setCorner(position, settlement.toString());
-            payWithRessources(Config.Structure.SETTLEMENT.getCosts(),currentPlayer);
+            payWithResources(Config.Structure.SETTLEMENT.getCosts(),currentPlayer);
             currentPlayer.setWinPoints(currentPlayer.getWinPoints() + 1);
             return true;
         } else {
@@ -290,6 +329,44 @@ public class SiedlerGame {
         }
     }
 
+    private boolean isValidCorner(Point position) {
+
+        boolean isValid = false;
+        for (int i = 0; i < Config.Resource.values().length; i++) {
+
+            for (int j = 0; j < board.getFields(position).size(); j++) {
+
+                if (board.getFields(position).get(j).getResource() == Config.Resource.values()[i]) {
+                    isValid = true;
+                }
+
+            }
+        }
+        return isValid;
+    }
+
+    private boolean hasEnoughResources(List<Config.Resource> list, Player currentPlayer) {
+
+        boolean hasEnoughRessources = true;
+        for (Resource resource : list) {
+
+            if (getCurrentPlayer().getNumberOfSingleResource(resource) < 1) {
+                hasEnoughRessources = false;
+            }
+        }
+
+        return hasEnoughRessources;
+
+    }
+
+    private void payWithResources(List<Config.Resource> list, Player currentPlayer){
+
+        for (Resource resource : list) {
+
+            getCurrentPlayer().removeResource(1, resource);
+            bank.addBankResources(1,resource);
+        }
+    }
 
     /**
      * This method builds a road at a specicfied location
@@ -303,52 +380,24 @@ public class SiedlerGame {
         Road road = new Road(currentPlayer.getPlayerFaction(),roadStart, roadEnd);
 
         if (hasValidConditionsForRoad(currentPlayer,roadStart,roadEnd)
-                &&hasEnoughRessources(Config.Structure.ROAD.getCosts(),currentPlayer)) {
+                && hasEnoughResources(Config.Structure.ROAD.getCosts(),currentPlayer)) {
 
             getCurrentPlayer().initializeMeeple(road);
             board.setEdge(roadStart, roadEnd, road.toString());
-            payWithRessources(Config.Structure.ROAD.getCosts(),currentPlayer);
+            payWithResources(Config.Structure.ROAD.getCosts(),currentPlayer);
             return true;
         } else {
             return false;
         }
     }
 
-    /**
-     * This Method build a city at a specified position 
-     * 
-     * @param position the specified position for the city
-     * @return true, if the city has been built
-     */
-    public boolean buildCity(Point position) {
-    	Player currentPlayer = getCurrentPlayer();
-        City city = new City(getCurrentPlayer().getPlayerFaction());
-        boolean hasSettlement = false;
-
-        if(currentPlayer.getPlayerFaction().toString().equals(board.getCorner(position))){
-            hasSettlement = true;
-        }
-        if(hasSettlement 
-        		&& hasEnoughRessources(Config.Structure.CITY.getCosts(), currentPlayer)
-        		&& getCurrentPlayer().hasAvailableCities()) {
-
-        	getCurrentPlayer().removeSettlement();
-        	getCurrentPlayer().initializeMeeple(city);
-        	board.setCorner(position, city.toString());
-        	payWithRessources(Config.Structure.CITY.getCosts(), currentPlayer);
-        	currentPlayer.setWinPoints(currentPlayer.getWinPoints() + 1);
-    		return true;
-    	} else {
-    		return false;
-    	}
-    }
-
     private boolean hasValidConditionsForRoad(Player currentPlayer, Point roadStart, Point roadEnd) {
-       return (board.hasEdge(roadStart, roadEnd) &&
+        return (board.hasEdge(roadStart, roadEnd) &&
                 board.getEdge(roadStart, roadEnd) == null
                 && (hasAdjacentElementsForRoad(currentPlayer, roadStart, roadEnd)
                 ||hasAdjacentElementsForRoad(currentPlayer,roadEnd,roadStart)));
     }
+
 
     private boolean hasAdjacentElementsForRoad(Player currentPlayer, Point roadStart, Point roadEnd){
 
@@ -380,44 +429,38 @@ public class SiedlerGame {
     }
 
 
-    private boolean isValidCorner(Point position) {
+    /**
+     * This Method build a city at a specified position 
+     * 
+     * @param position the specified position for the city
+     * @return true, if the city has been built
+     */
+    public boolean buildCity(Point position) {
+    	Player currentPlayer = getCurrentPlayer();
+        City city = new City(getCurrentPlayer().getPlayerFaction());
+        boolean hasSettlement = false;
 
-        boolean isValid = false;
-        for (int i = 0; i < Config.Resource.values().length; i++) {
-
-            for (int j = 0; j < board.getFields(position).size(); j++) {
-
-                if (board.getFields(position).get(j).getResource() == Config.Resource.values()[i]) {
-                    isValid = true;
-                }
-
-            }
+        if(currentPlayer.getPlayerFaction().toString().equals(board.getCorner(position))){
+            hasSettlement = true;
         }
-        return isValid;
+        if(hasSettlement 
+        		&& hasEnoughResources(Config.Structure.CITY.getCosts(), currentPlayer)
+        		&& getCurrentPlayer().hasAvailableCities()) {
+
+        	getCurrentPlayer().removeSettlement();
+        	getCurrentPlayer().initializeMeeple(city);
+        	board.setCorner(position, city.toString());
+        	payWithResources(Config.Structure.CITY.getCosts(), currentPlayer);
+        	currentPlayer.setWinPoints(currentPlayer.getWinPoints() + 1);
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 
-    private boolean hasEnoughRessources(List<Config.Resource> list, Player currentPlayer) {
 
-        boolean hasEnoughRessources = true;
-        for (Resource resource : list) {
 
-            if (getCurrentPlayer().getNumberOfSingleResource(resource) < 1) {
-                hasEnoughRessources = false;
-            }
-        }
 
-        return hasEnoughRessources;
-
-    }
-
-    private void payWithRessources(List<Config.Resource> list, Player currentPlayer){
-
-        for (Resource resource : list) {
-
-            getCurrentPlayer().removeResource(1, resource);
-            bank.addBankResources(1,resource);
-        }
-    }
 
     /**
      * This method trade 4 offered resources to one wished resource.
@@ -476,88 +519,115 @@ public class SiedlerGame {
 
         return winner;
     }
-    
+
+
     /**
-     * The robber method is called when the number 7 is rolled. The method checks the number
-     * of resources pro player. Players who have more than 7 resources will be robbed of half
-     * the resources.
-     * 
-     * An example of the rounding system: A player with 9 resources must give 4 resources back.
+     * This method checks if a player has a road that is longer than
+     * five connected Edges which are not interrupted by a different
+     * settlement or city. If the condition is true the player gets two extra
+     * points except there is another player with a even longer road.
+     * @return 'Player' who gets five extra points or 'Null', if there
+     * is no player who matches the conditions.
      */
-    private void stealResourcesFromPlayer() {
-    	for(Player player : players) {
-    		int numberOfResources = player.getNumberOfTotalResources();
-    		if(numberOfResources > Config.MAX_CARDS_IN_HAND_NO_DROP) {
-    			if(numberOfResources % 2 == 0) {  //even number
-    				stealingResources(player, numberOfResources / 2);
-    			}
-    			else {	//uneven number
-    				stealingResources(player, (numberOfResources - 1) / 2);
-    			}
-    		}
-    	}
-    }
-    
-    /**
-     * This method performs the Robber's function. It removes a certain number of random resources 
-     * from the player and add them back to the bank.
-     * 
-     * @param player The player who gets robbed.
-     * @param numberOfResources Number of resources robbed
-     */
-    private void stealingResources(Player player, int numberOfResources) {
-    	int index = 0;
-    	for(int i = 0; i < numberOfResources ; i++) {
-    		index = (int)(Math.random() * player.getNumberOfTotalResources());
-    		bank.addBankResources(1, player.getResourceStock().get(index));
-			player.getResourceStock().remove(index);
-		}
+
+    public Player hasLongestRoad(){
+        Player playerWithLongestRoad = null;
+        int longestRoad = 0;
+        for(Player player : players) {
+
+            if(getLongestRoad(player) >= 5 && getLongestRoad(player) >= longestRoad) {
+
+                longestRoad = getLongestRoad(player);
+                playerWithLongestRoad = player;
+            }
+        }
+
+        if(playerWithLongestRoad != null) {
+
+            playerWithLongestRoad.setWinPoints(playerWithLongestRoad.getWinPoints() + 2);
+        }
+
+        return playerWithLongestRoad;
     }
 
 
     private int getLongestRoad(Player player){
-        int length = 1;
+        int longestRoad = 0;
 
-        //potential start nodes
         Set<Point> roadCorners = new HashSet<>();
 
-        //fill in potential nodes
         for(Meeple meepple : player.getMeepleList()){
 
             if(meepple instanceof Road) {
-
                 roadCorners.add(((Road) meepple).getRoadStart());
                 roadCorners.add(((Road) meepple).getRoadEnd());
             }
         }
-
-
-        //map of visited roads;
-
-
-        Map<Integer,Integer> visitedRoads = new HashMap<>();
-
-       /** for(Point corner : roadCorners) {
+        for(Point corner : roadCorners) {
            visitedRoads.clear();
-            for(String road : board.getAdjacentEdges(corner)) {
+           searchForLongestRoadAtCorner(corner,player, 1);
+           for(int i : visitedRoads.values()) {
+               if(i>longestRoad) {
+                   longestRoad = i;
+               }
+           }
 
-                if(road.equals(player.getPlayerFaction().toString().substring(0, 1))&&!visitedRoads.containsKey(road.g)) {
+            }
+                return longestRoad;
+        }
 
+        private void searchForLongestRoadAtCorner(Point corner, Player player, int length) {
+
+            for(Road road : getAdjacentRoads(corner,player.getPlayerFaction())) {
+
+                if(road.OWNER.toString().equals(player.getPlayerFaction().toString())&&
+                        !visitedRoads.containsKey(road.getUniqueID()) &&
+                        !visitedRoads.containsKey(road.getUniqueIDreverse())) {
+
+                    if(road.getRoadStart().toString().equals(corner.toString())) {
+
+                        visitedRoads.put(road.getUniqueID(), length);
+                        visitedRoads.put(road.getUniqueIDreverse(), length );
+
+                        if(player.getPlayerFaction().toString().substring(0, 1)
+                                .equals(board.getCorner(road.getRoadEnd()))
+                        || board.getCorner(road.getRoadEnd())==null) {
+
+                            searchForLongestRoadAtCorner(road.getRoadEnd(), player, length + 1);
+                        }
+                    }
+                    else if(road.getRoadEnd().toString().equals(corner.toString())) {
+                        visitedRoads.put(road.getUniqueID(), length);
+                        visitedRoads.put(road.getUniqueIDreverse(), length);
+
+                        if(player.getPlayerFaction().toString().substring(0, 1)
+                                .equals(board.getCorner(road.getRoadStart()))
+                                || board.getCorner(road.getRoadStart())==null) {
+
+                            searchForLongestRoadAtCorner(road.getRoadStart(), player, length + 1);
+                        }
+                    }
                 }
             }
 
-        }*/
-
-
-    return 0;
-
         }
 
-        private void searchForLongestRoad(Point corner, Player player, int currentLength){
 
+    private List<Road> getAdjacentRoads(Point corner, Faction player){
 
+        List<Road> roads = new ArrayList<>();
+        for(int i = 0; i < board.getNeighborsOfCornerAsPoints(corner).size(); i++)
+        {
+            if(board.hasEdge(corner, board.getNeighborsOfCornerAsPoints(corner).get(i))) {
 
+                if(board.getEdge(corner, board.getNeighborsOfCornerAsPoints(corner).get(i))!=null) {
 
+                    roads.add(new Road(player, corner,
+                            board.getNeighborsOfCornerAsPoints(corner).get(i)));
+                }
+            }
+        }
+            return roads;
         }
 
 
