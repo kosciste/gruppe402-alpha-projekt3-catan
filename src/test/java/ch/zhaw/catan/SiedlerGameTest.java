@@ -287,4 +287,22 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
         assertFalse(siedlerGame.getCurrentPlayer().getResourceStock().contains(want));
     }
+
+    @Test
+    void tradeWithBankFourToOne_WithBankNoResources()
+    {
+        Config.Resource offer = Config.Resource.CLAY;
+        Config.Resource want = Config.Resource.WOOD;
+
+        SiedlerGame siedlerGame = new SiedlerGame(2);
+        for (int i = 0; i < 4; i++) {
+            siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+        }
+        for (int i = 0; i < 20; i++) {
+            siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.WOOD);
+        }
+
+        //assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
+        assertEquals(23, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
+    }
 }
