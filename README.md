@@ -3,7 +3,7 @@
 
 ### Einführung
 
-Hallo! Auf diesem Repository finden Sie eine in Java geschriebene, vereinfachte Version von dem bekannten Bretspiel: Die Siedler von Katan. Diese Version ist auf der Konsole spielebar.
+Hallo! Auf diesem Repository finden Sie eine in Java geschriebene, vereinfachte Version von dem bekannten Brettspiel: Die Siedler von Catan. Diese Version ist auf der Konsole spielbar.
 
 #### Voraussetzung
 
@@ -14,7 +14,7 @@ Hallo! Auf diesem Repository finden Sie eine in Java geschriebene, vereinfachte 
 #### Installation
 
 * Clonen Sie das Repository in ihr Lokales System.
-* Danach öffnen Sie das Projekt mit der von Ihnen gewählt IDE.
+* Danach öffnen Sie das Projekt mit der von Ihnen gewählten IDE.
 * Nun sollten Sie eine .jar Datei vom Texteditor entwickeln können.
 
 * Als letztes öffnen Sie ihre Konsole und starten die Applikation.
