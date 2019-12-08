@@ -203,22 +203,25 @@ public class SiedlerGame {
 
                         if(corner.equals(player.getPlayerFaction().toString())){
 
-                            player.addRescourceFromSettlement
-                                    (board.getField(field).getResource());
+                            if(bank.hasBankEnoughResources(1,board.getField(field).getResource())) {
 
-                            resources.add(board.getField(field).getResource());
-                            bank.removeBankResource(1,board.getField(field).getResource());
+                                player.addRescourceFromSettlement
+                                        (board.getField(field).getResource());
 
+                                resources.add(board.getField(field).getResource());
+                                bank.removeBankResource(1,board.getField(field).getResource());
+                            }
                         }
 
                         if(corner.equals(player.getPlayerFaction().toString().toUpperCase())){
+                           if (bank.hasBankEnoughResources(2,board.getField(field).getResource())) {
+                                player.addRescourceFromCity
+                                        (board.getField(field).getResource());
 
-                            player.addRescourceFromCity
-                                    (board.getField(field).getResource());
-
-                            resources.add(board.getField(field).getResource());
-                            resources.add(board.getField(field).getResource());
-                            bank.removeBankResource(2,board.getField(field).getResource());
+                                resources.add(board.getField(field).getResource());
+                                resources.add(board.getField(field).getResource());
+                                bank.removeBankResource(2,board.getField(field).getResource());
+                            }
                         }
                     }
                 }
