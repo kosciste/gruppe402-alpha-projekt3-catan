@@ -21,7 +21,7 @@ public class SiedlerGame {
 
     private static final int WINPOINTS = 5;
     private static final int OFFSET = 1;
-    private static int playerAtTurn = 0;
+    private int playerAtTurn = 0;
     private int numberOfPlayers;
     SiedlerBoard board = new SiedlerBoard();
     Bank bank = new Bank();
