@@ -1,7 +1,5 @@
 package ch.zhaw.catan;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -10,11 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SiedlerGameTest {
 
-    @BeforeAll
-    void setUp() {
-
-    }
-
     @Test
     void switchToNextPlayer() {
         SiedlerGame siedlerGame = new SiedlerGame(4);
@@ -22,12 +15,14 @@ class SiedlerGameTest {
         assertEquals(siedlerGame.getCurrentPlayer(),siedlerGame.getPlayer().get(1));
     }
 
+    /*
     @Test
     void switchToPreviousPlayer() {
         SiedlerGame siedlerGame = new SiedlerGame(4);
-        siedlerGame.switchToNextPlayer();
-        assertEquals(siedlerGame.getCurrentPlayer(),siedlerGame.getPlayer().get(4));
+        siedlerGame.switchToPreviousPlayer();
+        assertEquals(siedlerGame.getPlayer().get(3), siedlerGame.getCurrentPlayer());
     }
+    */
 
     @Test
     void placeInitialSettlementValidValue() {
@@ -52,8 +47,108 @@ class SiedlerGameTest {
     }
 
     @Test
-    void placeInitialRoad() {
+    void placeInitialRoadStartAndEndNotSideBySide() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	
+    	assertFalse(siedlerGame.placeInitialRoad(new Point(3, 7), new Point(11, 15)));
     }
+    
+    @Test
+    void placeInitialRoadStartHasNoSettlementEndAdjoinsNothing() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	Point startOfNewRoad = new Point(7, 7);
+    	Point endOfNewRoad = new Point(7, 9);
+    	
+    	assertFalse(siedlerGame.placeInitialRoad(startOfNewRoad, endOfNewRoad));
+    }
+    
+    @Test
+    void placeInitialRoadStartHasNoSettlementEndAdjoinsOwnRoad() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	Point startOfOwnRoad = new Point(7, 7);
+    	Point endOfOwnRoad = new Point(7, 9);
+    	siedlerGame.placeInitialSettlement(startOfOwnRoad, false);
+    	siedlerGame.placeInitialRoad(startOfOwnRoad, endOfOwnRoad);
+    	Point startOfNewRoad = new Point(8, 10);
+    	
+    	assertTrue(siedlerGame.placeInitialRoad(startOfNewRoad, endOfOwnRoad));
+    }
+    
+    @Test
+    void placeInitialRoadStartHasNoSettlementEndAdjoinsForeignRoad() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	Point startOfForeignRoad = new Point(7, 7);
+    	Point endOfForeignRoad = new Point(7, 9);
+    	siedlerGame.placeInitialSettlement(startOfForeignRoad, false);
+    	siedlerGame.placeInitialRoad(startOfForeignRoad, endOfForeignRoad);
+    	siedlerGame.switchToNextPlayer();
+    	Point startOfNewRoad = new Point(8, 10);
+    	
+    	assertFalse(siedlerGame.placeInitialRoad(startOfNewRoad, endOfForeignRoad));
+    }
+    
+    @Test
+    void placeInitialRoadStartHasOwnSettlementEndAdjoinsNothing() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	Point startOfNewRoad = new Point(7, 7);
+    	Point endOfNewRoad = new Point(7, 9);
+    	siedlerGame.placeInitialSettlement(startOfNewRoad, false);
+    	
+    	assertTrue(siedlerGame.placeInitialRoad(startOfNewRoad, endOfNewRoad));
+    }
+    
+    @Test
+    void placeInitialRoadStartHasOwnSettlementEndAdjoinsOwnRoad() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	Point startOfNewRoad = new Point(7, 7);
+    	Point endOfNewRoad = new Point(7, 9);
+    	Point startOfOwnRoad = new Point(8, 10);
+    	siedlerGame.placeInitialSettlement(startOfOwnRoad, false);
+    	siedlerGame.placeInitialRoad(startOfOwnRoad, endOfNewRoad);
+    	siedlerGame.placeInitialSettlement(startOfNewRoad, false);
+    	
+    	assertTrue(siedlerGame.placeInitialRoad(startOfNewRoad, endOfNewRoad));
+    }
+    
+    @Test
+    void placeInitialRoadStartHasOwnSettlementEndAdjoinsForeignRoad() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	Point startOfNewRoad = new Point(7, 7);
+    	Point endOfNewRoad = new Point(7, 9);
+    	Point startOfForeignRoad = new Point(8, 10);
+    	siedlerGame.placeInitialSettlement(startOfForeignRoad, false);
+    	siedlerGame.placeInitialRoad(startOfForeignRoad, endOfNewRoad);
+    	siedlerGame.switchToNextPlayer();
+    	siedlerGame.placeInitialSettlement(startOfNewRoad, false);
+    	
+    	assertTrue(siedlerGame.placeInitialRoad(startOfNewRoad, endOfNewRoad));
+    }
+    
+    @Test
+    void placeInitialRoadStartHasForeignSettlementEndAdjoinsNothing() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	Point startOfNewRoad = new Point(7, 7);
+    	Point endOfNewRoad = new Point(7, 9);
+    	siedlerGame.placeInitialSettlement(startOfNewRoad, false);
+    	siedlerGame.switchToNextPlayer();
+    	
+    	assertFalse(siedlerGame.placeInitialRoad(startOfNewRoad, endOfNewRoad));
+    }
+    
+    @Test
+    void placeInitialRoadStartHasForeignSettlementEndAdjoinsForeignRoad() {
+    	SiedlerGame siedlerGame = new SiedlerGame(2);
+    	Point startOfNewRoad = new Point(7, 7);
+    	Point endOfNewRoad = new Point(7, 9);
+    	siedlerGame.placeInitialSettlement(startOfNewRoad, false);
+    	Point startOfForeignRoad = new Point(8, 10);
+    	siedlerGame.placeInitialSettlement(startOfForeignRoad, false);
+    	siedlerGame.placeInitialRoad(startOfForeignRoad, endOfNewRoad);
+    	siedlerGame.switchToNextPlayer();
+    	
+    	assertFalse(siedlerGame.placeInitialRoad(startOfNewRoad, endOfNewRoad));
+    }
+
 
     @Test
     void throwDice() {
@@ -75,9 +170,9 @@ class SiedlerGameTest {
     void getWinner() {
     }
 
+    /*
     @Test
     void hasLongestRoad(){
-
         Settlement settlement = new Settlement(Config.Faction.RED);
         board.setCorner(new Point(5,3),settlement.toString());
         Road road = new Road(Config.Faction.RED,new Point(5,3), new Point(6,4));
@@ -100,6 +195,7 @@ class SiedlerGameTest {
         System.out.println(getLongestRoad(getPlayer().get(0)));
         System.out.println(getLongestRoad(getPlayer().get(1)));
     }
+    */
 }
 
 /**
