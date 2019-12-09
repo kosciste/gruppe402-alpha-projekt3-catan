@@ -15,14 +15,14 @@ class SiedlerGameTest {
         assertEquals(siedlerGame.getCurrentPlayer(),siedlerGame.getPlayer().get(1));
     }
 
-    /*
+
     @Test
     void switchToPreviousPlayer() {
         SiedlerGame siedlerGame = new SiedlerGame(4);
         siedlerGame.switchToPreviousPlayer();
         assertEquals(siedlerGame.getPlayer().get(3), siedlerGame.getCurrentPlayer());
     }
-    */
+
 
     @Test
     void placeInitialSettlementValidValue() {
@@ -358,7 +358,7 @@ class SiedlerGameTest {
         siedlerGame.getCurrentPlayer().initializeMeeple(road);
         assertFalse(siedlerGame.buildRoad(new Point(5,3), new Point(5,1)));
     }
-    
+
 
     @Test
     void buildCity() {
@@ -368,32 +368,82 @@ class SiedlerGameTest {
     void getWinner() {
     }
 
-    /*
     @Test
-    void hasLongestRoad(){
-        Settlement settlement = new Settlement(Config.Faction.RED);
-        board.setCorner(new Point(5,3),settlement.toString());
-        Road road = new Road(Config.Faction.RED,new Point(5,3), new Point(6,4));
-        board.setEdge(new Point(5,3), new Point(6,4),road.toString());
-        Road road2 = new Road(Config.Faction.RED,new Point(6,4), new Point(6,6));
-        Road road3 = new Road(Config.Faction.RED,new Point(6,6), new Point(7,7));
-        Settlement settlement1 = new Settlement(Config.Faction.BLUE);
-        Settlement settlement2 = new Settlement(Config.Faction.BLUE);
-        board.setCorner(new Point(6,6), settlement2.toString());
-        getPlayer().get(1).initializeMeeple(settlement2);
-        board.setCorner(new Point(10,4),settlement1.toString());
-        Road road4 = new Road(Config.Faction.BLUE,new Point(10,4), new Point(10,6));
-        board.setEdge(new Point(10,4), new Point(10,6),road4.toString());
-        getPlayer().get(1).initializeMeeple(road4);
-        getPlayer().get(0).initializeMeeple(road);
-        getPlayer().get(0).initializeMeeple(road2);
-        getPlayer().get(0).initializeMeeple(road3);
-        board.setEdge(new Point(6,4), new Point(6,6),road2.toString());
-        board.setEdge(new Point(6,6), new Point(7,7),road3.toString());
-        System.out.println(getLongestRoad(getPlayer().get(0)));
-        System.out.println(getLongestRoad(getPlayer().get(1)));
+    void hasLongestRoadIfConditionsApply(){
+        SiedlerGame  siedlerGame = new SiedlerGame(2);
+        siedlerGame.placeInitialSettlement(new Point(5,3), false);
+        siedlerGame.placeInitialRoad(new Point(5,3), new Point(6,4));
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.CLAY);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOD);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.CLAY);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOD);
+        Road road = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(6,4), new Point(6,6));
+        siedlerGame.buildRoad(new Point(6,4), new Point(6,6));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road);
+        Road road1 = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(6,6), new Point(7,7));
+        siedlerGame.buildRoad(new Point(6,6), new Point(7,7));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road1);
+        Road road2 = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(7,7), new Point(7,9));
+        siedlerGame.buildRoad(new Point(7,7), new Point(7,9));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road2);
+        Road road3 = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(7,9), new Point(8,10));
+        siedlerGame.buildRoad(new Point(7,9), new Point(8,10));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road3);
+        siedlerGame.switchToNextPlayer();
+
+        Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
+        siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
+        siedlerGame.placeInitialSettlement(new Point(3,13), false);
+        siedlerGame.placeInitialRoad(new Point(3,13), new Point(3,15));
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.CLAY);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOD);
+        Road road4 = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(3,15), new Point(4,16));
+        siedlerGame.buildRoad(new Point(3,15), new Point(4,16));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road4);
+        assertEquals(siedlerGame.getPlayer().get(0), siedlerGame.hasLongestRoad());
+
     }
-    */
+
+    @Test
+    void hasLongestRoadIfNull(){
+        SiedlerGame  siedlerGame = new SiedlerGame(2);
+        siedlerGame.placeInitialSettlement(new Point(5,3), false);
+        siedlerGame.placeInitialRoad(new Point(5,3), new Point(6,4));
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.CLAY);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOD);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.CLAY);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOD);
+        Road road = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(6,4), new Point(6,6));
+        siedlerGame.buildRoad(new Point(6,4), new Point(6,6));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road);
+        Road road1 = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(6,6), new Point(7,7));
+        siedlerGame.buildRoad(new Point(6,6), new Point(7,7));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road1);
+        Road road2 = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(7,7), new Point(7,9));
+        siedlerGame.buildRoad(new Point(7,7), new Point(7,9));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road2);
+        Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
+        siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
+        siedlerGame.placeInitialSettlement(new Point(3,13), false);
+        siedlerGame.placeInitialRoad(new Point(3,13), new Point(3,15));
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.CLAY);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOD);
+        Road road4 = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(3,15), new Point(4,16));
+        siedlerGame.buildRoad(new Point(3,15), new Point(4,16));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road4);
+        assertNull(siedlerGame.hasLongestRoad());
+
+    }
+
 }
 
 /**
