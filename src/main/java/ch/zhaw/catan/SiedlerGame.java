@@ -348,7 +348,6 @@ public class SiedlerGame {
                 if (board.getFields(position).get(j).getResource() == Config.Resource.values()[i]) {
                     isValid = true;
                 }
-
             }
         }
         return isValid;
@@ -358,22 +357,25 @@ public class SiedlerGame {
     /**
      * The method checks if the player has enough resources to build
      * a specified kind of meeple.
-     *
      * @param list          the costs of resources fot the specified meeple
      * @param currentPlayer the player who wants to build
      * @return 'true' if the player can pay the costs.
      */
     private boolean hasEnoughResources(List<Config.Resource> list, Player currentPlayer) {
-
-        boolean hasEnoughRessources = true;
-        for (Resource resource : list) {
-
-            if (getCurrentPlayer().getNumberOfSingleResource(resource) < 1) {
-                hasEnoughRessources = false;
+        if(list == Config.Structure.CITY.getCosts()){
+            return (currentPlayer.getNumberOfSingleResource(Resource.STONE)>2
+                    &&(getCurrentPlayer().getNumberOfSingleResource(Resource.GRAIN) > 1)); }
+       else {
+            boolean hasEnoughResources = true;
+            for (Resource resource : list) {
+                if (currentPlayer.getNumberOfSingleResource(resource) < 1) {
+                    hasEnoughResources = false;
+                }
             }
+            return hasEnoughResources;
         }
-        return hasEnoughRessources;
     }
+
 
     /**
      * This method removes resources from the player which he uses
@@ -540,9 +542,7 @@ public class SiedlerGame {
 
                 winner = player;
             }
-
         }
-
         return winner;
     }
 
@@ -646,7 +646,6 @@ public class SiedlerGame {
                 }
             }
         }
-
     }
 
     /**
