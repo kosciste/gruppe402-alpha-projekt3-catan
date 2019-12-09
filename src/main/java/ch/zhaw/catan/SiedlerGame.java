@@ -28,6 +28,7 @@ public class SiedlerGame {
     private int playerAtTurn = 0;
     private int numberOfPlayers;
     private List<Player> players = new ArrayList<>();
+    private int longestRoad = 0;
 
 
     public SiedlerGame(int numberOfPlayers) {
@@ -557,7 +558,6 @@ public class SiedlerGame {
 
     public Player getPlayerWithLongestRoad() {
         Player playerWithLongestRoad = null;
-        int longestRoad = 0;
         for (Player player : players) {
 
             if (getLongestRoad(player) >= 5 && getLongestRoad(player) > longestRoad) {
