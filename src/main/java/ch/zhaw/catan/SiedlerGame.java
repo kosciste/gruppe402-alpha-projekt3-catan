@@ -560,7 +560,7 @@ public class SiedlerGame {
         int longestRoad = 0;
         for (Player player : players) {
 
-            if (getLongestRoad(player) >= 5 && getLongestRoad(player) >= longestRoad) {
+            if (getLongestRoad(player) >= 5 && getLongestRoad(player) > longestRoad) {
 
                 longestRoad = getLongestRoad(player);
                 playerWithLongestRoad = player;
@@ -577,7 +577,7 @@ public class SiedlerGame {
      * @param player the player whose roads need to be checked
      * @return 'int' size of the longest road
      */
-    private int getLongestRoad(Player player) {
+    public int getLongestRoad(Player player) {
         int longestRoad = 0;
 
         Set<Point> roadCorners = new HashSet<>();
