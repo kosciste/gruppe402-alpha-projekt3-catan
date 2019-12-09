@@ -161,9 +161,10 @@ public class Output {
 	}
 	
 	/**
+	 * @param lengthOfLongestRoad the amount of roads which build the longest road
 	 * @return string as an information, that the current player owns the longest road
 	 */
-	public static String getLongestRoadMessage() {
-		return "You own the longest road!";
+	public static String getLongestRoadMessage(int lengthOfLongestRoad) {
+		return "You own the longest road!\nThe length of the longest road is " + lengthOfLongestRoad;
 	}
 }

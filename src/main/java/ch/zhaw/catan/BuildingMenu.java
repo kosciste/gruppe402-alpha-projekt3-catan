@@ -165,10 +165,10 @@ public class BuildingMenu {
 	
 	/**
 	 * Looks for the longest road. If nobody has owned the longest road up to now,
-	 * but the current player does, he gets two points and a message is printed to
-	 * the console. If a player has owned the longest road but now the current
-	 * player owns an even longer road, the old owner loses two points and the new
-	 * player gets them. In both cases there is a look for a winner.
+	 * but the current player does, he gets two points. If a player has owned the
+	 * longest road but now the current player owns an even longer road, the old
+	 * owner loses two points and the new player gets them. In both cases there is a
+	 * message printed to the console and a look for a winner.
 	 */
 	private void lookForLongestRoad() {
 		Player currentPlayer = siedlerGame.getCurrentPlayer();
@@ -182,7 +182,8 @@ public class BuildingMenu {
 			currentPlayer.setWinPoints(currentPoints + SiedlerGame.POINTS_LONGEST_ROAD);
 
 			Player.currentPlayerWithLongestRoad = currentPlayer;
-			InputOutputConsole.printText(Output.getLongestRoadMessage());
+			int lengthOfLongestRoad = siedlerGame.getLongestRoad(currentPlayer);
+			InputOutputConsole.printText(Output.getLongestRoadMessage(lengthOfLongestRoad));
 			lookForWinner();
 		}
 	}
