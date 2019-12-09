@@ -394,7 +394,6 @@ class SiedlerGameTest {
         siedlerGame.buildRoad(new Point(7,9), new Point(8,10));
         siedlerGame.getCurrentPlayer().initializeMeeple(road3);
         siedlerGame.switchToNextPlayer();
-
         Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
         siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
         siedlerGame.placeInitialSettlement(new Point(3,13), false);
@@ -405,7 +404,7 @@ class SiedlerGameTest {
                 .getPlayerFaction(),new Point(3,15), new Point(4,16));
         siedlerGame.buildRoad(new Point(3,15), new Point(4,16));
         siedlerGame.getCurrentPlayer().initializeMeeple(road4);
-        assertEquals(siedlerGame.getPlayer().get(0), siedlerGame.hasLongestRoad());
+        assertEquals(siedlerGame.getPlayer().get(0), siedlerGame.getPlayerWithLongestRoad());
 
     }
 
@@ -440,7 +439,7 @@ class SiedlerGameTest {
                 .getPlayerFaction(),new Point(3,15), new Point(4,16));
         siedlerGame.buildRoad(new Point(3,15), new Point(4,16));
         siedlerGame.getCurrentPlayer().initializeMeeple(road4);
-        assertNull(siedlerGame.hasLongestRoad());
+        assertNull(siedlerGame.getPlayerWithLongestRoad());
 
     }
 

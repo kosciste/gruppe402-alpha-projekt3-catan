@@ -568,7 +568,7 @@ public class SiedlerGame {
      * is no player who matches the conditions.
      */
 
-    public Player hasLongestRoad(){
+    public Player getPlayerWithLongestRoad(){
         Player playerWithLongestRoad = null;
         int longestRoad = 0;
         for(Player player : players) {
@@ -578,11 +578,6 @@ public class SiedlerGame {
                 longestRoad = getLongestRoad(player);
                 playerWithLongestRoad = player;
             }
-        }
-
-        if(playerWithLongestRoad != null) {
-
-            playerWithLongestRoad.setWinPoints(playerWithLongestRoad.getWinPoints() + 2);
         }
 
         return playerWithLongestRoad;
