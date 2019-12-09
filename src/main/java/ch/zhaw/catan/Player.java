@@ -14,6 +14,8 @@ import ch.zhaw.catan.Config.Resource;
  *
  */
 public class Player {
+	
+	protected static Player currentPlayerWithLongestRoad;
 	private int winPoints;
 	private List<Meeple> meeples;
 	private List<Resource> resourceStock;

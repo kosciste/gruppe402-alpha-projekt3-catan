@@ -58,6 +58,24 @@ public class BuildingMenu {
                     break;
                 case ROAD:
                     startRoadBuilding();
+                    Player currentPlayer = siedlerGame.getCurrentPlayer();
+                    Player newPlayerWithLongestRoad = siedlerGame.hasLongestRoad();
+                    if (currentPlayer == newPlayerWithLongestRoad && currentPlayer != Player.currentPlayerWithLongestRoad) {
+                    	if (Player.currentPlayerWithLongestRoad != null) {
+                    		int currentPoints = Player.currentPlayerWithLongestRoad.getWinPoints();
+                        	Player.currentPlayerWithLongestRoad.setWinPoints(currentPoints - SiedlerGame.POINTS_LONGEST_ROAD);
+                    	}
+                    	int currentPoints = currentPlayer.getWinPoints();
+                    	currentPlayer.setWinPoints(currentPoints + SiedlerGame.POINTS_LONGEST_ROAD);
+                    	
+                    	Player.currentPlayerWithLongestRoad = currentPlayer;
+                    	InputOutputConsole.printText(Output.getLongestRoadMessage());
+                    }
+                    if (isWinnerAvailable()) {
+                    	winner = siedlerGame.getWinner();
+                    	menuIsRunning = false;
+                    	gameIsRunning = false;
+                    }
                     break;
                 case SETTLEMENT:
                     startSettlementBuilding();

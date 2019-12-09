@@ -19,7 +19,8 @@ import java.util.HashSet;
 
 public class SiedlerGame {
 
-    private static final int WINPOINTS = 5;
+    protected static final int POINTS_LONGEST_ROAD = 2;
+	private static final int WINPOINTS = 5;
     private static final int OFFSET = 1;
     private int playerAtTurn = 0;
     private int numberOfPlayers;

@@ -159,4 +159,11 @@ public class Output {
 	public static String getWinnerMessage(Player winner) {
 		return "Game over! The winner is " + getPlayerWithName(winner);
 	}
+	
+	/**
+	 * @return string as an information, that the current player owns the longest road
+	 */
+	public static String getLongestRoadMessage() {
+		return "You own the longest road!";
+	}
 }
