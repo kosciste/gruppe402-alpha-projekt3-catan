@@ -38,69 +38,74 @@ class BankTest {
 	}
 	
 	@Test
-	void GRAINhasBankEnoughtResourcesFalse() {
+	void GRAINhasBankEnoughResourcesFalse() {
 		Bank bank = new Bank();
 		bank.removeBankResource(19, Resource.GRAIN);
 		assertFalse(bank.hasBankEnoughResources(1, Resource.GRAIN));
 	}
 	
 	@Test
-	void GRAINhasBankEnoughtResourcesTrue() {
+	void GRAINhasBankEnoughResourcesTrue() {
 		Bank bank = new Bank();
 		assertTrue(bank.hasBankEnoughResources(1, Resource.GRAIN));
 	}
 	
 	@Test
-	void WOOLhasBankEnoughtResourcesFalse() {
+	void WOOLhasBankEnoughResourcesFalse() {
 		Bank bank = new Bank();
 		bank.removeBankResource(19, Resource.WOOL);
 		assertFalse(bank.hasBankEnoughResources(1, Resource.WOOL));
 	}
 	
 	@Test
-	void WOOLhasBankEnoughtResourcesTrue() {
+	void WOOLhasBankEnoughResourcesTrue() {
 		Bank bank = new Bank();
 		assertTrue(bank.hasBankEnoughResources(1, Resource.WOOL));
 	}
 	
 	@Test
-	void WOODhasBankEnoughtResourcesFalse() {
+	void WOODhasBankEnoughResourcesFalse() {
 		Bank bank = new Bank();
 		bank.removeBankResource(19, Resource.WOOD);
 		assertFalse(bank.hasBankEnoughResources(1, Resource.WOOD));
 	}
 	
 	@Test
-	void WOODhasBankEnoughtResourcesTrue() {
+	void WOODhasBankEnoughResourcesTrue() {
 		Bank bank = new Bank();
 		assertTrue(bank.hasBankEnoughResources(1, Resource.WOOD));
 	}
 	
 	@Test
-	void STONEhasBankEnoughtResourcesFalse() {
+	void STONEhasBankEnoughResourcesFalse() {
 		Bank bank = new Bank();
 		bank.removeBankResource(19, Resource.STONE);
 		assertFalse(bank.hasBankEnoughResources(1, Resource.STONE));
 	}
 	
 	@Test
-	void STONEhasBankEnoughtResourcesTrue() {
+	void STONEhasBankEnoughResourcesTrue() {
 		Bank bank = new Bank();
 		assertTrue(bank.hasBankEnoughResources(1, Resource.STONE));
 	}
 	
 	@Test
-	void CLAYhasBankEnoughtResourcesFalse() {
+	void CLAYhasBankEnoughResourcesFalse() {
 		Bank bank = new Bank();
 		bank.removeBankResource(19, Resource.CLAY);
 		assertFalse(bank.hasBankEnoughResources(1, Resource.CLAY));
 	}
 	
 	@Test
-	void CLAYhasBankEnoughtResourcesTrue() {
+	void CLAYhasBankEnoughResourcesTrue() {
 		Bank bank = new Bank();
 		assertTrue(bank.hasBankEnoughResources(1, Resource.CLAY));
 	}
 	
+	@Test
+	void overMaxHasBankEnoughResources() {
+		Bank bank = new Bank();
+		assertFalse(bank.hasBankEnoughResources(20, Resource.CLAY));
+	}
 	
 }
