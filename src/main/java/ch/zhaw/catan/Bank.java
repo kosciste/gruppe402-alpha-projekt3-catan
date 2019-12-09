@@ -44,7 +44,6 @@ public class Bank {
 	 * @param resource The type of resource.
 	 * @return true, if the bank has enough resources. 
 	 */
-	//TODO Fehler, wird nicht überprüft bei: placeInitialSettlement, throwDice 2 mal.
 	public boolean hasBankEnoughResources(int number, Resource resource){
 		int index = 0;
 		Iterator<Resource> it = resourceBank.iterator();
@@ -101,7 +100,6 @@ public class Bank {
 	 * 
 	 * @return resource ArrayList
 	 */
-	//TODO Wird nur für Testing gebraucht
 	public List<Resource> getBankResources() {
 		return resourceBank;
 	}
