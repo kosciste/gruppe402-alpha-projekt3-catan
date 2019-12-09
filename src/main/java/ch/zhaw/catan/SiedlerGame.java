@@ -531,13 +531,7 @@ public class SiedlerGame {
             return false;
         }
 
-        int resourceCounter = 0;
-        for (Resource resource : getCurrentPlayer().getResourceStock()) {
-            if (resource.equals(offer)) {
-                resourceCounter++;
-            }
-        }
-        if (resourceCounter >= 4) {
+        if (getCurrentPlayer().getNumberOfSingleResource(offer) >= 4) {
             return true;
         } else {
             return false;
