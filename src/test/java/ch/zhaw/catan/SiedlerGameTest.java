@@ -42,8 +42,6 @@ class SiedlerGameTest {
 
         //Distance rule
         assertFalse(siedlerGame.placeInitialSettlement(new Point(5, 1), false));
-
-
     }
 
     @Test
@@ -149,7 +147,6 @@ class SiedlerGameTest {
     	assertFalse(siedlerGame.placeInitialRoad(startOfNewRoad, endOfNewRoad));
     }
 
-
     @Test
     void buildSettlementWithValidConditions() {
         SiedlerGame  siedlerGame = new SiedlerGame(2);
@@ -166,7 +163,6 @@ class SiedlerGameTest {
         Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
         siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
         assertTrue(siedlerGame.buildSettlement(new Point(6,6)));
-
     }
 
     @Test
@@ -181,7 +177,6 @@ class SiedlerGameTest {
         Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
         siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
         assertFalse(siedlerGame.buildSettlement(new Point(6,6)));
-
     }
 
     @Test
@@ -203,7 +198,6 @@ class SiedlerGameTest {
         Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
         siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
         assertFalse(siedlerGame.buildSettlement(new Point(6,6)));
-
     }
 
     @Test
@@ -355,9 +349,60 @@ class SiedlerGameTest {
         assertFalse(siedlerGame.buildRoad(new Point(5,3), new Point(5,1)));
     }
 
-
     @Test
-    void buildCity() {
+    void buildCityWhenNotEnoughResources() {
+    	SiedlerGame  siedlerGame = new SiedlerGame(2);
+    	siedlerGame.placeInitialSettlement(new Point(6,6), false);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.GRAIN);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	City city = new City(siedlerGame.getCurrentPlayer().getPlayerFaction());
+    	siedlerGame.getCurrentPlayer().initializeMeeple(city);
+    	assertFalse(siedlerGame.buildCity(new Point(6,6)));
+    }
+    
+    @Test
+    void buildCityWithNoSettlement() {
+       	SiedlerGame  siedlerGame = new SiedlerGame(2);
+    	siedlerGame.placeInitialSettlement(new Point(6,6), false);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.GRAIN);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.GRAIN);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	City city = new City(siedlerGame.getCurrentPlayer().getPlayerFaction());
+    	siedlerGame.getCurrentPlayer().initializeMeeple(city);
+    	assertFalse(siedlerGame.buildCity(new Point(9,9)));
+    }
+       
+    @Test
+    void buildCityMaxNumberOfCities() {
+    	SiedlerGame  siedlerGame = new SiedlerGame(2);
+    	siedlerGame.placeInitialSettlement(new Point(6,6), false);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.GRAIN);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.GRAIN);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	siedlerGame.getCurrentPlayer().initializeMeeple(new City(siedlerGame.getCurrentPlayer().getPlayerFaction()));
+    	siedlerGame.getCurrentPlayer().initializeMeeple(new City(siedlerGame.getCurrentPlayer().getPlayerFaction()));
+    	siedlerGame.getCurrentPlayer().initializeMeeple(new City(siedlerGame.getCurrentPlayer().getPlayerFaction()));
+    	siedlerGame.getCurrentPlayer().initializeMeeple(new City(siedlerGame.getCurrentPlayer().getPlayerFaction()));
+    	assertFalse(siedlerGame.buildCity(new Point(6,6)));
+    }
+    
+    @Test
+    void buildCityHasEnoughRessources() {
+    	SiedlerGame  siedlerGame = new SiedlerGame(2);
+    	siedlerGame.placeInitialSettlement(new Point(6,6), false);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.GRAIN);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.GRAIN);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.STONE);
+    	City city = new City(siedlerGame.getCurrentPlayer().getPlayerFaction());
+    	siedlerGame.getCurrentPlayer().initializeMeeple(city);
+    	assertTrue(siedlerGame.buildCity(new Point(6,6)));
     }
 
     @Test
@@ -371,7 +416,6 @@ class SiedlerGameTest {
         siedlerGame.switchToNextPlayer();
         siedlerGame.getCurrentPlayer().setWinPoints(2);
         assertNull(siedlerGame.getWinner());
-
     }
 
     @Test
@@ -399,7 +443,6 @@ class SiedlerGameTest {
         siedlerGame.getCurrentPlayer().setWinPoints(7);
         assertEquals(siedlerGame.getWinner(),siedlerGame.getCurrentPlayer());
     }
-
 
     @Test
     void hasLongestRoadIfConditionsApply(){
@@ -438,7 +481,6 @@ class SiedlerGameTest {
         siedlerGame.buildRoad(new Point(3,15), new Point(4,16));
         siedlerGame.getCurrentPlayer().initializeMeeple(road4);
         assertEquals(siedlerGame.getPlayer().get(0), siedlerGame.getPlayerWithLongestRoad());
-
     }
 
     @Test
@@ -473,7 +515,6 @@ class SiedlerGameTest {
         siedlerGame.buildRoad(new Point(3,15), new Point(4,16));
         siedlerGame.getCurrentPlayer().initializeMeeple(road4);
         assertNull(siedlerGame.getPlayerWithLongestRoad());
-
     }
 
 }
