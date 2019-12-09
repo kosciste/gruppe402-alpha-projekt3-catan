@@ -20,7 +20,7 @@ import java.util.HashSet;
 public class SiedlerGame {
 
     protected static final int POINTS_LONGEST_ROAD = 2;
-	private static final int WINPOINTS = 5;
+	private static final int WINPOINTS = 7;
     private static final int OFFSET = 1;
     SiedlerBoard board = new SiedlerBoard();
     Bank bank = new Bank();
@@ -42,7 +42,6 @@ public class SiedlerGame {
             Player player = new Player(Faction.values()[i]);
             players.add(player);
         }
-
     }
 
     /**
@@ -71,7 +70,6 @@ public class SiedlerGame {
         }
     }
 
-
     /**
      * This method returns a list with all players.
      *
@@ -81,7 +79,6 @@ public class SiedlerGame {
 
         return players;
     }
-
 
     /**
      * This method returns the GameBoard
@@ -93,7 +90,6 @@ public class SiedlerGame {
         return board;
     }
 
-
     /**
      * Returns the current player who needs to make a turn.
      *
@@ -102,7 +98,6 @@ public class SiedlerGame {
     public Player getCurrentPlayer() {
         return players.get(playerAtTurn);
     }
-
 
     /**
      * The method builds an  initial settlement without the need to pay
@@ -240,7 +235,6 @@ public class SiedlerGame {
      * @param number
      * @return first digit as 'int'
      */
-
     private Integer getFirstDigit(int number) {
         Integer digit;
         if (number >= 10) {
@@ -250,7 +244,6 @@ public class SiedlerGame {
         }
         return digit;
     }
-
 
     /**
      * Returns the last digit of a two-digit number
@@ -369,8 +362,6 @@ public class SiedlerGame {
      * @param currentPlayer the player who wants to build
      * @return 'true' if the player can pay the costs.
      */
-
-
     private boolean hasEnoughResources(List<Config.Resource> list, Player currentPlayer) {
 
         boolean hasEnoughRessources = true;
@@ -380,11 +371,8 @@ public class SiedlerGame {
                 hasEnoughRessources = false;
             }
         }
-
         return hasEnoughRessources;
-
     }
-
 
     /**
      * This method removes resources from the player which he uses
@@ -442,7 +430,6 @@ public class SiedlerGame {
                 || hasAdjacentElementsForRoad(currentPlayer, roadEnd, roadStart)));
     }
 
-
     /**
      * This method checks if the position where a player wants to build
      * a road is valid.That means a adjacent meeple needs to be
@@ -474,7 +461,6 @@ public class SiedlerGame {
         return hasAdjacentElements;
     }
 
-
     /**
      * This Method build a city at a specified position,
      * if all needed conditions match.
@@ -504,7 +490,6 @@ public class SiedlerGame {
             return false;
         }
     }
-
 
     /**
      * This method trade 4 offered resources to one wished resource.
@@ -560,7 +545,6 @@ public class SiedlerGame {
         return winner;
     }
 
-
     /**
      * This method checks if a player has a road that is longer than
      * five connected Edges which are not interrupted by a different
@@ -585,7 +569,6 @@ public class SiedlerGame {
 
         return playerWithLongestRoad;
     }
-
 
     /**
      * This method returns the size of the longest road of a specified player
@@ -614,11 +597,9 @@ public class SiedlerGame {
                     longestRoad = i;
                 }
             }
-
         }
         return longestRoad;
     }
-
     /**
      * This method is called by 'getLongestRoad' an searches the
      * longest road at specified corner that could be the ending or beginning
@@ -687,6 +668,4 @@ public class SiedlerGame {
         }
         return roads;
     }
-
-
 }
