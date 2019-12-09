@@ -363,8 +363,8 @@ public class SiedlerGame {
      */
     private boolean hasEnoughResources(List<Config.Resource> list, Player currentPlayer) {
         if(list == Config.Structure.CITY.getCosts()){
-            return (currentPlayer.getNumberOfSingleResource(Resource.STONE)>2
-                    &&(getCurrentPlayer().getNumberOfSingleResource(Resource.GRAIN) > 1)); }
+            return ((currentPlayer.getNumberOfSingleResource(Resource.STONE)>2)
+                    &&(currentPlayer.getNumberOfSingleResource(Resource.GRAIN)>1)); }
        else {
             boolean hasEnoughResources = true;
             for (Resource resource : list) {
