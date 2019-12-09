@@ -365,8 +365,37 @@ class SiedlerGameTest {
     }
 
     @Test
-    void getWinner() {
+    void getWinnerIfNoWinner() {
+
+        //No winner
+        SiedlerGame  siedlerGame = new SiedlerGame(4);
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        assertNull(siedlerGame.getWinner());
+
     }
+
+   /** @Test
+    void getWinnerIfLimit() {
+
+        //No winner
+        SiedlerGame  siedlerGame = new SiedlerGame(4);
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(7);
+        assertNull(siedlerGame.getWinner());
+
+    }*/
+
 
     @Test
     void hasLongestRoadIfConditionsApply(){
@@ -394,7 +423,6 @@ class SiedlerGameTest {
         siedlerGame.buildRoad(new Point(7,9), new Point(8,10));
         siedlerGame.getCurrentPlayer().initializeMeeple(road3);
         siedlerGame.switchToNextPlayer();
-
         Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
         siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
         siedlerGame.placeInitialSettlement(new Point(3,13), false);
@@ -405,7 +433,7 @@ class SiedlerGameTest {
                 .getPlayerFaction(),new Point(3,15), new Point(4,16));
         siedlerGame.buildRoad(new Point(3,15), new Point(4,16));
         siedlerGame.getCurrentPlayer().initializeMeeple(road4);
-        assertEquals(siedlerGame.getPlayer().get(0), siedlerGame.hasLongestRoad());
+        assertEquals(siedlerGame.getPlayer().get(0), siedlerGame.getPlayerWithLongestRoad());
 
     }
 
@@ -440,7 +468,7 @@ class SiedlerGameTest {
                 .getPlayerFaction(),new Point(3,15), new Point(4,16));
         siedlerGame.buildRoad(new Point(3,15), new Point(4,16));
         siedlerGame.getCurrentPlayer().initializeMeeple(road4);
-        assertNull(siedlerGame.hasLongestRoad());
+        assertNull(siedlerGame.getPlayerWithLongestRoad());
 
     }
 
@@ -458,6 +486,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 4; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+            siedlerGame.bank.removeBankResource(1, Config.Resource.CLAY);
         }
         assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
         assertEquals(4, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
@@ -485,6 +514,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 4; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+            siedlerGame.bank.removeBankResource(1, Config.Resource.CLAY);
         }
         assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
         assertEquals(4, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
@@ -500,6 +530,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 4; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+            siedlerGame.bank.removeBankResource(1, Config.Resource.CLAY);
         }
         assertTrue(siedlerGame.tradeWithBankFourToOne(offer, want));
         assertEquals(1, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
@@ -515,6 +546,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 2; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+            siedlerGame.bank.removeBankResource(1, Config.Resource.CLAY);
         }
         assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
         assertEquals(2, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
@@ -530,6 +562,7 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 5; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+            siedlerGame.bank.removeBankResource(1, Config.Resource.CLAY);
         }
         assertEquals(5, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
         assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
@@ -545,12 +578,14 @@ class SiedlerGame_TradeWithBankFourToOneTest {
         SiedlerGame siedlerGame = new SiedlerGame(2);
         for (int i = 0; i < 4; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.CLAY);
+            siedlerGame.bank.removeBankResource(1, Config.Resource.CLAY);
         }
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 19; i++) {
             siedlerGame.getCurrentPlayer().addRescourceFromSettlement(Config.Resource.WOOD);
+            siedlerGame.bank.removeBankResource(1, Config.Resource.WOOD);
         }
 
-        //assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
+        assertFalse(siedlerGame.tradeWithBankFourToOne(offer, want));
         assertEquals(23, siedlerGame.getCurrentPlayer().getNumberOfTotalResources());
     }
 }
