@@ -25,6 +25,8 @@ public class BuildingMenu {
 
     private SiedlerGame siedlerGame;
     private SiedlerBoardTextView view;
+    private boolean gameIsRunning;
+    private boolean menuIsRunning;
     protected static Player winner;
 
     /**
@@ -43,8 +45,8 @@ public class BuildingMenu {
 	 * @return false to stop the game if there is a winner
 	 */
     public boolean startBuildingMenu() {
-    	boolean gameIsRunning = true;
-        boolean menuIsRunning = true;
+    	gameIsRunning = true;
+        menuIsRunning = true;
         while(menuIsRunning) {
             switch (InputOutputConsole.getEnumValue(BuildingMenuActions.class)) {
                 case GO_BACK:
@@ -58,40 +60,15 @@ public class BuildingMenu {
                     break;
                 case ROAD:
                     startRoadBuilding();
-                    Player currentPlayer = siedlerGame.getCurrentPlayer();
-                    Player newPlayerWithLongestRoad = siedlerGame.hasLongestRoad();
-                    if (currentPlayer == newPlayerWithLongestRoad && currentPlayer != Player.currentPlayerWithLongestRoad) {
-                    	if (Player.currentPlayerWithLongestRoad != null) {
-                    		int currentPoints = Player.currentPlayerWithLongestRoad.getWinPoints();
-                        	Player.currentPlayerWithLongestRoad.setWinPoints(currentPoints - SiedlerGame.POINTS_LONGEST_ROAD);
-                    	}
-                    	int currentPoints = currentPlayer.getWinPoints();
-                    	currentPlayer.setWinPoints(currentPoints + SiedlerGame.POINTS_LONGEST_ROAD);
-                    	
-                    	Player.currentPlayerWithLongestRoad = currentPlayer;
-                    	InputOutputConsole.printText(Output.getLongestRoadMessage());
-                    }
-                    if (isWinnerAvailable()) {
-                    	winner = siedlerGame.getWinner();
-                    	menuIsRunning = false;
-                    	gameIsRunning = false;
-                    }
+                    lookForLongestRoad();
                     break;
                 case SETTLEMENT:
                     startSettlementBuilding();
-                    if (isWinnerAvailable()) {
-                    	winner = siedlerGame.getWinner();
-                    	menuIsRunning = false;
-                    	gameIsRunning = false;
-                    }
+                    lookForWinner();
                     break;
                 case CITY:
                     startCityBuilding();
-                    if (isWinnerAvailable()) {
-                    	winner = siedlerGame.getWinner();
-                    	menuIsRunning = false;
-                    	gameIsRunning = false;
-                    }
+                    lookForWinner();
                     break;
             }
         }
@@ -173,5 +150,40 @@ public class BuildingMenu {
 	 */
 	private boolean isWinnerAvailable() {
 		return (siedlerGame.getWinner() != null) ? true : false;
+	}
+	
+	/**
+	 * Looks for a winner. The game stops if there is a winner. Otherwise it goes on.
+	 */
+	private void lookForWinner() {
+		if (isWinnerAvailable()) {
+        	winner = siedlerGame.getWinner();
+        	menuIsRunning = false;
+        	gameIsRunning = false;
+        }
+	}
+	
+	/**
+	 * Looks for the longest road. If nobody has owned the longest road up to now,
+	 * but the current player does, he gets two points and a message is printed to
+	 * the console. If a player has owned the longest road but now the current
+	 * player owns an even longer road, the old owner loses two points and the new
+	 * player gets them. In both cases there is a look for a winner.
+	 */
+	private void lookForLongestRoad() {
+		Player currentPlayer = siedlerGame.getCurrentPlayer();
+		Player newPlayerWithLongestRoad = siedlerGame.getPlayerWithLongestRoad();
+		if (currentPlayer == newPlayerWithLongestRoad && currentPlayer != Player.currentPlayerWithLongestRoad) {
+			if (Player.currentPlayerWithLongestRoad != null) {
+				int currentPoints = Player.currentPlayerWithLongestRoad.getWinPoints();
+				Player.currentPlayerWithLongestRoad.setWinPoints(currentPoints - SiedlerGame.POINTS_LONGEST_ROAD);
+			}
+			int currentPoints = currentPlayer.getWinPoints();
+			currentPlayer.setWinPoints(currentPoints + SiedlerGame.POINTS_LONGEST_ROAD);
+
+			Player.currentPlayerWithLongestRoad = currentPlayer;
+			InputOutputConsole.printText(Output.getLongestRoadMessage());
+			lookForWinner();
+		}
 	}
 }
