@@ -21,7 +21,7 @@ Hallo! Auf diesem Repository finden Sie eine in Java geschriebene, vereinfachte 
 
 ### Weitere Informationen
 
-Weitere Informationen / Dokumentationen finden Sie in den [Issues](https://github.zhaw.ch/pm1-it19awin-fame-muon-rayi/gruppe402-alpha-projekt2-editor/issues) und im [Wiki](https://github.zhaw.ch/pm1-it19awin-fame-muon-rayi/gruppe402-alpha-projekt2-editor/wiki).
+Weitere Informationen / Dokumentationen finden Sie in den [Issues](https://github.zhaw.ch/pm1-it19awin-fame-muon-rayi/gruppe402-alpha-projekt3-catan/issues) und im [Wiki](https://github.zhaw.ch/pm1-it19awin-fame-muon-rayi/gruppe402-alpha-projekt3-catan/wiki).
 
 Autoren:
 
