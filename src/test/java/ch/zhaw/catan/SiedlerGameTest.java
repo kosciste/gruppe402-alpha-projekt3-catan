@@ -151,10 +151,6 @@ class SiedlerGameTest {
 
 
     @Test
-    void throwDice() {
-    }
-
-    @Test
     void buildSettlementWithValidConditions() {
         SiedlerGame  siedlerGame = new SiedlerGame(2);
         siedlerGame.placeInitialSettlement(new Point(5,3), false);
@@ -366,8 +362,6 @@ class SiedlerGameTest {
 
     @Test
     void getWinnerIfNoWinner() {
-
-        //No winner
         SiedlerGame  siedlerGame = new SiedlerGame(4);
         siedlerGame.getCurrentPlayer().setWinPoints(2);
         siedlerGame.switchToNextPlayer();
@@ -380,10 +374,21 @@ class SiedlerGameTest {
 
     }
 
-   /** @Test
+    @Test
     void getWinnerIfLimit() {
+        SiedlerGame  siedlerGame = new SiedlerGame(4);
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(6);
+        assertNull(siedlerGame.getWinner());
+    }
 
-        //No winner
+    @Test
+    void getWinner() {
         SiedlerGame  siedlerGame = new SiedlerGame(4);
         siedlerGame.getCurrentPlayer().setWinPoints(2);
         siedlerGame.switchToNextPlayer();
@@ -392,9 +397,8 @@ class SiedlerGameTest {
         siedlerGame.getCurrentPlayer().setWinPoints(2);
         siedlerGame.switchToNextPlayer();
         siedlerGame.getCurrentPlayer().setWinPoints(7);
-        assertNull(siedlerGame.getWinner());
-
-    }*/
+        assertEquals(siedlerGame.getWinner(),siedlerGame.getCurrentPlayer());
+    }
 
 
     @Test
