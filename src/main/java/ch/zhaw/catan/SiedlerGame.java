@@ -623,7 +623,7 @@ public class SiedlerGame {
                     visitedRoads.put(road.getUniqueID(), length);
                     visitedRoads.put(road.getUniqueIDreverse(), length);
 
-                    if (player.getPlayerFaction().toString().substring(0, 1)
+                    if (player.getPlayerFaction().toString()
                             .equals(board.getCorner(road.getRoadEnd()))
                             || board.getCorner(road.getRoadEnd()) == null) {
 
@@ -633,7 +633,7 @@ public class SiedlerGame {
                     visitedRoads.put(road.getUniqueID(), length);
                     visitedRoads.put(road.getUniqueIDreverse(), length);
 
-                    if (player.getPlayerFaction().toString().substring(0, 1)
+                    if (player.getPlayerFaction().toString()
                             .equals(board.getCorner(road.getRoadStart()))
                             || board.getCorner(road.getRoadStart()) == null) {
 
