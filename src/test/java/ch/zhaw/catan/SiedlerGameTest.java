@@ -365,8 +365,37 @@ class SiedlerGameTest {
     }
 
     @Test
-    void getWinner() {
+    void getWinnerIfNoWinner() {
+
+        //No winner
+        SiedlerGame  siedlerGame = new SiedlerGame(4);
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        assertNull(siedlerGame.getWinner());
+
     }
+
+   /** @Test
+    void getWinnerIfLimit() {
+
+        //No winner
+        SiedlerGame  siedlerGame = new SiedlerGame(4);
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(2);
+        siedlerGame.switchToNextPlayer();
+        siedlerGame.getCurrentPlayer().setWinPoints(7);
+        assertNull(siedlerGame.getWinner());
+
+    }*/
+
 
     @Test
     void hasLongestRoadIfConditionsApply(){
