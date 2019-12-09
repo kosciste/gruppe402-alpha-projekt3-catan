@@ -17,4 +17,10 @@ public enum TradingMenuActions {
     {
         this.name = name;
     }
+
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }
