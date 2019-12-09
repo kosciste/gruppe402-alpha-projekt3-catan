@@ -210,6 +210,41 @@ class SiedlerGameTest {
 
     }
 
+    @Test
+    void buildSettlementWhenPositionOccupied() {
+        SiedlerGame  siedlerGame = new SiedlerGame(2);
+        siedlerGame.placeInitialSettlement(new Point(5,3), false);
+        siedlerGame.placeInitialRoad(new Point(5,3), new Point(6,4));
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.CLAY);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOD);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOL);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.GRAIN);
+        Road road = new Road(siedlerGame.getCurrentPlayer()
+                .getPlayerFaction(),new Point(6,4), new Point(6,6));
+        siedlerGame.buildRoad(new Point(6,4), new Point(6,6));
+        siedlerGame.getCurrentPlayer().initializeMeeple(road);
+        Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
+        Settlement settlement1 = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
+        siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
+        siedlerGame.getCurrentPlayer().initializeMeeple(settlement1);
+        siedlerGame.buildSettlement(new Point(6,6));
+        assertFalse(siedlerGame.buildSettlement(new Point(6,6)));
+    }
+
+    @Test
+    void buildSettlementCheckDistanceRule() {
+        SiedlerGame  siedlerGame = new SiedlerGame(2);
+        siedlerGame.placeInitialSettlement(new Point(5,3), false);
+        siedlerGame.placeInitialRoad(new Point(5,3), new Point(6,4));
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.CLAY);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOD);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.WOOL);
+        siedlerGame.getCurrentPlayer().addRescourceFromCity(Config.Resource.GRAIN);
+        Settlement settlement = new Settlement(siedlerGame.getCurrentPlayer().getPlayerFaction());
+        siedlerGame.getCurrentPlayer().initializeMeeple(settlement);
+        assertFalse(siedlerGame.buildSettlement(new Point(6,4)));
+    }
+    
 
     @Test
     void buildRoad() {

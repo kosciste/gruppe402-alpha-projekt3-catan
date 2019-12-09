@@ -443,9 +443,9 @@ public class SiedlerGame {
      * a road is valid.That means a adjacent meeple needs to be
      * in connection to the new road.
      * @param currentPlayer
-     * @param roadStart
-     * @param roadEnd
-     * @return
+     * @param roadStart the point where the road starts
+     * @param roadEnd he point where the road ends
+     * @return 'true' if the defined position has adjacent elements
      */
     private boolean hasAdjacentElementsForRoad(Player currentPlayer, Point roadStart, Point roadEnd){
 
