@@ -625,6 +625,8 @@ public class SiedlerGame {
 
                     if (player.getPlayerFaction().toString()
                             .equals(board.getCorner(road.getRoadEnd()))
+                            ||player.getPlayerFaction().toString().toUpperCase()
+                            .equals(board.getCorner(road.getRoadEnd()))
                             || board.getCorner(road.getRoadEnd()) == null) {
 
                         searchForLongestRoadAtCorner(road.getRoadEnd(), player, length + 1);
@@ -634,6 +636,8 @@ public class SiedlerGame {
                     visitedRoads.put(road.getUniqueIDreverse(), length);
 
                     if (player.getPlayerFaction().toString()
+                            .equals(board.getCorner(road.getRoadStart()))
+                            ||player.getPlayerFaction().toString().toUpperCase()
                             .equals(board.getCorner(road.getRoadStart()))
                             || board.getCorner(road.getRoadStart()) == null) {
 
