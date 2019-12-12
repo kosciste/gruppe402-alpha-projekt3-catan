@@ -15,7 +15,7 @@ Hallo! Auf diesem Repository finden Sie eine in Java geschriebene, vereinfachte 
 
 * Clonen Sie das Repository in ihr Lokales System.
 * Danach öffnen Sie das Projekt mit der von Ihnen gewählten IDE.
-* Nun sollten Sie eine .jar Datei vom Texteditor entwickeln können.
+* Nun sollten Sie eine .jar Datei von der Applikation entwickeln können.
 
 * Als letztes öffnen Sie ihre Konsole und starten die Applikation.
 
